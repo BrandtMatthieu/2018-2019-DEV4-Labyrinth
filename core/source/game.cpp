@@ -1,4 +1,4 @@
-#include "game.h"
+#include "../include/game.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
