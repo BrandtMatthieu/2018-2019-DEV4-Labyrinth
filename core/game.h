@@ -22,6 +22,8 @@ namespace Labyrinth_44422 {
 
 			public:
 				Game();
+				unsigned int getMinPlayers() const;
+				unsigned int getMaxPlayers() const;
 				std::vector<Player *> getPlayers() const;
 				Board * getBoard() const;
 				Player * getWinner() const;
