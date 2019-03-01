@@ -9,4 +9,5 @@ SOURCES += \
 
 HEADERS += \
     include/game.h \
-    include/player.h
+    include/player.h \
+    include/colors.h

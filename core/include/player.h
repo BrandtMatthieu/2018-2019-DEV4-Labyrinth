@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "./Colors.h"
-#include "./ObjectiveCard.h"
+#include "./colors.h"
+#include "./objectiveCard.h"
 
 namespace Labyrinth_44422 {
 	namespace model {

@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "./Board.h"
-#include "./Tile.h"
-#include "./Player.h"
+#include "./board.h"
+#include "./tile.h"
+#include "./player.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
