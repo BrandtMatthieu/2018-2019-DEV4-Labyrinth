@@ -3,9 +3,7 @@
 namespace Labyrinth_44422 {
 	namespace model {
 
-		Player::Player() {
-
-		}
+		Player::Player() {}
 
 	}
 }

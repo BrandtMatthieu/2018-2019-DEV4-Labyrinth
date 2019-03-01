@@ -21,7 +21,7 @@ namespace Labyrinth_44422 {
 			public:
 				Player();
 				std::string getNickname() const;
-				Color getColor() const;
+				Colors getColor() const;
 				unsigned int getPositionVerticale() const;
 				unsigned int getPositionHorizontale() const;
 				ObjectiveCard * getCurrentObjective() const;

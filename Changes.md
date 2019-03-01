@@ -14,3 +14,7 @@ Ce fichier reprend les changements par rapport au modèle métier remis lors de 
   * ajout d'un getter pour l'attribut privé `positionVerticale` de la classe `Player` en prévision d'un futur éventuel accès
   * ajout d'un getter pour l'attribut privé `positionHorizontale` de la classe `Player` en prévision d'un futur éventuel accès
   * utilisation d'un `unsigned int` plutôt qu'un `int` pour la méthode `getObjectiveCount` de la classe `Player` puisque le nombre d'objectifs d'un joueur ne peut pas être négatif
+  * utilisation d'un `unsigned int` plutôt qu'un `int` pour l'attribut `startNumber` de la classe `Tile` puisque le numéro de départ d'un joueur ne peut pas être négatif
+  * ajout d'un getter pour l'attribut privé `movable` de la classe `Tile` en prévision d'un futur éventuel accès
+  * ajout d'un getter pour l'attribut privé `sizeHorizontal` de la classe `Board` en prévision d'un futur éventuel accès
+  * ajout d'un getter pour l'attribut privé `sizeVertical` de la classe `Board` en prévision d'un futur éventuel accès
