@@ -4,16 +4,17 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+    source/board.cpp \
     source/game.cpp \
+    source/objectiveCard.cpp \
     source/player.cpp \
     source/tile.cpp \
-    source/board.cpp \
-    source/objectiveCard.cpp
 
 HEADERS += \
-    include/game.h \
-    include/player.h \
-    include/colors.h \
-    include/tile.h \
     include/board.h \
-    include/objectiveCard.h
+    include/colors.h \
+    include/game.h \
+    include/objectiveCard.h \
+    include/objectivesTypes.h \
+    include/player.h \
+    include/tile.h
