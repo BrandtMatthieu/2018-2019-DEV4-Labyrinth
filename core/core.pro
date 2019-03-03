@@ -7,11 +7,13 @@ SOURCES += \
     source/game.cpp \
     source/player.cpp \
     source/tile.cpp \
-    source/board.cpp
+    source/board.cpp \
+    source/objectiveCard.cpp
 
 HEADERS += \
     include/game.h \
     include/player.h \
     include/colors.h \
     include/tile.h \
-    include/board.h
+    include/board.h \
+    include/objectiveCard.h
