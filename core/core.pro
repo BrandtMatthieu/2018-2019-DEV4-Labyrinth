@@ -17,4 +17,5 @@ HEADERS += \
     include/objectiveCard.h \
     include/objectivesTypes.h \
     include/player.h \
-    include/tile.h
+    include/tile.h \
+    include/tileTypes.h

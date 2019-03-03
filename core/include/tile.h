@@ -3,21 +3,22 @@
 
 #include <stdbool.h>
 
-#include "./tileType.h"
+#include "./tileTypes.h"
+#include "./objectivesTypes.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
 
 		class Tile {
 			private:
-				TileType type;
+				TileTypes type;
 				bool movable;
 				ObjectivesTypes objective;
 				unsigned int startNumber;
 
 			public:
 				Tile();
-				TileType getType() const;
+				TileTypes getType() const;
 				bool isMovable() const;
 				ObjectivesTypes getObjective() const;
 				unsigned int getStartNumber() const;

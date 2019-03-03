@@ -3,7 +3,7 @@
 namespace Labyrinth_44422 {
 	namespace model {
 		
-		ObjectiveCard::ObjectiveCard();
+		ObjectiveCard::ObjectiveCard() {};
 		
 	}
 }

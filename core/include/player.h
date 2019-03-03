@@ -16,7 +16,7 @@ namespace Labyrinth_44422 {
 				Colors color;
 				unsigned int positionVerticale;
 				unsigned int positionHorizontale;
-				std::vector<ObjectiveCard *> objectiveCards
+				std::vector<ObjectiveCard *> objectiveCards;
 
 			public:
 				Player();
