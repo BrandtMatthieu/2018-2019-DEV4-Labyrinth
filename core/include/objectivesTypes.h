@@ -4,6 +4,12 @@
 namespace Labyrinth_44422 {
 	namespace model {
 
+		/**
+		 * Represents an objective on an objective tile or on a tile
+		 * @author 44422
+		 * @version 0.1.0
+		 * @since 2019-03-03
+		 */
 		enum class ObjectivesTypes {
 			BAT,
 			BEETLE,

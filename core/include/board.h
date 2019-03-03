@@ -7,7 +7,13 @@
 
 namespace Labyrinth_44422 {
 	namespace model {
-
+	
+		/**
+		 * Represents the board in the Labyrinth game
+		 * @author 44422
+		 * @version 0.1.0
+		 * @since 2019-03-01
+		 */
 		class Board {
 			private:
 				unsigned int sizeHorizontal = 7;

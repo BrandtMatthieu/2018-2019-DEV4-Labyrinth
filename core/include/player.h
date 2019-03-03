@@ -10,6 +10,12 @@
 namespace Labyrinth_44422 {
 	namespace model {
 
+		/**
+		 * Represents a player for the game
+		 * @author 44422
+		 * @version 0.1.0
+		 * @since 2019-03-01
+		 */
 		class Player {
 			private:
 				std::string nickname;
