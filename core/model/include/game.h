@@ -21,13 +21,14 @@ namespace Labyrinth_44422 {
 				unsigned int minPlayers = 2;
 				unsigned int maxPlayers = 4;
 				std::vector<Player *> players;
-				Board * board;
-				Player * winner;
+				Board * board = nullptr;
+				Player * winner = nullptr;
 				std::vector<Tile *> avaliableTiles;
-				unsigned int currentPlayerIndex;
+				unsigned int currentPlayerIndex = 0;
 
 			public:
-				Game();
+				Game(void);
+				~Game(void);
 				unsigned int getMinPlayers() const;
 				unsigned int getMaxPlayers() const;
 				std::vector<Player *> getPlayers() const;
