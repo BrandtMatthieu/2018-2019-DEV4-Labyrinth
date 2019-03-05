@@ -13,7 +13,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Represents the labyrinth board game
 		 * @author 44422
-		 * @version 0.1.0
+		 * @version 0.1.1
 		 * @since 2019-03-01
 		 */
 		class Game {
@@ -23,22 +23,22 @@ namespace Labyrinth_44422 {
 				std::vector<Player *> players;
 				Board * board = nullptr;
 				Player * winner = nullptr;
-				std::vector<Tile *> avaliableTiles;
+				std::vector<Tile *> availableTiles;
 				unsigned int currentPlayerIndex = 0;
 
 			public:
 				Game(void);
 				~Game(void);
-				unsigned int getMinPlayers() const;
-				unsigned int getMaxPlayers() const;
-				std::vector<Player *> getPlayers() const;
-				Board * getBoard() const;
-				Player * getWinner() const;
-				std::vector<Tile *> getAvaliableTiles() const;
-				Player * getCurrentPlayer() const;
-				void addPlayer(Player * player);
-				void nextPlayer();
-				void start();
+				unsigned int getMinPlayers(void) const;
+				unsigned int getMaxPlayers(void) const;
+				std::vector<Player *> getPlayers(void) const;
+				Board * getBoard(void) const;
+				Player * getWinner(void) const;
+				std::vector<Tile *> getAvailableTiles(void) const;
+				Player * getCurrentPlayer(void) const;
+				void addPlayer(std::string name, Colors color);
+				void nextPlayer(void);
+				void start(void);
 		};
 
 	}
