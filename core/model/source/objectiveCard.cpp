@@ -3,7 +3,13 @@
 namespace Labyrinth_44422 {
 	namespace model {
 		
-		ObjectiveCard::ObjectiveCard() {};
+		/**
+		 * Creates a new objective card
+		 * @param objective the objective on the card
+		 */
+		ObjectiveCard::ObjectiveCard(ObjectivesTypes & objective) {
+			this->objective = objective;
+		};
 		
 	}
 }

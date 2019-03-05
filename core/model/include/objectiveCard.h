@@ -16,8 +16,8 @@ namespace Labyrinth_44422 {
 			private:
 				ObjectivesTypes objective;
 			public:
-				ObjectiveCard();
-				ObjectivesTypes getObjective() const;
+				ObjectiveCard(ObjectivesTypes & objective);
+				ObjectivesTypes getObjective(void) const;
 		};
 		
 	}
