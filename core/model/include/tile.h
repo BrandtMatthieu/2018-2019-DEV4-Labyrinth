@@ -5,6 +5,7 @@
 
 #include "./tileTypes.h"
 #include "./objectivesTypes.h"
+#include "./position.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
@@ -12,22 +13,28 @@ namespace Labyrinth_44422 {
 		/**
 		 * Represents a tile for the board game Labyrinth
 		 * @author 44422
-		 * @version 0.1.0
+		 * @version 0.1.1
 		 * @since 2019-03-01
 		 */
 		class Tile {
 			private:
-				TileTypes type;
+				bool pathUP;
+				bool pathDOWN;
+				bool pathRIGHT;
+				bool pathLEFT;
+				
+				Position position;
 				bool movable;
-				ObjectivesTypes objective;
-				unsigned int startNumber;
+				ObjectivesTypes objective = NULL;
+				unsigned int startNumber = NULL;
 
 			public:
-				Tile();
-				TileTypes getType() const;
-				bool isMovable() const;
-				ObjectivesTypes getObjective() const;
-				unsigned int getStartNumber() const;
+				Tile(bool pathUP, bool pathDOWN, bool pathRIGHT, bool pathLEFT, Position position, bool movable, ObjectivesTypes objective, unsigned int startNumber);
+				Tile(Tile & tile);
+				TileTypes getType(void) const;
+				bool isMovable(void) const;
+				ObjectivesTypes getObjective(void) const;
+				unsigned int getStartNumber(void) const;
 		};
 
 	}
