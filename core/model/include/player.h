@@ -6,6 +6,7 @@
 
 #include "./colors.h"
 #include "./objectiveCard.h"
+#include "./position.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
@@ -13,7 +14,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Represents a player for the game
 		 * @author 44422
-		 * @version 0.1.0
+		 * @version 0.1.1
 		 * @since 2019-03-01
 		 */
 		class Player {
@@ -25,17 +26,17 @@ namespace Labyrinth_44422 {
 				std::vector<ObjectiveCard *> objectiveCards;
 
 			public:
-				Player();
-				std::string getNickname() const;
-				Colors getColor() const;
-				unsigned int getPositionVerticale() const;
-				unsigned int getPositionHorizontale() const;
-				ObjectiveCard * getCurrentObjective() const;
-				unsigned int getObjectiveCount() const;
-				void completeCurrentObjective();
-				void insertTile();
-				void movePawn();
-				void endTurn();
+				Player(std::string nickname, Colors color);
+				std::string getNickname(void) const;
+				Colors getColor(void) const;
+				unsigned int getPositionVerticale(void) const;
+				unsigned int getPositionHorizontale(void) const;
+				ObjectiveCard * getCurrentObjective(void) const;
+				unsigned int getObjectiveCount(void) const;
+				void completeCurrentObjective(void);
+				void insertTile(Position position, InsertSide side);
+				void movePawn(Position position);
+				void endTurn(void);
 		};
 
 	}
