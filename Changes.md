@@ -18,3 +18,5 @@ Ce fichier reprend les changements par rapport au modèle métier remis lors de 
   * ajout d'un getter pour l'attribut privé `movable` de la classe `Tile` en prévision d'un futur éventuel accès
   * ajout d'un getter pour l'attribut privé `sizeHorizontal` de la classe `Board` en prévision d'un futur éventuel accès
   * ajout d'un getter pour l'attribut privé `sizeVertical` de la classe `Board` en prévision d'un futur éventuel accès
+* 04/03/2019
+  * ajout d'une classe `position` pour remplacer différents attributs privés de certaines classes (`Tile` et `Board`)
