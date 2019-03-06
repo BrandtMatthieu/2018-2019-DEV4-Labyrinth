@@ -14,11 +14,14 @@ namespace Labyrinth_44422 {
 		 * @since 2019-03-04
 		 */
 		class Position {
-			public:
+			private:
 				unsigned int x;
 				unsigned int y;
-				Position(unsigned int & x, unsigned int & y);
+			public:
+				Position(unsigned x, unsigned y);
 				Position(Position & position);
+				unsigned int getX(void) const;
+				unsigned int getY(void) const;
 				void move(unsigned int & x, unsigned int & y);
 				void move(unsigned int & amount, InsertSide & side);
 				void move(Position & position);

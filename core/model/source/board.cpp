@@ -20,10 +20,10 @@ namespace Labyrinth_44422 {
 		 * @return true if the provided position in inside the game's board
 		 */
 		bool Board::positionInsideBoard(Position position) const {
-			return position.x >= 0
-				&& position.x < this->sizeHorizontal
-				&& position.y >= 0
-				&& position.y < this->sizeVertical;
+			return position.getX() >= 0
+				&& position.getX() < this->maxPosition.getX()
+				&& position.getY() >= 0
+				&& position.getY() < this->maxPosition.getY();
 		}
 		
 		/**
@@ -31,7 +31,7 @@ namespace Labyrinth_44422 {
 		 * @return the horizontal size of the game's board
 		 */
 		unsigned int Board::getSizeHorizontal(void) const {
-			return this->sizeHorizontal;
+			return this->maxPosition.getX();
 		}
 		
 		/**
@@ -39,7 +39,7 @@ namespace Labyrinth_44422 {
 		 * @return the vertical size of the game's board
 		 */
 		unsigned int Board::getSizeVertical(void) const {
-			return this->sizeVertical;
+			return this->maxPosition.getY();
 		}
 		
 		/**
@@ -57,7 +57,7 @@ namespace Labyrinth_44422 {
 		 */
 		Tile * Board::getTileAt(Position & position) const {
 			if(this->positionInsideBoard(position)) {
-				return this->tiles.at(position.x + position.y * this->getSizeHorizontal());
+				return this->tiles.at(position.getX() + position.getY() * this->getSizeHorizontal());
 			} else {
 				throw std::invalid_argument("Cannot get tile at " + position.toString() +
 				".\nPosition is out of board's bounds (0;0) to (" + std::to_string(this->getSizeHorizontal()));

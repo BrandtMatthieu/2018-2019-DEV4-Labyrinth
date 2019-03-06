@@ -25,7 +25,7 @@ namespace Labyrinth_44422 {
 				
 				Position position;
 				bool movable;
-				ObjectivesTypes objective = NULL;
+				ObjectivesTypes objective;
 				unsigned int startNumber = NULL;
 
 			public:

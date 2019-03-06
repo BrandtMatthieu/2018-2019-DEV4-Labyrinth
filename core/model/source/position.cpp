@@ -11,7 +11,7 @@ namespace Labyrinth_44422 {
 		 * @param x the x axis of the position
 		 * @param y the y axis of the position
 		 */
-		Position::Position(unsigned int & x, unsigned int & y) {
+		Position::Position(unsigned int x, unsigned int y) {
 			this->x = x;
 			this->y = y;
 		}
@@ -24,6 +24,22 @@ namespace Labyrinth_44422 {
 		Position::Position(Position & position) {
 			this->x = position.x;
 			this->y = position.y;
+		}
+		
+		/**
+		 * Gets the x value of the position
+		 * @return
+		 */
+		unsigned int Position::getX(void) const {
+			return this->x;
+		}
+		
+		/**
+		 * Gets the y value of the position
+		 * @return
+		 */
+		unsigned int Position::getY(void) const {
+			return this->y;
 		}
 
 		/**
@@ -93,6 +109,5 @@ namespace Labyrinth_44422 {
 		std::string Position::toString(void) const {
 			return "(" + std::to_string(this->x) + ";" + std::to_string(this->y) + ")";
 		}
-		
 	}
 }

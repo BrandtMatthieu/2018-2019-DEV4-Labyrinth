@@ -19,7 +19,6 @@ namespace Labyrinth_44422 {
 		 */
 		Tile::Tile(bool pathUP, bool pathDOWN, bool pathRIGHT, bool pathLEFT, Position position, bool movable,
 				   ObjectivesTypes objective, unsigned int startNumber) {
-			
 		}
 		
 		Tile::Tile(Tile &tile) {

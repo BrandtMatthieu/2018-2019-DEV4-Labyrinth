@@ -19,8 +19,7 @@ namespace Labyrinth_44422 {
 		 */
 		class Board {
 			private:
-				unsigned int sizeHorizontal = 7;
-				unsigned int sizeVertical = 7;
+				Position maxPosition{7, 7};
 				std::vector<Tile *> tiles;
 
 			public:
