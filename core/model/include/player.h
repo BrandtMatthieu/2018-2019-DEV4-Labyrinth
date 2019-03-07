@@ -21,21 +21,28 @@ namespace Labyrinth_44422 {
 			private:
 				std::string nickname;
 				Colors color;
-				unsigned int positionVerticale;
-				unsigned int positionHorizontale;
-				std::vector<ObjectiveCard *> objectiveCards;
+				Position position;
+				std::vector<ObjectiveCard *> objectiveCardsLeft;
+				std::vector<ObjectiveCard *> completedObjectiveCards;
 
+				bool hasInsertedTile = false;
+				bool hasMovedPawn = false;
+				
 			public:
-				Player(std::string nickname, Colors color);
+				Player(std::string & nickname, Colors & color, Position & position);
+				~Player(void);
 				std::string getNickname(void) const;
 				Colors getColor(void) const;
-				unsigned int getPositionVerticale(void) const;
-				unsigned int getPositionHorizontale(void) const;
+				Position getPosition(void) const;
 				ObjectiveCard * getCurrentObjective(void) const;
 				unsigned int getObjectiveCount(void) const;
+				bool getHasInsertedTile(void) const;
+				bool getHasMovedPawn(void) const;
+				
 				void completeCurrentObjective(void);
-				void insertTile(Position position, InsertSide side);
-				void movePawn(Position position);
+				void addObjective(ObjectiveCard * objectiveCard);
+				void insertTile();
+				void movePawn(Position & position);
 				void endTurn(void);
 		};
 
