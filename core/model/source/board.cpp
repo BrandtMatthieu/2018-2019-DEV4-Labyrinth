@@ -15,15 +15,13 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
-		 * Checks if the provided position is inside the board
-		 * @param position the position to check
-		 * @return true if the provided position in inside the game's board
+		 * Destroys the board object and cleans its members
 		 */
-		bool Board::positionInsideBoard(Position position) const {
-			return position.getX() >= 0
-				&& position.getX() < this->maxPosition.getX()
-				&& position.getY() >= 0
-				&& position.getY() < this->maxPosition.getY();
+		Board::~Board() {
+			for(const auto & tile : this->tiles) {
+				delete tile;
+			}
+			this->tiles.clear();
 		}
 		
 		/**
@@ -62,6 +60,18 @@ namespace Labyrinth_44422 {
 				throw std::invalid_argument("Cannot get tile at " + position.toString() +
 				".\nPosition is out of board's bounds (0;0) to (" + std::to_string(this->getSizeHorizontal()));
 			}
+		}
+		
+		/**
+ * Checks if the provided position is inside the board
+ * @param position the position to check
+ * @return true if the provided position in inside the game's board
+ */
+		bool Board::positionInsideBoard(Position position) const {
+			return position.getX() >= 0
+				   && position.getX() < this->maxPosition.getX()
+				   && position.getY() >= 0
+				   && position.getY() < this->maxPosition.getY();
 		}
 		
 		/**
@@ -104,7 +114,5 @@ namespace Labyrinth_44422 {
 			// TODO
 			return false;
 		}
-		
-		
 	}
 }

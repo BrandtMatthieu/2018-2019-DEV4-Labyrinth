@@ -24,9 +24,9 @@ namespace Labyrinth_44422 {
 
 			public:
 				Board();
+				~Board();
 			
-				bool positionInsideBoard(Position position) const;
-				
+
 				unsigned int getSizeHorizontal(void) const;
 				unsigned int getSizeVertical(void) const;
 				std::vector<Tile *> getTiles(void) const;
@@ -36,6 +36,8 @@ namespace Labyrinth_44422 {
 				bool canInsertTile(Position & position, InsertSide & side) const;
 				void insertTile(Position & position, 	Tile * tile,  InsertSide & side);
 				bool canPlayerGoTo(Position & position, Player * player) const;
+				bool positionInsideBoard(Position position) const;
+			
 		};
 
 	}
