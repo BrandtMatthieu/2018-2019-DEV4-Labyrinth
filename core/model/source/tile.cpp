@@ -17,29 +17,96 @@ namespace Labyrinth_44422 {
 		 * @param objective the objective of the tile
 		 * @param startNumber
 		 */
-		Tile::Tile(bool pathUP, bool pathDOWN, bool pathRIGHT, bool pathLEFT, Position position, bool movable,
-				   ObjectivesTypes objective, unsigned int startNumber) {
+		Tile::Tile(bool & pathUP, bool & pathDOWN, bool & pathRIGHT, bool & pathLEFT, Position & position, bool & movable,
+				   ObjectivesTypes & objective, unsigned int startNumber = NULL): position{position.getX(), position.getY()} {
+			this->pathUP = pathUP;
+			this->pathDOWN = pathDOWN;
+			this->pathRIGHT = pathRIGHT;
+			this->pathLEFT = pathLEFT;
+			this->position = position;
+			this->movable = movable;
+			this->objective = objective;
+			this->startNumber = startNumber;
 		}
 		
-		Tile::Tile(Tile &tile) {
-		
+		/**
+		 * Creates a new tile from another tile
+		 * aka. copy constructor
+		 * @param tile the tile to create the new tile from
+		 */
+		Tile::Tile(Tile & tile): position{position} {
+			this->pathUP = tile.getPathUP();
+			this->pathDOWN = tile.getPathDOWN();
+			this->pathRIGHT = tile.getPathRIGHT();
+			this->pathLEFT = tile.getPathLEFT();
+			this->position = tile.getPosition();
+			this->movable = tile.isMovable();
+			this->objective = tile.getObjective();
+			this->startNumber = tile.getStartNumber();
 		}
 		
-		TileTypes Tile::getType(void) const {
-			return L;
+		/**
+		 * Returns true if the tile has a path up
+		 * @return true if the tile has a path up
+		 */
+		bool Tile::getPathUP(void) const {
+			return this->pathUP;
 		}
 		
+		/**
+		 * Returns true if the tile has a path down
+		 * @return true if the tile has a path down
+		 */
+		bool Tile::getPathDOWN(void) const {
+			return this->pathDOWN;
+		}
+		
+		/**
+		 * Returns true if the tile has a path right
+		 * @return true if the tile has a path right
+		 */
+		bool Tile::getPathRIGHT(void) const {
+			return this->pathRIGHT;
+		}
+		
+		/**
+		 * Returns true if the tile has a path left
+		 * @return true if the tile has a path left
+		 */
+		bool Tile::getPathLEFT(void) const {
+			return this->pathLEFT;
+		}
+		
+		/**
+		 * Returns true if the tile can be moved
+		 * @return true if the tile can be moved
+		 */
 		bool Tile::isMovable(void) const {
 			return false;
 		}
 		
-		ObjectivesTypes Tile::getObjective(void) const {
-			return CROWN;
+		/**
+		 * Returns the position of the tile on the board
+		 * @return the position of the tile on the board
+		 */
+		Position Tile::getPosition(void) const {
+			return this->position;
 		}
 		
+		/**
+		 * Returns the objective on the tile
+		 * @return the objective on the tile
+		 */
+		ObjectivesTypes Tile::getObjective(void) const {
+			return this->objective;
+		}
+		
+		/**
+		 * Returns the start number on the tile
+		 * @return the start number on the tile
+		 */
 		unsigned int Tile::getStartNumber(void) const {
 			return 0;
 		}
-
 	}
 }

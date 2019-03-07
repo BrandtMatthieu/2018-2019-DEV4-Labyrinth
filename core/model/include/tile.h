@@ -29,9 +29,15 @@ namespace Labyrinth_44422 {
 				unsigned int startNumber = NULL;
 
 			public:
-				Tile(bool pathUP, bool pathDOWN, bool pathRIGHT, bool pathLEFT, Position position, bool movable, ObjectivesTypes objective, unsigned int startNumber);
+				Tile(bool & pathUP, bool & pathDOWN, bool & pathRIGHT, bool & pathLEFT, Position & position, bool & movable, ObjectivesTypes & objective, unsigned int startNumber);
 				Tile(Tile & tile);
-				TileTypes getType(void) const;
+				
+				bool getPathUP(void) const;
+				bool getPathDOWN(void) const;
+				bool getPathRIGHT(void) const;
+				bool getPathLEFT(void) const;
+				
+				Position getPosition(void) const;
 				bool isMovable(void) const;
 				ObjectivesTypes getObjective(void) const;
 				unsigned int getStartNumber(void) const;
