@@ -17,11 +17,19 @@ namespace Labyrinth_44422 {
 		 * Cleans the game item before it is getting destroyed
 		 */
 		Game::~Game(void) {
-			delete this->board;
-			for(const auto & element : this->players) {
-				delete element;
+			for(const auto & player : this->players) {
+				delete player;
 			}
 			this->players.clear();
+			
+			delete this->board;
+			
+			this->winner = nullptr;
+			
+			for(const auto & tile : this->availableTiles) {
+				delete tile;
+			}
+			this->availableTiles.clear();
 		}
 		
 		/**
@@ -87,7 +95,7 @@ namespace Labyrinth_44422 {
 		 */
 		void Game::addPlayer(std::string name, Colors color) {
 			if(this->getPlayers().size() < this->getMaxPlayers()) {
-				this->players.insert(this->players.end(), new Player(name, color));
+				this->players.insert(this->players.end(), new Player(name, color, Position(0, 0)));
 			} else {
 				throw std::length_error("Cannot add player.\nMaximum amount of player (" + std::to_string(this->getMaxPlayers()) + ") already reached.");
 			}
