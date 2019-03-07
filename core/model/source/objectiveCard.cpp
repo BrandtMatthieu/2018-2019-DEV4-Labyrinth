@@ -11,5 +11,13 @@ namespace Labyrinth_44422 {
 			this->objective = objective;
 		};
 		
+		/**
+		 * Returns the objective on the objective card
+		 * @return the objective on the objective card
+		 */
+		ObjectivesTypes ObjectiveCard::getObjective() const {
+			return this->objective;
+		}
+		
 	}
 }
