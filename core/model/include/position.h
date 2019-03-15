@@ -6,7 +6,7 @@
 
 namespace Labyrinth_44422 {
 	namespace model {
-		
+
 		/**
 		 * Represents a position of any object in the game
 		 * @author 44422
@@ -19,17 +19,21 @@ namespace Labyrinth_44422 {
 				unsigned int y;
 			public:
 				Position(unsigned x, unsigned y);
-				Position(Position & position);
+				Position(const Position & position);
+				Position & operator=(const Position & position);
+				~Position() = default;
+				
 				unsigned int getX(void) const;
 				unsigned int getY(void) const;
-				void move(unsigned int & x, unsigned int & y);
-				void move(unsigned int & amount, InsertSide & side);
-				void move(Position & position);
-				void set(unsigned int & x, unsigned int & y);
-				void set(Position & position);
+				
+                void move(const unsigned int & x, const unsigned int & y);
+				void move(const unsigned int & amount, const InsertSide & side);
+				void move(const Position & position);
+				void set(const unsigned int & x, const unsigned int & y);
+				void set(const Position & position);
 				std::string toString(void) const;
 		};
-		
+
 	}
 }
 
