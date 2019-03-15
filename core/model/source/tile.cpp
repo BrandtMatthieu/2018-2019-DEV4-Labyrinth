@@ -1,6 +1,3 @@
-
-#include <core/model/include/tile.h>
-
 #include "../include/tile.h"
 
 namespace Labyrinth_44422 {
@@ -17,33 +14,30 @@ namespace Labyrinth_44422 {
 		 * @param objective the objective of the tile
 		 * @param startNumber
 		 */
-		Tile::Tile(bool & pathUP, bool & pathDOWN, bool & pathRIGHT, bool & pathLEFT, Position & position, bool & movable,
-				   ObjectivesTypes & objective, unsigned int startNumber = NULL): position{position.getX(), position.getY()} {
-			this->pathUP = pathUP;
-			this->pathDOWN = pathDOWN;
-			this->pathRIGHT = pathRIGHT;
-			this->pathLEFT = pathLEFT;
-			this->position = position;
-			this->movable = movable;
-			this->objective = objective;
-			this->startNumber = startNumber;
-		}
+		Tile::Tile(const bool & pathUP, const bool & pathDOWN, const bool & pathRIGHT, const bool & pathLEFT, const Position & position, const bool & movable, const ObjectivesTypes & objective, const unsigned int startNumber) :
+			position{position},
+			pathUP{pathUP},
+			pathDOWN{pathDOWN},
+			pathRIGHT{pathRIGHT},
+			pathLEFT{pathLEFT},
+			movable{movable},
+			objective{objective},
+			startNumber{startNumber}{}
 		
 		/**
 		 * Creates a new tile from another tile
 		 * aka. copy constructor
 		 * @param tile the tile to create the new tile from
 		 */
-		Tile::Tile(Tile & tile): position{position} {
-			this->pathUP = tile.getPathUP();
-			this->pathDOWN = tile.getPathDOWN();
-			this->pathRIGHT = tile.getPathRIGHT();
-			this->pathLEFT = tile.getPathLEFT();
-			this->position = tile.getPosition();
-			this->movable = tile.isMovable();
-			this->objective = tile.getObjective();
-			this->startNumber = tile.getStartNumber();
-		}
+		Tile::Tile(const Tile & tile) :
+			position{tile.position},
+			pathUP{tile.pathUP},
+			pathDOWN{tile.pathDOWN},
+			pathRIGHT{tile.pathRIGHT},
+			pathLEFT{tile.pathLEFT},
+			movable{tile.movable},
+			objective{tile.objective},
+			startNumber{tile.startNumber}{}
 		
 		/**
 		 * Returns true if the tile has a path up
@@ -107,6 +101,30 @@ namespace Labyrinth_44422 {
 		 */
 		unsigned int Tile::getStartNumber(void) const {
 			return 0;
+		}
+		
+		/**
+		 * Rotates the tile 90° to the right (clockwise)
+		 * Changes the path to match the rotated tile
+		 */
+		void Tile::rotateRight90(void) {
+			bool up = this->pathUP;
+			this->pathUP = this->pathLEFT;
+			this->pathLEFT = this->pathDOWN;
+			this->pathDOWN = this->pathRIGHT;
+			this->pathRIGHT = up;
+		}
+		
+		/**
+		 * Rotates the tile 90° to the left (counter-clockwise)
+		 * Changes the path to match the rotated tile
+		 */
+		void Tile::rotateLeft90(void) {
+			bool up = this->pathUP;
+			this->pathUP = this->pathRIGHT;
+			this->pathRIGHT = this->pathDOWN;
+			this->pathDOWN = this->pathLEFT;
+			this->pathLEFT = up;
 		}
 	}
 }

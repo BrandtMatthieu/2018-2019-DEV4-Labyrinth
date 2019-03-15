@@ -1,8 +1,6 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include <stdbool.h>
-
 #include "./tileTypes.h"
 #include "./objectivesTypes.h"
 #include "./position.h"
@@ -26,12 +24,16 @@ namespace Labyrinth_44422 {
 				Position position;
 				bool movable;
 				ObjectivesTypes objective;
-				unsigned int startNumber = NULL;
+				unsigned int startNumber;
 
 			public:
-				Tile(bool & pathUP, bool & pathDOWN, bool & pathRIGHT, bool & pathLEFT, Position & position, bool & movable, ObjectivesTypes & objective, unsigned int startNumber);
-				Tile(Tile & tile);
-				
+				Tile(const bool & pathUP, const bool & pathDOWN, const bool & pathRIGHT, const bool & pathLEFT, const Position & position, const bool & movable, const ObjectivesTypes & objective, unsigned int startNumber);
+				Tile(const Tile & tile);
+				Tile & operator= (const Tile & tile);
+				Tile(Tile && tile) noexcept;
+				Tile & operator= (Tile && tile) noexcept;
+				~Tile(void) = default;
+
 				bool getPathUP(void) const;
 				bool getPathDOWN(void) const;
 				bool getPathRIGHT(void) const;
@@ -41,6 +43,9 @@ namespace Labyrinth_44422 {
 				bool isMovable(void) const;
 				ObjectivesTypes getObjective(void) const;
 				unsigned int getStartNumber(void) const;
+				
+				void rotateRight90(void);
+				void rotateLeft90(void);
 		};
 
 	}
