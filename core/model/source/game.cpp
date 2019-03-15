@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <cstring>
 
 #include "../include/game.h"
 
@@ -9,10 +8,31 @@ namespace Labyrinth_44422 {
 		/**
 		 * Creates a new Labyrinth game
 		 */
-		Game::Game(void) {
-			this->board = new Board();
+		Game::Game(void) :
+			board{new Board(Position(7, 7))} {}
+		
+		Game::Game(const Game & game) :
+			board{new Board(* game.board)},
+			currentPlayerIndex{game.currentPlayerIndex} {
+			for(Player * const & player_ptr : game.players) {
+				this->players.push_back(new Player(* player_ptr));
+			}
+			
+			if(game.winner == nullptr) {
+				this->winner = nullptr;
+			} else {
+				unsigned int index = 0;
+				while(game.players.at(index) != game.winner) {
+					index++;
+				}
+				this->winner = this->players.at(index);
+			}
+			
+			for(Tile * const & tile_ptr : game.availableTiles) {
+				this->availableTiles.push_back(new Tile(* tile_ptr));
+			}
 		}
-
+		
 		/**
 		 * Cleans the game item before it is getting destroyed
 		 */
@@ -57,6 +77,30 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
+		 * Returns the amount of players that are currently in the game
+		 * @return the amount of players that are currently in the game
+		 */
+		unsigned int Game::getPlayersCount(void) const {
+			return this->players.size();
+		}
+		
+		/**
+		 * Returns true if the game has enough players to start
+		 * @return true if the game has enough players to start
+		 */
+		bool Game::hasEnoughPlayers(void) const {
+			return this->players.size() >= this->minPlayers;
+		}
+		
+		/**
+		 * Returns true if the game has a winner
+		 * @return true if the game has a winner
+		 */
+		bool Game::hasWinner(void) const {
+			return this->winner != nullptr;
+		}
+		
+		/**
 		 * Returns the address of the board of the current game
 		 * @return the address of the board of the current game
 		 */
@@ -93,9 +137,10 @@ namespace Labyrinth_44422 {
 		 * @param name the nickname of the player to add
 		 * @param color the color of the player to add
 		 */
-		void Game::addPlayer(std::string name, Colors color) {
+		void Game::addPlayer(const std::string & name) {
 			if(this->getPlayers().size() < this->getMaxPlayers()) {
-				this->players.insert(this->players.end(), new Player(name, color, Position(0, 0)));
+				this->players.insert(this->players.end(), new Player(name, Colors::get(this->players.size()), Position(0, 0)));
+				// TODO changer la position initiale du joueur dynamiquement
 			} else {
 				throw std::length_error("Cannot add player.\nMaximum amount of player (" + std::to_string(this->getMaxPlayers()) + ") already reached.");
 			}
@@ -106,7 +151,7 @@ namespace Labyrinth_44422 {
 		 */
 		void Game::nextPlayer(void) {
 			if(this->currentPlayerIndex >= 0 && this->currentPlayerIndex < this->getMaxPlayers()) {
-				this->currentPlayerIndex = (this->currentPlayerIndex++ % this->getMaxPlayers());
+				this->currentPlayerIndex = ((this->currentPlayerIndex + 1) % this->getMaxPlayers());
 			}
 		}
 		
@@ -120,6 +165,6 @@ namespace Labyrinth_44422 {
 				throw std::runtime_error("Too few players to start the game");
 			}
 		}
-		
+
 	}
 }
