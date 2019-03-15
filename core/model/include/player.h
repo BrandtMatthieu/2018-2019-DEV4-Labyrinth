@@ -29,19 +29,28 @@ namespace Labyrinth_44422 {
 				bool hasMovedPawn = false;
 				
 			public:
-				Player(std::string & nickname, Colors & color, Position & position);
+				Player(const std::string & nickname, const Colors & color, const Position & position);
+				Player(const Player & player);
+				Player & operator= (const Player & player);
+				Player(Player && player) noexcept;
+				Player & operator= (Player && player) noexcept;
 				~Player(void);
+
 				std::string getNickname(void) const;
 				Colors getColor(void) const;
 				Position getPosition(void) const;
 				ObjectiveCard * getCurrentObjective(void) const;
+				std::vector<ObjectiveCard *> getCompletedObjectiveCards(void) const;
 				unsigned int getObjectiveCount(void) const;
+				std::vector<ObjectiveCard *> getObjectiveCardsLeft(void) const;
+				unsigned int getObjectiveCardsLeftCount(void) const;
+				
 				bool getHasInsertedTile(void) const;
 				bool getHasMovedPawn(void) const;
 				
 				void completeCurrentObjective(void);
 				void addObjective(ObjectiveCard * objectiveCard);
-				void insertTile();
+				void insertTile(void);
 				void movePawn(Position & position);
 				void endTurn(void);
 		};

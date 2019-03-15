@@ -1,5 +1,3 @@
-
-#include <core/model/include/player.h>
 #include <stdexcept>
 
 #include "../include/player.h"
@@ -8,15 +6,28 @@ namespace Labyrinth_44422 {
 	namespace model {
 		
 		/**
-		 * Creates anew player for the game
+		 * Creates a new player for the game
 		 * @param nickname the nickname of the player
 		 * @param color the color of the player's pawn
 		 */
-		Player::Player(std::string & nickname, Colors & color, Position & position): position{position.getX(), position.getY()} {
-			this->nickname = nickname;
-			this->color = color;
-			this->position = position;
-		}
+		Player::Player(const std::string & nickname, const Colors & color, const Position & position) :
+			position{position.getX(), position.getY()},
+			nickname{nickname},
+			color{color}{}
+
+		/**
+		 * Creates a new player from an existing player
+		 * aka. copy constructor
+		 * @param player the player to create the new player from
+		 */
+		Player::Player(const Player & player) :
+			nickname{player.nickname},
+			color{player.color},
+			position{player.position},
+			objectiveCardsLeft{player.objectiveCardsLeft},
+			completedObjectiveCards{player.completedObjectiveCards},
+			hasMovedPawn{player.hasMovedPawn},
+			hasInsertedTile{player.hasInsertedTile}{}
 		
 		/**
 		 * Destroy the player and cleans it's members
@@ -62,12 +73,10 @@ namespace Labyrinth_44422 {
 		 * @return the player's current objective
 		 */
 		ObjectiveCard * Player::getCurrentObjective(void) const {
-			if(this->objectiveCardsLeft.size()>0) {
+			if(!this->objectiveCardsLeft.empty()) {
 				return this->objectiveCardsLeft.at(0);
-			} else {
-				throw std::range_error("Cannot return the player's current objective.\nThere are no objective cards left.");
 			}
-
+			throw std::range_error("Cannot return the player's current objective.\nThere are no objective cards left.");
 		}
 		
 		/**
@@ -75,6 +84,10 @@ namespace Labyrinth_44422 {
 		 * @return the number of objective cards the player has left
 		 */
 		unsigned int Player::getObjectiveCount(void) const {
+			return this->objectiveCardsLeft.size();
+		}
+		
+		unsigned int Player::getObjectiveCardsLeftCount(void) const {
 			return this->objectiveCardsLeft.size();
 		}
 		
@@ -97,7 +110,7 @@ namespace Labyrinth_44422 {
 		 * Completes the current objective card of the player and adds it to the completed objectives
 		 */
 		void Player::completeCurrentObjective(void) {
-			if(this->objectiveCardsLeft.size()>0) {
+			if(!this->objectiveCardsLeft.empty()) {
 				this->completedObjectiveCards.push_back(this->objectiveCardsLeft.at(0));
 				this->objectiveCardsLeft.erase(this->objectiveCardsLeft.begin());
 			} else {
@@ -117,7 +130,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Makes the player insert a tile on the board
 		 */
-		void Player::insertTile() {
+		void Player::insertTile(void) {
 			this->hasInsertedTile = true;
 		}
 		
@@ -141,5 +154,7 @@ namespace Labyrinth_44422 {
 			this->hasInsertedTile = false;
 			this->hasMovedPawn = false;
 		}
+		
+
 	}
 }
