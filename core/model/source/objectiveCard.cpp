@@ -7,9 +7,16 @@ namespace Labyrinth_44422 {
 		 * Creates a new objective card
 		 * @param objective the objective on the card
 		 */
-		ObjectiveCard::ObjectiveCard(ObjectivesTypes & objective) {
-			this->objective = objective;
-		};
+		ObjectiveCard::ObjectiveCard(const ObjectivesTypes & objective) :
+			objective{objective} {};
+		
+		/**
+		 * Creates a new objective card from an other objective card
+		 * aka. copy constructor
+		 * @param objectiveCard
+		 */
+		ObjectiveCard::ObjectiveCard(const ObjectiveCard & objectiveCard) :
+		objective{objectiveCard.getObjective()} {}
 		
 		/**
 		 * Returns the objective on the objective card
@@ -18,6 +25,5 @@ namespace Labyrinth_44422 {
 		ObjectivesTypes ObjectiveCard::getObjective() const {
 			return this->objective;
 		}
-		
 	}
 }
