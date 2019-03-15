@@ -1,4 +1,15 @@
-TEMPLATE = subdirs
+TEMPLATE = app
+CONFIG += debug\
+    qt \
+    console \
+    warn_on \
+    c++11 \
 
 SUBDIRS += \
-    core
+    core \
+    console \
+    gui \
+
+DESTDIR = build
+
+QMAKE += --Wall
