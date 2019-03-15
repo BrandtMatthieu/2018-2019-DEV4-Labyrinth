@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 
 #include "../../../console/include/consoleView.h"
+#include "../../model/include/game.h"
 
 namespace Labyrinth_44422 {
 	namespace controller {
@@ -12,12 +13,19 @@ namespace Labyrinth_44422 {
 		 * @version 0.1.1
 		 * @since 2019-03-04
 		 */
-		class Controller {
-		private:
-			Labyrinth_44422::console::ConsoleView * consoleView;
-			void start(void);
-		public:
-			Controller(Labyrinth_44422::console::ConsoleView * consoleView);
+		class ControllerConsole {
+			private:
+				Labyrinth_44422::console::ConsoleView * consoleView;
+				Labyrinth_44422::model::Game * game;
+			public:
+				ControllerConsole(Labyrinth_44422::console::ConsoleView * const consoleView);
+				ControllerConsole(const ControllerConsole & controllerConsole);
+				ControllerConsole & operator= (const ControllerConsole & controllerConsole);
+				ControllerConsole(ControllerConsole && controllerConsole) noexcept;
+				ControllerConsole & operator= (ControllerConsole && controllerConsole) noexcept;
+				~ControllerConsole();
+
+				void start();
 		};
 		
 	}
