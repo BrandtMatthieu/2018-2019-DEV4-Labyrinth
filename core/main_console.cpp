@@ -13,7 +13,7 @@ int main() {
     try {
 		Labyrinth_44422::controller::ControllerConsole controller(new Labyrinth_44422::console::ConsoleView(true));
 		controller.start();
-	} catch(std::exception & exception) {
+	} catch(const std::exception & exception) {
 		std::cout << "Labyrinth a rencontre une erreur et doit fermer." << std::endl << exception.what() << std::endl;
 		return -1;
 	}

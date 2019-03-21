@@ -17,7 +17,7 @@ namespace Labyrinth_44422 {
 		 * aka. copy constructor
 		 * @param position the existing position to create the new position from
 		 */
-		Position::Position(Position const & position) :
+		Position::Position(const Position & position) :
 			x{position.x},
 			y{position.y}{}
 			
@@ -61,16 +61,24 @@ namespace Labyrinth_44422 {
 		void Position::move(const unsigned int & amount, const InsertSide & side) {
 			switch(side) {
 				case InsertSide::UP:
-					this->y += amount;
+					if(this->y - amount < 0) {
+						this->y = 0;
+					} else {
+						this->y -= amount; // move towards up so y decreases
+					}
 					break;
 				case InsertSide::DOWN:
-					this->y -= amount;
+					this->y += amount; // move towards down so y increases
 					break;
 				case InsertSide::RIGHT:
-					this->x += amount;
+					this->x += amount; // move towards right so x increases
 					break;
 				case InsertSide::LEFT:
-					this->x -= amount;
+					if(this->x - amount < 0) {
+						this->x = 0;
+					} else {
+						this->x -= amount; // move towards left so x decreases
+					}
 					break;
 			}
 		}

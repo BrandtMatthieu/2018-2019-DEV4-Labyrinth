@@ -7,7 +7,7 @@ namespace Labyrinth_44422 {
 		 * Creates a new controller for the Labyrinth game
 		 * @param consoleView the address of a console view
 		 */
-		ControllerConsole::ControllerConsole(Labyrinth_44422::console::ConsoleView * const consoleView) :
+		ControllerConsole::ControllerConsole(const Labyrinth_44422::console::ConsoleView * const consoleView) :
 			consoleView{consoleView},
 			game{new Labyrinth_44422::model::Game()} {
 			for(int i = 0; i < this->game->getMinPlayers(); i++) {

@@ -102,10 +102,10 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
- * Gets a yes or no answer from the user
- * @param message the message to ask something to the player and wait for a yes or no answer
- * @return the answer of the player as a boolean
- */
+		 * Gets a yes or no answer from the user
+		 * @param message the message to ask something to the player and wait for a yes or no answer
+		 * @return the answer of the player as a boolean
+		 */
 		bool ConsoleView::getYesNoAnswer(const std::string & message) const {
 			std::string answer;
 			std::cout << message << " [yes|no]" << std::endl;
@@ -118,7 +118,7 @@ namespace Labyrinth_44422 {
 			return answer == "yes" || answer == "y";
 		}
 		
-		ConsoleView::ConsoleView(bool spacing) :
+		ConsoleView::ConsoleView(bool const spacing) :
 			spacing{spacing} {}
 		
 		ConsoleView::ConsoleView(const ConsoleView & vue) :
@@ -140,7 +140,7 @@ namespace Labyrinth_44422 {
 		std::string ConsoleView::newPlayerName(void) const {
 			std::string answer;
 			while(answer.empty()) {
-				std::cin >> answer; // TODO trim answer
+				std::cin >> answer;
 			}
 			return answer;
 		}
@@ -169,7 +169,7 @@ namespace Labyrinth_44422 {
 		 * Prints the board of the game
 		 * @param board the board to print
 		 */
-		void ConsoleView::printBoard(const model::Board * board) const {
+		void ConsoleView::printBoard(const model::Board * const board) const {
 			for(unsigned int j = 0; j < board->getSizeVertical(); j++) {
 				for(unsigned int k = 0; k < ConsoleView::tileSize; k++) {
 					for(unsigned int i = 0; i < board->getSizeHorizontal(); i++) {

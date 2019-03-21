@@ -18,7 +18,7 @@ namespace Labyrinth_44422 {
 				Labyrinth_44422::console::ConsoleView * consoleView;
 				Labyrinth_44422::model::Game * game;
 			public:
-				ControllerConsole(Labyrinth_44422::console::ConsoleView * const consoleView);
+				ControllerConsole(const Labyrinth_44422::console::ConsoleView * const consoleView);
 				ControllerConsole(const ControllerConsole & controllerConsole);
 				ControllerConsole & operator= (const ControllerConsole & controllerConsole);
 				ControllerConsole(ControllerConsole && controllerConsole) noexcept;
