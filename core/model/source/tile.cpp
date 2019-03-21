@@ -104,6 +104,14 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
+		 * Sets the position of the tile
+		 * @param position the new position of the tile
+		 */
+		void Tile::setPosition(const Position & position) {
+			this->position = position;
+		}
+		
+		/**
 		 * Rotates the tile 90° to the right (clockwise)
 		 * Changes the path to match the rotated tile
 		 */
@@ -125,6 +133,14 @@ namespace Labyrinth_44422 {
 			this->pathRIGHT = this->pathDOWN;
 			this->pathDOWN = this->pathLEFT;
 			this->pathLEFT = up;
+		}
+		
+		/**
+		 * Moves the tile 1 cell in the provided way
+		 * @param side the way to move the side to
+		 */
+		void Tile::move(const InsertSide & side) {
+			this->position.move(1, side);
 		}
 	}
 }

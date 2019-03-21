@@ -43,9 +43,13 @@ namespace Labyrinth_44422 {
 				bool isMovable(void) const;
 				ObjectivesTypes getObjective(void) const;
 				unsigned int getStartNumber(void) const;
+			
+				void setPosition(const Position & position);
 				
 				void rotateRight90(void);
 				void rotateLeft90(void);
+				void move(const InsertSide & side);
+				
 		};
 
 	}
