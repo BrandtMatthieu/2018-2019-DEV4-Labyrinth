@@ -14,16 +14,17 @@ namespace Labyrinth_44422 {
 		 */
 		class ObjectiveCard {
 			private:
-				ObjectivesTypes objective;
+				std::string objective;
 			public:
-				ObjectiveCard(const ObjectivesTypes & objective);
+				ObjectiveCard(const std::string & objective);
 				ObjectiveCard(const ObjectiveCard & objectiveCard);
 				ObjectiveCard & operator= (const ObjectiveCard & objectiveCard);
 				ObjectiveCard(ObjectiveCard && objectiveCard) noexcept;
 				ObjectiveCard & operator= (ObjectiveCard && objectiveCard) noexcept;
 				~ObjectiveCard(void) = default;
-
-				ObjectivesTypes getObjective(void) const;
+			
+				std::string getObjective(void) const;
+				bool hasObjective(void) const;
 		};
 		
 	}

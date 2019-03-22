@@ -14,7 +14,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Represents a console view of the Labyrinth game
 		 * @author 44422
-		 * @version 0.1.2
+		 * @version 0.1.3
 		 * @since 2019-03-05
 		 */
 		class ConsoleView {
@@ -40,6 +40,7 @@ namespace Labyrinth_44422 {
 				
 				bool addNewPlayer(void) const;
 				std::string newPlayerName(void) const;
+				
 				void printGameInfos(const model::Game * const game) const;
 				void printBoard(const model::Board * const board) const;
 				void printPlayerInfos(const model::Player * const player) const;

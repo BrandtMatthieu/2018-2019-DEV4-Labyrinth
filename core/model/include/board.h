@@ -14,12 +14,12 @@ namespace Labyrinth_44422 {
 		/**
 		 * Represents the board in the Labyrinth game
 		 * @author 44422
-		 * @version 0.1.1
+		 * @version 0.1.2
 		 * @since 2019-03-01
 		 */
 		class Board {
 			private:
-				Position maxPosition{7, 7};
+				Position maxSize{7, 7};
 				std::vector<Tile *> tiles;
 			
 				unsigned int indexOf(std::vector<Tile *> & myVector, Tile * tile) const;
@@ -33,18 +33,21 @@ namespace Labyrinth_44422 {
 				Board & operator= (Board && board) noexcept; // move assignment operator
 				~Board(void); // destructor
 			
-				unsigned int getSizeHorizontal(void) const;
-				unsigned int getSizeVertical(void) const;
-				Position getMaxPosition(void) const;
-				std::vector<Tile *> getTiles(void) const;
-				Tile * getTileAt(const Position & position) const;
+				Position getMaxSize(void) const;
+				unsigned int getMaxSizeX(void) const;
+				unsigned int getMaxSizeY(void) const;
+				bool positionInsideBoard(const Position & position) const;
 				
+				std::vector<Tile *> getTiles(void) const;
+				unsigned int getTilewCount(void) const;
+				Tile * getTilesAt(const Position &position) const;
 				void setTile(const Position & position, const Tile * const tile);
+				void setTile(const unsigned int index, const Tile * const tile);
+				
 				bool canInsertTile(const Position & position, const InsertSide & side) const;
 				void insertTile(const Position & position, const Tile * const tile,  const InsertSide & side);
+				
 				bool canGoToFrom(Position & from, Position & to);
-				bool positionInsideBoard(const Position & position) const;
-
 		};
 	}
 }

@@ -3,7 +3,6 @@
 #include <stdexcept>
 
 #include "../include/consoleView.h"
-#include "../../core/model/include/colors.h"
 #include "../../core/model/include/tile.h"
 #include "../../core/model/include/board.h"
 
@@ -58,7 +57,7 @@ namespace Labyrinth_44422 {
 							line += ConsoleView::wall;
 						}
 					} else { // Horizontal Middle part
-						// TODO print player of objective or spawnPoint
+						// TODO print player on the tile or objective or spawnPoint
 						line += ConsoleView::path;
 					}
 				} else if(k == ConsoleView::pathSize
@@ -108,19 +107,27 @@ namespace Labyrinth_44422 {
 		 */
 		bool ConsoleView::getYesNoAnswer(const std::string & message) const {
 			std::string answer;
-			std::cout << message << " [yes|no]" << std::endl;
+			std::cout << message << " [ yes | no ]" << std::endl << "> ";
 			do {
-				if(answer.empty()) {
-					std::cout << "Wrong input, please only answer with [yes] or [no]." << std::endl;
-				}
 				std::cin >> answer;
+				if(answer.empty()) {
+					std::cout << "Wrong input, please only answer with [ yes ] or [ no ]." << std::endl << " >";
+				}
 			} while(answer != "yes" || answer != "y" || answer != "n" || answer != "no");
 			return answer == "yes" || answer == "y";
 		}
 		
+		/**
+		 * Creates a new console veiw
+		 * @param spacing if there needs to be spaces between the rows and lines of the board printed
+		 */
 		ConsoleView::ConsoleView(bool const spacing) :
 			spacing{spacing} {}
 		
+		/**
+		 * Creates a new console view from an existing one
+		 * @param vue
+		 */
 		ConsoleView::ConsoleView(const ConsoleView & vue) :
 			spacing{vue.spacing} {}
 		
@@ -129,8 +136,7 @@ namespace Labyrinth_44422 {
 		 * @return true if the players want to add another player
 		 */
 		bool ConsoleView::addNewPlayer(void) const {
-			std::string question = "Would you like to add another player";
-			return getYesNoAnswer(question);
+			return getYesNoAnswer("Would you like to add another player ?");
 		}
 		
 		/**
@@ -138,9 +144,13 @@ namespace Labyrinth_44422 {
 		 * @return the name of the new player
 		 */
 		std::string ConsoleView::newPlayerName(void) const {
+			std::cout << "Please enter a name for this player" << std::endl << "> ";
 			std::string answer;
 			while(answer.empty()) {
 				std::cin >> answer;
+				if(answer.empty()) {
+					std::cout << "Invalid name. Please enter a name for this player" << std::endl << "> ";
+				}
 			}
 			return answer;
 		}
@@ -170,10 +180,10 @@ namespace Labyrinth_44422 {
 		 * @param board the board to print
 		 */
 		void ConsoleView::printBoard(const model::Board * const board) const {
-			for(unsigned int j = 0; j < board->getSizeVertical(); j++) {
+			for(unsigned int j = 0; j < board->getMaxSizeY(); j++) {
 				for(unsigned int k = 0; k < ConsoleView::tileSize; k++) {
-					for(unsigned int i = 0; i < board->getSizeHorizontal(); i++) {
-						std::cout << this->printTile(board->getTiles().at(j * board->getSizeHorizontal() + i), k);
+					for(unsigned int i = 0; i < board->getMaxSizeX(); i++) {
+						std::cout << this->printTile(board->getTiles().at(j * board->getMaxSizeX() + i), k);
 						if(this->spacing) {
 							std::cout << ConsoleView::space;
 						}
@@ -193,9 +203,9 @@ namespace Labyrinth_44422 {
 		void ConsoleView::printPlayerInfos(const model::Player * const player) const {
 			std::cout << "Players infos :" << std::endl
 				<< "Nickname : " << player->getNickname() << std::endl
-				<< "Color : " << player->getColor().getColorName() << std::endl
+				<< "Color : " << player->getColor() << std::endl
 				<< "Location : " << player->getPosition().toString() << std::endl
-				<< "Current objective : " << player->getCurrentObjective()->getObjective().getObjectiveName() << std::endl
+				<< "Current objective : " << player->getCurrentObjective()->getObjective() << std::endl
 				<< "Objectives left count : " << std::to_string(player->getObjectiveCardsLeftCount()) << std::endl << std::endl
 				<< "Objectives completed count : " << std::to_string(player->getObjectiveCount()) << std::endl;
 				

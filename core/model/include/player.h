@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "./colors.h"
 #include "./objectiveCard.h"
 #include "./position.h"
 
@@ -20,16 +19,16 @@ namespace Labyrinth_44422 {
 		class Player {
 			private:
 				std::string nickname;
-				Colors color;
+				std::string color;
 				Position position;
 				std::vector<ObjectiveCard *> objectiveCardsLeft;
 				std::vector<ObjectiveCard *> completedObjectiveCards;
 
-				bool hasInsertedTile = false;
-				bool hasMovedPawn = false;
+				bool _hasInsertedTile = false;
+				bool _hasMovedPawn = false;
 				
 			public:
-				Player(const std::string & nickname, const Colors & color, const Position & position);
+				Player(const std::string & nickname, const std::string & color, const Position & position);
 				Player(const Player & player);
 				Player & operator= (const Player & player);
 				Player(Player && player) noexcept;
@@ -37,21 +36,26 @@ namespace Labyrinth_44422 {
 				~Player(void);
 
 				std::string getNickname(void) const;
-				Colors getColor(void) const;
+				
+				std::string getColor(void) const;
+				
 				Position getPosition(void) const;
+				
 				ObjectiveCard * getCurrentObjective(void) const;
+				void completeCurrentObjective(void);
+				
 				std::vector<ObjectiveCard *> getCompletedObjectiveCards(void) const;
 				unsigned int getObjectiveCount(void) const;
+				
 				std::vector<ObjectiveCard *> getObjectiveCardsLeft(void) const;
 				unsigned int getObjectiveCardsLeftCount(void) const;
+				void addObjective(ObjectiveCard * const & objectiveCard);
 				
-				bool getHasInsertedTile(void) const;
-				bool getHasMovedPawn(void) const;
+				bool hasInsertedTile(void) const;
+				bool hasMovedPawn(void) const;
 				
-				void completeCurrentObjective(void);
-				void addObjective(ObjectiveCard * objectiveCard);
 				void insertTile(void);
-				void movePawn(Position & position);
+				void movePawn(const Position & position);
 				void endTurn(void);
 		};
 

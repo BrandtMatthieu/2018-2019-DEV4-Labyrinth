@@ -20,6 +20,7 @@ namespace Labyrinth_44422 {
 			private:
 				unsigned int minPlayers = 2;
 				unsigned int maxPlayers = 4;
+				
 				std::vector<Player *> players;
 				Board * board = nullptr;
 				Player * winner = nullptr;
@@ -36,17 +37,23 @@ namespace Labyrinth_44422 {
 
 				unsigned int getMinPlayers(void) const;
 				unsigned int getMaxPlayers(void) const;
+				
 				std::vector<Player *> getPlayers(void) const;
+				Player * getPlayerAt(void) const;
 				unsigned int getPlayersCount(void) const;
 				bool hasEnoughPlayers(void) const;
-				bool hasWinner(void) const;
+			
 				Board * getBoard(void) const;
+			
 				Player * getWinner(void) const;
+				bool hasWinner(void) const;
+				
 				std::vector<Tile *> getAvailableTiles(void) const;
+				
 				Player * getCurrentPlayer(void) const;
-
 				void addPlayer(const std::string & name);
 				void nextPlayer(void);
+				
 				void start(void);
 		};
 

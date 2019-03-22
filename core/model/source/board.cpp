@@ -14,14 +14,15 @@ namespace Labyrinth_44422 {
 		 * @return the index of the tiles in the provided vector
 		 */
 		unsigned int Board::indexOf(std::vector<Tile *> & myVector, Tile * tile) const {
-			if(this->includes(myVector, tile)) {
-				for(unsigned int i = 0; i < myVector.size(); i++) {
-					if(this->tiles[i] == tile) {
-						return i;
-					}
+			if(!this->includes(myVector, tile)) {
+				throw std::runtime_error("Error while getting the index of the tile. The tile doesn't exists inside the vector.");
+			}
+			
+			for(unsigned int i = 0; i < myVector.size(); i++) {
+				if(this->tiles[i] == tile) {
+					return i;
 				}
 			}
-			return 0;
 		}
 		
 		/**
@@ -43,7 +44,9 @@ namespace Labyrinth_44422 {
 		 * Creates a new board for the Labyrinth game
 		 */
 		Board::Board(const Position & maxPosition) :
-			maxPosition{maxPosition},
+			maxSize{this->positionInsideBoard(maxPosition)
+				?maxPosition
+				:throw std::runtime_error("Error while initializing the board. Position not inside bounds.")},
 			tiles{std::vector<Tile *>()} {}
 
 		/**
@@ -52,7 +55,7 @@ namespace Labyrinth_44422 {
 		 * @param board the board to create the new board from
 		 */
 		Board::Board(const Board & board) :
-			maxPosition{board.getMaxPosition()},
+			maxSize{board.getMaxSize()},
 			tiles{std::vector<Tile *>()} {
 			for(Tile * const & tile_ptr : board.tiles) {
 				this->tiles.push_back(new Tile(* tile_ptr));
@@ -73,24 +76,24 @@ namespace Labyrinth_44422 {
 		 * Returns the horizontal size of the game's board
 		 * @return the horizontal size of the game's board
 		 */
-		unsigned int Board::getSizeHorizontal(void) const {
-			return this->maxPosition.getX();
+		unsigned int Board::getMaxSizeX(void) const {
+			return this->maxSize.getX();
 		}
 		
 		/**
 		 * Returns the vertical size of the game's board
 		 * @return the vertical size of the game's board
 		 */
-		unsigned int Board::getSizeVertical(void) const {
-			return this->maxPosition.getY();
+		unsigned int Board::getMaxSizeY(void) const {
+			return this->maxSize.getY();
 		}
 
 		/**
 		 * Returns the max positions of the board
 		 * @return the max positions of the board
 		 */
-		Position Board::getMaxPosition(void) const {
-			return this->maxPosition;
+		Position Board::getMaxSize(void) const {
+			return this->maxSize;
 		}
 		
 		/**
@@ -106,12 +109,14 @@ namespace Labyrinth_44422 {
 		 * @param position  the position of the tile to get
 		 * @return the address of the tile at a provided position
 		 */
-		Tile * Board::getTileAt(const Position & position) const {
-			if(this->positionInsideBoard(position)) {
-				return this->tiles.at(position.getX() + position.getY() * this->getSizeHorizontal());
+		Tile * Board::getTilesAt(const Position & position) const {
+			if(!this->positionInsideBoard(position)) {
+				throw std::invalid_argument("Error while getting the tile at " + position.toString() +
+											". Position is out of board's bounds (0;0) to " +
+											this->maxSize.toString());
 			}
-			throw std::invalid_argument("Cannot get tile at " + position.toString() +
-				".\nPosition is out of board's bounds (0;0) to (" + std::to_string(this->getSizeHorizontal()));
+			
+			return this->tiles.at(position.getX() + position.getY() * this->getMaxSizeX());
 		}
 		
 		/**
@@ -120,8 +125,8 @@ namespace Labyrinth_44422 {
 		 * @return true if the provided position in inside the game's board
 		 */
 		bool Board::positionInsideBoard(const Position & position) const {
-			return position.getX() < this->maxPosition.getX()
-				   && position.getY() < this->maxPosition.getY();
+			return position.getX() < this->maxSize.getX() &&
+					position.getY() < this->maxSize.getY();
 		}
 		
 		/**
@@ -130,12 +135,11 @@ namespace Labyrinth_44422 {
 		 * @param tile the tile to set at the provided position
 		 */
 		void Board::setTile(const Position & position, const Tile * const tile) {
-			if(position.getX() + position.getY() * this->getSizeHorizontal() > this->getSizeHorizontal() * this->getSizeVertical()
-			|| position.getX() + position.getY() * this->getSizeHorizontal() > this->tiles.size()) {
-				throw std::invalid_argument("Position is out of bounds");
-			} else {
-				this->tiles[position.getX() + position.getY() * this->getSizeHorizontal()] = const_cast<Tile *>(tile);
+			if(!this->positionInsideBoard(position)) {
+				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
 			}
+			
+			this->tiles[position.getX() + position.getY() * this->getMaxSizeX()] = const_cast<Tile *>(tile);
 		}
 		
 		/**
@@ -145,17 +149,22 @@ namespace Labyrinth_44422 {
 		 * @return true if a tile can be inserted at the provided position
 		 */
 		bool Board::canInsertTile(const Position & position, const InsertSide & side) const {
+			if(!this->positionInsideBoard(position)) {
+				throw std::invalid_argument("Error while inserting a tile at a position. Position is out of bounds.");
+			}
+			
 			bool lineMovable = true;
 			switch(side) {
 				case InsertSide::UP:
 				case InsertSide::DOWN:
-					for(unsigned int i = position.getX(); i < this->tiles.size(); i = i + this->getSizeHorizontal()) {
+					for(unsigned int i = position.getX(); i < this->tiles.size(); i = i + this->getMaxSizeX()) {
 						lineMovable = lineMovable && this->tiles.at(i)->isMovable();
 					}
 					break;
 				case InsertSide::RIGHT:
 				case InsertSide::LEFT:
-					for(unsigned int i = position.getY() * this->getSizeHorizontal(); i < (position.getY() + 1) * this->getSizeHorizontal(); i++) {
+					for(unsigned int i = position.getY() * this->getMaxSizeX(); i < (position.getY() + 1) *
+																								  this->getMaxSizeX(); i++) {
 						lineMovable = lineMovable && this->tiles.at(i)->isMovable();
 					}
 					break;
@@ -170,7 +179,21 @@ namespace Labyrinth_44422 {
 		 * @param side what side to insert the tile at
 		 */
 		void Board::insertTile(const Position & position, const Tile * const tile, const InsertSide & side) {
-			// TODO
+			if(!this->positionInsideBoard(position)) {
+				throw std::runtime_error("Error while inserting a tile. Position out of bounds.");
+			}
+			if(!this->canInsertTile(position, side)) {
+				throw std::runtime_error("Error while inserting a tile. Column or row cannot move.");
+			}
+			
+			switch(side) {
+				case InsertSide::LEFT:
+				case InsertSide::RIGHT:
+					break;
+				case InsertSide::DOWN:
+				case InsertSide::UP:
+					break;
+			}
 		}
 		
 		/**
@@ -180,12 +203,19 @@ namespace Labyrinth_44422 {
 		 * @return true if a player can go to a provided position
 		 */
 		bool Board::canGoToFrom(Position & from, Position & to) {
+			if(!this->positionInsideBoard(from)) {
+				throw std::invalid_argument("Error while checking valid tiles. \"From\" position is out of bounds");
+			}
+			if(!this->positionInsideBoard(to)) {
+				throw std::invalid_argument("Error while checking valid tiles. \"To\" position is out of bounds");
+			}
+			
 			std::vector<Tile *> tilesToCheck;
 			std::vector<Tile *> tilesPossible;
 			std::vector<Tile *> tilesNotPossible;
 			
-			tilesPossible.push_back(this->tiles[from.getX() + from.getY() * (this->maxPosition.getX())]);
-			tilesToCheck.push_back(this->tiles[from.getX() + from.getY() * (this->maxPosition.getX())]);
+			tilesPossible.push_back(this->tiles[from.getX() + from.getY() * (this->maxSize.getX())]);
+			tilesToCheck.push_back(this->tiles[from.getX() + from.getY() * (this->maxSize.getX())]);
 			
 			unsigned int currentTileX;
 			unsigned int currentTileY;
@@ -193,12 +223,12 @@ namespace Labyrinth_44422 {
 			while (!tilesToCheck.empty()) {
 				Tile * currentTile = tilesToCheck[0];
 				
-				currentTileX = this->indexOf(this->tiles, currentTile) % this->maxPosition.getX();
-				currentTileY = this->indexOf(this->tiles, currentTile) / this->maxPosition.getX();
+				currentTileX = this->indexOf(this->tiles, currentTile) % this->maxSize.getX();
+				currentTileY = this->indexOf(this->tiles, currentTile) / this->maxSize.getX();
 				
 				unsigned int index;
-				if (currentTileX + 1 < this->maxPosition.getX()) {
-					index = (currentTileX + 1) + currentTileY * this->maxPosition.getX();
+				if (currentTileX + 1 < this->maxSize.getX()) {
+					index = (currentTileX + 1) + currentTileY * this->maxSize.getX();
 					if (currentTile->getPathRIGHT() && this->tiles[index]->getPathLEFT() && !this->includes(tilesPossible, this->tiles[index])) {
 						if (!this->includes(tilesToCheck, this->tiles[index])) {
 							tilesToCheck.push_back(this->tiles[index]);
@@ -215,8 +245,8 @@ namespace Labyrinth_44422 {
 						}
 					}
 				}
-				if (currentTileX - 1 >= 0) {
-					index = (currentTileX - 1) + currentTileY * this->maxPosition.getX();
+				if (currentTileX >= 1) {
+					index = (currentTileX - 1) + currentTileY * this->maxSize.getX();
 					if (currentTile->getPathLEFT() && this->tiles[index]->getPathRIGHT() && !this->includes(tilesPossible, this->tiles[index])) {
 						if (!this->includes(tilesToCheck, this->tiles[index])) {
 							tilesToCheck.push_back(this->tiles[index]);
@@ -233,8 +263,8 @@ namespace Labyrinth_44422 {
 						}
 					}
 				}
-				if (currentTileY - 1 >= 0) {
-					index = currentTileX + (currentTileY - 1) * this->maxPosition.getX();
+				if (currentTileY >= 1) {
+					index = currentTileX + (currentTileY - 1) * this->maxSize.getX();
 					if (currentTile->getPathUP() && this->tiles[index]->getPathDOWN() && !this->includes(tilesPossible, this->tiles[index])) {
 						if (!this->includes(tilesToCheck, this->tiles[index])) {
 							tilesToCheck.push_back(this->tiles[index]);
@@ -251,8 +281,8 @@ namespace Labyrinth_44422 {
 						}
 					}
 				}
-				if (currentTileY + 1 < this->maxPosition.getY()) {
-					index = currentTileX + (currentTileY + 1) * this->maxPosition.getX();
+				if (currentTileY + 1 < this->maxSize.getY()) {
+					index = currentTileX + (currentTileY + 1) * this->maxSize.getX();
 					if (currentTile->getPathDOWN() && this->tiles[index]->getPathUP() && !this->includes(tilesPossible, this->tiles[index])) {
 						if (!this->includes(tilesToCheck, this->tiles[index])) {
 							tilesToCheck.push_back(this->tiles[index]);
@@ -273,7 +303,7 @@ namespace Labyrinth_44422 {
 			}
 			
 			
-			return this->includes(tilesPossible, this->tiles[to.getX() + to.getY() * this->maxPosition.getX()]);
+			return this->includes(tilesPossible, this->tiles[to.getX() + to.getY() * this->maxSize.getX()]);
 		}
 	}
 }

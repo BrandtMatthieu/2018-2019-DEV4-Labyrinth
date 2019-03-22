@@ -1,7 +1,6 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include "./tileTypes.h"
 #include "./objectivesTypes.h"
 #include "./position.h"
 
@@ -40,14 +39,18 @@ namespace Labyrinth_44422 {
 				bool getPathLEFT(void) const;
 				
 				Position getPosition(void) const;
+				
 				bool isMovable(void) const;
+				
 				ObjectivesTypes getObjective(void) const;
+				
 				unsigned int getStartNumber(void) const;
 			
 				void setPosition(const Position & position);
 				
 				void rotateRight90(void);
 				void rotateLeft90(void);
+				
 				void move(const InsertSide & side);
 				
 		};

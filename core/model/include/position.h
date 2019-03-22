@@ -17,6 +17,7 @@ namespace Labyrinth_44422 {
 			private:
 				unsigned int x;
 				unsigned int y;
+			
 			public:
 				Position(unsigned x, unsigned y);
 				Position(const Position & position);
@@ -29,8 +30,10 @@ namespace Labyrinth_44422 {
                 void move(const unsigned int & x, const unsigned int & y);
 				void move(const unsigned int & amount, const InsertSide & side);
 				void move(const Position & position);
+				
 				void set(const unsigned int & x, const unsigned int & y);
 				void set(const Position & position);
+				
 				std::string toString(void) const;
 		};
 

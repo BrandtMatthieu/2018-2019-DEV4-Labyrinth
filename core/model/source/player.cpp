@@ -10,7 +10,7 @@ namespace Labyrinth_44422 {
 		 * @param nickname the nickname of the player
 		 * @param color the color of the player's pawn
 		 */
-		Player::Player(const std::string & nickname, const Colors & color, const Position & position) :
+		Player::Player(const std::string & nickname, const std::string & color, const Position & position) :
 			position{position.getX(), position.getY()},
 			nickname{nickname},
 			color{color}{}
@@ -26,8 +26,8 @@ namespace Labyrinth_44422 {
 			position{player.position},
 			objectiveCardsLeft{player.objectiveCardsLeft},
 			completedObjectiveCards{player.completedObjectiveCards},
-			hasMovedPawn{player.hasMovedPawn},
-			hasInsertedTile{player.hasInsertedTile}{}
+			_hasMovedPawn{player._hasMovedPawn},
+			_hasInsertedTile{player._hasInsertedTile}{}
 		
 		/**
 		 * Destroy the player and cleans it's members
@@ -56,7 +56,7 @@ namespace Labyrinth_44422 {
 		 * Returns the player's color
 		 * @return the player's color
 		 */
-		Colors Player::getColor(void) const {
+		std::string Player::getColor(void) const {
 			return this->color;
 		}
 		
@@ -73,10 +73,19 @@ namespace Labyrinth_44422 {
 		 * @return the player's current objective
 		 */
 		ObjectiveCard * Player::getCurrentObjective(void) const {
-			if(!this->objectiveCardsLeft.empty()) {
-				return this->objectiveCardsLeft.at(0);
+			if(this->objectiveCardsLeft.empty()) {
+				throw std::range_error("Error while getting the player's current objective. There are no objective cards left.");
 			}
-			throw std::range_error("Cannot return the player's current objective.\nThere are no objective cards left.");
+			
+			return this->objectiveCardsLeft.at(0);
+		}
+		
+		/**
+		 * Returns all the completed objective cards inside a vector
+		 * @return all the completed objective cards inside a vector
+		 */
+		std::vector<ObjectiveCard *> Player::getCompletedObjectiveCards(void) const {
+			return this->completedObjectiveCards;
 		}
 		
 		/**
@@ -87,6 +96,18 @@ namespace Labyrinth_44422 {
 			return this->objectiveCardsLeft.size();
 		}
 		
+		/**
+		 * Returns all the objective cards left inside a vector
+		 * @return all the objective cards left inside a vector
+		 */
+		std::vector<ObjectiveCard *> Player::getObjectiveCardsLeft(void) const {
+			return this->objectiveCardsLeft;
+		}
+		
+		/**
+		 * Returns the amount of objective cards left
+		 * @return the amount of objective cards left
+		 */
 		unsigned int Player::getObjectiveCardsLeftCount(void) const {
 			return this->objectiveCardsLeft.size();
 		}
@@ -95,35 +116,34 @@ namespace Labyrinth_44422 {
 		 * Returns true if the player has already inserted a tile in the board
 		 * @return true if the player has already inserted a tile in the board
 		 */
-		bool Player::getHasInsertedTile(void) const {
-			return this->hasInsertedTile;
+		bool Player::hasInsertedTile(void) const {
+			return this->_hasInsertedTile;
 		}
 		/**
 		 * Returns true if the player has already moved his pawn
 		 * @return true if the player has already moved his pawn
 		 */
-		bool Player::getHasMovedPawn(void) const {
-			return this->hasMovedPawn;
+		bool Player::hasMovedPawn(void) const {
+			return this->_hasMovedPawn;
 		}
 		
 		/**
 		 * Completes the current objective card of the player and adds it to the completed objectives
 		 */
 		void Player::completeCurrentObjective(void) {
-			if(!this->objectiveCardsLeft.empty()) {
-				this->completedObjectiveCards.push_back(this->objectiveCardsLeft.at(0));
-				this->objectiveCardsLeft.erase(this->objectiveCardsLeft.begin());
-			} else {
-				throw std::range_error("Cannot complete current objective.\nThere are no objective cards left.");
+			if(this->objectiveCardsLeft.empty()) {
+				throw std::range_error("Cannot complete current objective. There are no objective cards left.");
 			}
 			
+			this->completedObjectiveCards.push_back(this->objectiveCardsLeft.at(0));
+			this->objectiveCardsLeft.erase(this->objectiveCardsLeft.begin());
 		}
 		
 		/**
 		 * Adds an objective to the player
 		 * @param objectiveCard the objective card to add to the player
 		 */
-		void Player::addObjective(ObjectiveCard * objectiveCard) {
+		void Player::addObjective(ObjectiveCard * const & objectiveCard) {
 			this->objectiveCardsLeft.push_back(objectiveCard);
 		}
 		
@@ -131,30 +151,32 @@ namespace Labyrinth_44422 {
 		 * Makes the player insert a tile on the board
 		 */
 		void Player::insertTile(void) {
-			this->hasInsertedTile = true;
+			this->_hasInsertedTile = true;
 		}
 		
 		/**
 		 * Move the player's pawn
 		 * @param position the new position of the player's pawn
 		 */
-		void Player::movePawn(Position & position) {
-			if(!this->hasMovedPawn) {
-				this->position = position;
-				this->hasMovedPawn = true;
-			} else {
+		void Player::movePawn(const Position & position) {
+			if(this->_hasMovedPawn) {
 				throw std::runtime_error("Cannot move pawn. Pawn has already been moved.");
 			}
+			
+			this->position = position;
+			this->_hasMovedPawn = true;
 		}
 		
 		/**
 		 * Ends the player's turn
 		 */
 		void Player::endTurn(void) {
-			this->hasInsertedTile = false;
-			this->hasMovedPawn = false;
+			this->_hasInsertedTile = false;
+			this->_hasMovedPawn = false;
 		}
 		
 
+		
+		
 	}
 }

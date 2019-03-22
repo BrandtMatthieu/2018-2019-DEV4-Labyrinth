@@ -63,7 +63,7 @@ namespace Labyrinth_44422 {
 					while(this->value != Value(index)) {
 						index++;
 					}
-					return ObjectivesTypes::objective_names[index];
+					return Labyrinth_44422::model::ObjectivesTypes::objective_names[index];
 				}
 				
 				static ObjectivesTypes get(unsigned int index) {

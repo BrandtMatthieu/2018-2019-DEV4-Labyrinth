@@ -8,8 +8,9 @@ namespace Labyrinth_44422 {
 		 * @param consoleView the address of a console view
 		 */
 		ControllerConsole::ControllerConsole(const Labyrinth_44422::console::ConsoleView * const consoleView) :
-			consoleView{consoleView},
+			consoleView{const_cast<Labyrinth_44422::console::ConsoleView *>(consoleView)},
 			game{new Labyrinth_44422::model::Game()} {
+			this->consoleView->printMessage("Welcome in the Labyrinth game.\nWould you like to see the instructions?");
 			for(int i = 0; i < this->game->getMinPlayers(); i++) {
 				std::string name = this->consoleView->newPlayerName();
 				this->game->addPlayer(name);
@@ -31,30 +32,21 @@ namespace Labyrinth_44422 {
 			consoleView{new Labyrinth_44422::console::ConsoleView(* controllerConsole.consoleView)},
 			game{new Labyrinth_44422::model::Game(* controllerConsole.game)} {};
 		
-		/**
-		 * Creates a new controller with another provided controller
-		 * aka. copy assignment operator
-		 * @param controllerConsole the other provided controller
-		 * @return a new controller with another provided controller
-		 */
-	 	/*
-		ControllerConsole & ControllerConsole::operator= (const ControllerConsole & controllerConsole) {
-			this->game = controllerConsole.game;
-			this->consoleView = controllerConsole.consoleView;
-			return *this;
-		}
-	  	*/
 		
 		/**
 		 * Starts the game
 		 */
 		void ControllerConsole::start() {
 			while(!this->game->hasWinner()) {
+				this->consoleView->printMessage(this->game->getCurrentPlayer()->getNickname() + ", à toi de jouer!");
 				
 				this->game->nextPlayer();
 			}
 		}
 		
+		/**
+		 * Destroys the console controller object and it's attributes
+		 */
 		ControllerConsole::~ControllerConsole() {
 			delete this->game;
 			delete this->consoleView;

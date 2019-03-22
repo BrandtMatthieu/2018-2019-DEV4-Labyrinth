@@ -7,7 +7,7 @@ namespace Labyrinth_44422 {
 		 * Creates a new objective card
 		 * @param objective the objective on the card
 		 */
-		ObjectiveCard::ObjectiveCard(const ObjectivesTypes & objective) :
+		ObjectiveCard::ObjectiveCard(const std::string & objective) :
 			objective{objective} {};
 		
 		/**
@@ -22,7 +22,7 @@ namespace Labyrinth_44422 {
 		 * Returns the objective on the objective card
 		 * @return the objective on the objective card
 		 */
-		ObjectivesTypes ObjectiveCard::getObjective() const {
+		std::string ObjectiveCard::getObjective() const {
 			return this->objective;
 		}
 	}

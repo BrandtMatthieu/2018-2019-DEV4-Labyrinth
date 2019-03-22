@@ -21,6 +21,11 @@ namespace Labyrinth_44422 {
 			x{position.x},
 			y{position.y}{}
 			
+		/**
+		 * Assigns the value of another object to this object
+		 * @param position another position
+		 * @return the new modified position
+		 */
 		Position & Position::operator=(Position const & position) {
 			this->x = position.x;
 			this->y = position.y;

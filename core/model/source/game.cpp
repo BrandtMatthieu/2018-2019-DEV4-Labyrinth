@@ -11,6 +11,11 @@ namespace Labyrinth_44422 {
 		Game::Game(void) :
 			board{new Board(Position(7, 7))} {}
 		
+		/**
+		 * Creates a new game from an existing game object
+		 * @param game the game to create the new game from
+		 * aka. copy constructor
+		 */
 		Game::Game(const Game & game) :
 			board{new Board(* game.board)},
 			currentPlayerIndex{game.currentPlayerIndex} {
@@ -138,19 +143,21 @@ namespace Labyrinth_44422 {
 		 * @param color the color of the player to add
 		 */
 		void Game::addPlayer(const std::string & name) {
-			if(this->getPlayers().size() < this->getMaxPlayers()) {
-				this->players.insert(this->players.end(), new Player(name, Colors::get(this->players.size()), Position(0, 0)));
-				// TODO changer la position initiale du joueur dynamiquement
-			} else {
-				throw std::length_error("Cannot add player.\nMaximum amount of player (" + std::to_string(this->getMaxPlayers()) + ") already reached.");
+			if(this->getPlayers().size() >= this->getMaxPlayers()) {
+				throw std::length_error("Error while adding player. Maximum amount of player (" +
+				std::to_string(this->getMaxPlayers()) + ") already reached.");
 			}
+			
+			this->players.insert(this->players.end(), new Player(name, "red", Position(0, 0)));
+			// TODO changer la position initiale du joueur dynamiquement
 		}
+
 		
 		/**
 		 * Skips turn of current player and select the next player
 		 */
 		void Game::nextPlayer(void) {
-			if(this->currentPlayerIndex >= 0 && this->currentPlayerIndex < this->getMaxPlayers()) {
+			if(this->currentPlayerIndex > 0 && this->currentPlayerIndex < this->getMaxPlayers()) {
 				this->currentPlayerIndex = ((this->currentPlayerIndex + 1) % this->getMaxPlayers());
 			}
 		}
@@ -159,11 +166,11 @@ namespace Labyrinth_44422 {
 		 * Starts the game
 		 */
 		void Game::start(void) {
-			if(this->getPlayers().size() >= this->getMinPlayers()) {
-				this->currentPlayerIndex = 0;
-			} else {
-				throw std::runtime_error("Too few players to start the game");
+			if(this->getPlayers().size() < this->getMinPlayers()) {
+				throw std::runtime_error("Error while starting the game. Too few players to start the game");
 			}
+			
+			this->currentPlayerIndex = 0;
 		}
 
 	}
