@@ -3,8 +3,8 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += \
-    source/controller_console.cpp
+INCLUDEPATH += include \
 
-HEADERS += \
-    include/controller_console.h
+SOURCES += source/controller_console.cpp \
+
+HEADERS += include/controller_console.h \

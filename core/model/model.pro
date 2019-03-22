@@ -3,6 +3,8 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
+INCLUDEPATH += include \
+
 SOURCES += \
     source/board.cpp \
     source/colors.cpp \
