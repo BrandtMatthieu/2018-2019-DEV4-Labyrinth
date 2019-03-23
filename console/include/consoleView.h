@@ -46,6 +46,7 @@ namespace Labyrinth_44422 {
 				void printPlayerInfos(const model::Player * const player) const;
 				void printMessage(const std::string & message) const;
 				void printError(const std::string & error) const;
+				void printHelp(const model::Board * const board) const;
 		};
 	}
 }

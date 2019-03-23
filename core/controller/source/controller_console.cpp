@@ -11,7 +11,7 @@ namespace Labyrinth_44422 {
 			consoleView{const_cast<Labyrinth_44422::console::ConsoleView *>(consoleView)},
 			game{new Labyrinth_44422::model::Game()} {
 			this->consoleView->printMessage("Welcome in the Labyrinth game.\nWould you like to see the instructions?");
-			for(int i = 0; i < this->game->getMinPlayers(); i++) {
+			for(unsigned int i = 0; i < this->game->getMinPlayers(); i++) {
 				std::string name = this->consoleView->newPlayerName();
 				this->game->addPlayer(name);
 			}
@@ -37,8 +37,9 @@ namespace Labyrinth_44422 {
 		 * Starts the game
 		 */
 		void ControllerConsole::start() {
+			this->consoleView->printHelp(this->game->getBoard());
 			while(!this->game->hasWinner()) {
-				this->consoleView->printMessage(this->game->getCurrentPlayer()->getNickname() + ", à toi de jouer!");
+				this->consoleView->printMessage(this->game->getCurrentPlayer()->getNickname() + ", it's your turn!");
 				
 				this->game->nextPlayer();
 			}

@@ -113,7 +113,7 @@ namespace Labyrinth_44422 {
 				if(answer.empty()) {
 					std::cout << "Wrong input, please only answer with [ yes ] or [ no ]." << std::endl << " >";
 				}
-			} while(answer != "yes" || answer != "y" || answer != "n" || answer != "no");
+			} while(answer != "yes" && answer != "y" && answer != "n" && answer != "no");
 			return answer == "yes" || answer == "y";
 		}
 		
@@ -226,6 +226,20 @@ namespace Labyrinth_44422 {
 		void ConsoleView::printError(const std::string & error) const {
 			std::cerr << error << std::endl;
 		}
-
+		
+		void ConsoleView::printHelp(const model::Board * const board) const {
+			std::cout <<
+			"== HELP ==" << std::endl << std::endl <<
+			"Here are the following available commands :" << std::endl <<
+			"- insert <n> [UP|DOWN|RIGHT|LEFT] " << std::endl <<
+			"\tinsert the tile at the nth row line" << std::endl <<
+			"\ti.e. \"insert 1 LEFT\" will insert the tile in the first line and push all the tiles to the left." << std::endl <<
+			"- goto <x> <y> " << std::endl <<
+			"\tmoves your pawn to a location, between (1;1) (upper left corner) and " << board->getMaxSize().toString() << " (bottom right corner)" << std::endl <<
+			"\ti.e. \"goto 3 3\" will try to move the pawn to the tile in (3;3) if the tile is connected to the current tile" << std::endl <<
+			"- help" << std::endl <<
+			"\tshows the different commands" << std::endl << std::endl;
+		}
+		
 	}
 }
