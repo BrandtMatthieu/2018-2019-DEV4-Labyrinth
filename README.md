@@ -31,7 +31,30 @@ Importez le projet dans **Qt Creator** en allant dans `Fichier > Ouvrir un fichi
 
 ### Lancement
 
-*À venir*
+#### Dans QtCreator
+
+1. Choisissez le profil Realease.
+2. Compilez le projet (Ctrl + B)
+
+#### Compilation avec CMake
+
+```
+cmake.exe --build ${dossier du projet}/cmake-build-debug --target Build -- -j 2
+```
+
+avec `-j 2` pour 2 threads actifs en parallèle pour la compilation
+
+#### Utilisation Build fournis
+
+Dans la section `tags` du repository, se trouvent différents builds du projet à différents stades.
+Les builds sont nommés de la façon suivante : `v a.b build yyy-mm-dd-hhmm` avec :
+
+* a la version majeure du projet
+* b la version mineure du projet
+* yyyy l'année du build
+* mm le mois du build
+* dd le jour du build
+* hhmm l'heure du build (heure et minutes)
 
 ### Lancer les tests
 

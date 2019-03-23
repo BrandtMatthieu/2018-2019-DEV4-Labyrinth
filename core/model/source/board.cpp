@@ -23,6 +23,7 @@ namespace Labyrinth_44422 {
 					return i;
 				}
 			}
+			return 0;
 		}
 		
 		/**
@@ -32,7 +33,7 @@ namespace Labyrinth_44422 {
 		 * @return true if an element exists in a vector
 		 */
 		bool Board::includes(std::vector<Tile *> & myVector, Tile * tile) const {
-			for(int i = 0; i < myVector.size(); i++) {
+			for(unsigned int i = 0; i < myVector.size(); i++) {
 				if(this->tiles[i] == tile) {
 					return true;
 				}

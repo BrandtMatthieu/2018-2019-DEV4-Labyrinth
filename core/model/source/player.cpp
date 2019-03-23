@@ -11,9 +11,9 @@ namespace Labyrinth_44422 {
 		 * @param color the color of the player's pawn
 		 */
 		Player::Player(const std::string & nickname, const std::string & color, const Position & position) :
-			position{position.getX(), position.getY()},
 			nickname{nickname},
-			color{color}{}
+			color{color},
+			position{position.getX(), position.getY()}{}
 
 		/**
 		 * Creates a new player from an existing player
@@ -26,8 +26,8 @@ namespace Labyrinth_44422 {
 			position{player.position},
 			objectiveCardsLeft{player.objectiveCardsLeft},
 			completedObjectiveCards{player.completedObjectiveCards},
-			_hasMovedPawn{player._hasMovedPawn},
-			_hasInsertedTile{player._hasInsertedTile}{}
+			_hasInsertedTile{player._hasInsertedTile},
+			_hasMovedPawn{player._hasMovedPawn}{}
 		
 		/**
 		 * Destroy the player and cleans it's members

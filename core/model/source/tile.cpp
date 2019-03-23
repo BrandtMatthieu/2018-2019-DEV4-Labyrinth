@@ -15,11 +15,11 @@ namespace Labyrinth_44422 {
 		 * @param startNumber
 		 */
 		Tile::Tile(const bool & pathUP, const bool & pathDOWN, const bool & pathRIGHT, const bool & pathLEFT, const Position & position, const bool & movable, const ObjectivesTypes & objective, const unsigned int startNumber) :
-			position{position},
 			pathUP{pathUP},
 			pathDOWN{pathDOWN},
 			pathRIGHT{pathRIGHT},
 			pathLEFT{pathLEFT},
+			position{position},
 			movable{movable},
 			objective{objective},
 			startNumber{startNumber}{}
@@ -30,11 +30,11 @@ namespace Labyrinth_44422 {
 		 * @param tile the tile to create the new tile from
 		 */
 		Tile::Tile(const Tile & tile) :
-			position{tile.position},
 			pathUP{tile.pathUP},
 			pathDOWN{tile.pathDOWN},
 			pathRIGHT{tile.pathRIGHT},
 			pathLEFT{tile.pathLEFT},
+			position{tile.position},
 			movable{tile.movable},
 			objective{tile.objective},
 			startNumber{tile.startNumber}{}
