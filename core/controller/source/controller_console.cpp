@@ -21,7 +21,7 @@ namespace Labyrinth_44422 {
 				std::string name = this->consoleView->newPlayerName();
 				this->game->addPlayer(name);
 			}
-		};
+		}
 		
 		/**
 		 * Creates a new controller for the Labyrinth game from an existing controller
@@ -30,7 +30,7 @@ namespace Labyrinth_44422 {
 		 */
 		ControllerConsole::ControllerConsole(const ControllerConsole & controllerConsole) :
 			consoleView{new Labyrinth_44422::console::ConsoleView(* controllerConsole.consoleView)},
-			game{new Labyrinth_44422::model::Game(* controllerConsole.game)} {};
+			game{new Labyrinth_44422::model::Game(* controllerConsole.game)} {}
 		
 		
 		/**

@@ -28,9 +28,6 @@ namespace Labyrinth_44422 {
 			public:
 				Tile(const bool & pathUP, const bool & pathDOWN, const bool & pathRIGHT, const bool & pathLEFT, const Position & position, const bool & movable, const ObjectivesTypes & objective, unsigned int startNumber);
 				Tile(const Tile & tile);
-				Tile & operator= (const Tile & tile);
-				Tile(Tile && tile) noexcept;
-				Tile & operator= (Tile && tile) noexcept;
 				~Tile(void) = default;
 
 				bool getPathUP(void) const;

@@ -21,7 +21,9 @@ namespace Labyrinth_44422 {
 			private:
 				Position maxSize{7, 7};
 				std::vector<Tile *> tiles;
-			
+				
+				std::vector<Position> playersDefaultPositions;
+				
 				unsigned int indexOf(std::vector<Tile *> & myVector, Tile * tile) const;
 				bool includes(std::vector<Tile *> & myVector, Tile * tile) const;
 
@@ -42,10 +44,13 @@ namespace Labyrinth_44422 {
 				unsigned int getTilewCount(void) const;
 				Tile * getTilesAt(const Position &position) const;
 				void setTile(const Position & position, const Tile * const tile);
+				void setTile(const unsigned int x, const unsigned int y, const Tile * const tile);
 				void setTile(const unsigned int index, const Tile * const tile);
 				
+				std::vector<Position> getPlayersDefaultPositions() const;
+				
 				bool canInsertTile(const Position & position, const InsertSide & side) const;
-				void insertTile(const Position & position, const Tile * const tile,  const InsertSide & side);
+				Tile * insertTile(const Position & position, const Tile * const tile,  const InsertSide & side);
 				
 				bool canGoToFrom(Position & from, Position & to);
 		};

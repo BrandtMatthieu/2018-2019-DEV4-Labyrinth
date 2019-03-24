@@ -48,7 +48,9 @@ namespace Labyrinth_44422 {
 			maxSize{this->positionInsideBoard(maxPosition)
 				?maxPosition
 				:throw std::runtime_error("Error while initializing the board. Position not inside bounds.")},
-			tiles{std::vector<Tile *>()} {}
+			tiles{std::vector<Tile *>(maxPosition.getX() * maxPosition.getY())} {
+			
+		}
 
 		/**
 		 * Creates a new board from an existing board
@@ -144,6 +146,33 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
+		 * Sets a tile in the game's board
+		 * @param x the x position of the tile to set
+		 * @param y the y position of the tile to set
+		 * @param tile the tile to set at the provided position
+		 */
+		void Board::setTile(const unsigned int x, const unsigned int y, const Tile *const tile) {
+			if(!this->positionInsideBoard(Position(x, y))) {
+				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
+			}
+			
+			this->tiles[x + y * this->getMaxSizeX()] = const_cast<Tile *>(tile);
+		}
+		
+		/**
+		 * Sets a tile in the game's board
+		 * @param index the index of the tile to set
+		 * @param tile the tile to set at the provided position
+		 */
+		void Board::setTile(const unsigned int index, const Tile *const tile) {
+			if(index > tiles.size()) {
+				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
+			}
+			
+			this->tiles[index] = const_cast<Tile *>(tile);
+		}
+		
+		/**
 		 * Returns true if a tile can be inserted at the provided position
 		 * @param position the position to check where to insert the tile
 		 * @param side which side the tile need to be inserted in
@@ -179,7 +208,7 @@ namespace Labyrinth_44422 {
 		 * @param tile the tile to insert
 		 * @param side what side to insert the tile at
 		 */
-		void Board::insertTile(const Position & position, const Tile * const tile, const InsertSide & side) {
+		Tile * Board::insertTile(const Position & position, const Tile * const tile, const InsertSide & side) {
 			if(!this->positionInsideBoard(position)) {
 				throw std::runtime_error("Error while inserting a tile. Position out of bounds.");
 			}
@@ -187,14 +216,40 @@ namespace Labyrinth_44422 {
 				throw std::runtime_error("Error while inserting a tile. Column or row cannot move.");
 			}
 			
+			Tile * kickedTile;
+
 			switch(side) {
 				case InsertSide::LEFT:
+					kickedTile = getTilesAt(Position(0, position.getY()));
+					for(unsigned int i = 0; i < this->maxSize.getX() - 1; i++) {
+						setTile(Position(i, position.getY()), getTilesAt(Position(i + 1, position.getY())));
+					}
+					setTile(Position(this->maxSize.getX() - 1, position.getY()), tile);
+					break;
 				case InsertSide::RIGHT:
+					kickedTile = getTilesAt(Position(this->maxSize.getX() - 1, position.getY()));
+					for(unsigned int i = this->maxSize.getX() - 1; 0 < i; i--) {
+						setTile(Position(i, position.getY()), getTilesAt(Position(i - 1, position.getY())));
+					}
+					setTile(Position(0, position.getY()), tile);
+					break;
+				case InsertSide::UP:
+					kickedTile = getTilesAt(Position(position.getX(), 0));
+					for(unsigned int i = 0; i < this->maxSize.getY() - 1; i++) {
+						setTile(Position(position.getX(), i), getTilesAt(Position(position.getX(), i + 1)));
+					}
+					setTile(Position(position.getX(), this->maxSize.getY() - 1), tile);
 					break;
 				case InsertSide::DOWN:
-				case InsertSide::UP:
+					kickedTile = getTilesAt(Position(position.getX(), this->maxSize.getY() - 1));
+					for(unsigned int i = this->maxSize.getY() - 1; 0 < i; i--) {
+						setTile(Position(position.getX(), i), getTilesAt(Position(position.getX(), i - 1)));
+					}
+					setTile(Position(position.getX(), 0), tile);
 					break;
 			}
+			
+			return kickedTile;
 		}
 		
 		/**
