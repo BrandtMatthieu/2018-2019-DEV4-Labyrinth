@@ -6,7 +6,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * The different names of the enum
 		 */
-		static const std::string objective_names[] = {
+		static std::string objective_names[] = {
 			"bat",
 			"beetle",
 			"bones",
@@ -33,5 +33,5 @@ namespace Labyrinth_44422 {
    			"treasure_chest"
 		};
 		
-	}
-}
+	}  // namespace model
+}  // namespace Labyrinth_44422

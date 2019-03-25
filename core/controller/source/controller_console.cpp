@@ -36,7 +36,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Starts the game
 		 */
-		void ControllerConsole::start() {
+		void ControllerConsole::start(void) {
 			this->consoleView->printHelp(this->game->getBoard());
 			while(!this->game->hasWinner()) {
 				this->consoleView->printMessage(this->game->getCurrentPlayer()->getNickname() + ", it's your turn!");
@@ -48,11 +48,11 @@ namespace Labyrinth_44422 {
 		/**
 		 * Destroys the console controller object and it's attributes
 		 */
-		ControllerConsole::~ControllerConsole() {
+		ControllerConsole::~ControllerConsole(void) {
 			delete this->game;
 			delete this->consoleView;
 		}
 		
 		
-	}
-}
+	}  // namespace controller
+}  // namespace Labyrinth_44422

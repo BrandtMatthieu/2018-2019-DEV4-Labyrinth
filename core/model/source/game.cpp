@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <ctime>
 #include <stdexcept>
 
 #include "../include/game.h"
@@ -8,8 +10,26 @@ namespace Labyrinth_44422 {
 		/**
 		 * Creates a new Labyrinth game
 		 */
-		Game::Game(void) :
-			board{new Board(Position(7, 7))} {}
+		Game::Game(void) {
+			
+			std::random_shuffle(ObjectivesTypes::objective_names->begin(), ObjectivesTypes::objective_names->end());
+			
+			this->board = new Board(Position{7, 7});
+			
+			srand(static_cast<unsigned int>(time(nullptr)));
+			for(unsigned int i = 0; i < 6; i++) {
+			
+			}
+			for(unsigned int i = 0; i < 12; i++) {
+				Tile * tile = new Tile(true, true, false, false, Position{0, 0}, true, NULL, NULL); // TODO
+				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
+					tile->rotateLeft90();
+				}
+			}
+			for(unsigned int i = 0; i < 16; i++) {
+			
+			}
+		}
 
 		/**
 		 * Creates a new game from an existing game object
@@ -80,6 +100,19 @@ namespace Labyrinth_44422 {
 		std::vector<Player *> Game::getPlayers(void) const {
 			return std::vector<Player *>(this->players);
 		}
+		
+		/**
+		 * Return the player at the provided index
+		 * @param index the index of the player to return
+		 * @return the player at the index
+		 */
+		Player * Game::getPlayerAt(const unsigned int index) const {
+			if(index >= this->players.size()) {
+				throw std::invalid_argument("Error while getting player at index. Index is out of bounds");
+			}
+			
+			return this->players.at(index);
+		}
 
 		/**
 		 * Returns the amount of players that are currently in the game
@@ -147,9 +180,29 @@ namespace Labyrinth_44422 {
 				throw std::length_error("Error while adding player. Maximum amount of player (" +
 				std::to_string(this->getMaxPlayers()) + ") already reached.");
 			}
+			Position position{0, 0};
+			switch(this->players.size()) {
+				case 0: {
+					position = Position{0, 6};
+					break;
+				}
+				case 1: {
+					position = Position{6, 6};
+					break;
+				}
+				case 2: {
+					position = Position{6, 0};
+					break;
+				}
+				case 3: {
+					position = Position{0, 0};
+					break;
+				}
+				default:
+					throw std::runtime_error("Error while giving start position to player. No position to give");
+			}
 
-			this->players.insert(this->players.end(), new Player(name, "red", Position(0, 0)));
-			// TODO changer la position initiale du joueur dynamiquement
+			this->players.insert(this->players.end(), new Player(name, "red", position));
 		}
 
 
@@ -174,6 +227,5 @@ namespace Labyrinth_44422 {
 
 			this->currentPlayerIndex = 0;
 		}
-
-	}
-}
+	}  // namespace model
+}  // namespace Labyrinth_44422

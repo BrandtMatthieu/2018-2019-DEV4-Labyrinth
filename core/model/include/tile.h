@@ -26,7 +26,14 @@ namespace Labyrinth_44422 {
 				unsigned int startNumber;
 
 			public:
-				Tile(const bool & pathUP, const bool & pathDOWN, const bool & pathRIGHT, const bool & pathLEFT, const Position & position, const bool & movable, const ObjectivesTypes & objective, unsigned int startNumber);
+				Tile(	const bool & pathUP,
+						const bool & pathDOWN,
+						const bool & pathRIGHT,
+						const bool & pathLEFT,
+						const Position & position,
+						const bool & movable,
+						const ObjectivesTypes & objective,
+						unsigned int startNumber);
 				Tile(const Tile & tile);
 				~Tile(void) = default;
 
@@ -52,7 +59,7 @@ namespace Labyrinth_44422 {
 				
 		};
 
-	}
-}
+	} // namespace model
+} // namespace Labyrinth_44422
 
 #endif // TILE_H

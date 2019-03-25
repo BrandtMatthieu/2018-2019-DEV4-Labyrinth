@@ -1,8 +1,7 @@
+#include <cmath>
 #include <stdexcept>
-#include <math.h>
 
 #include "../include/board.h"
-#include "../include/tile.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
@@ -13,7 +12,7 @@ namespace Labyrinth_44422 {
 		 * @param tile the tile to search for
 		 * @return the index of the tiles in the provided vector
 		 */
-		unsigned int Board::indexOf(std::vector<Tile *> & myVector, Tile * tile) const {
+		unsigned int Board::indexOf(const std::vector<Tile *> & myVector, const Tile * const tile) const {
 			if(!this->includes(myVector, tile)) {
 				throw std::runtime_error("Error while getting the index of the tile. The tile doesn't exists inside the vector.");
 			}
@@ -32,7 +31,7 @@ namespace Labyrinth_44422 {
 		 * @param tile the tile to search for
 		 * @return true if an element exists in a vector
 		 */
-		bool Board::includes(std::vector<Tile *> & myVector, Tile * tile) const {
+		bool Board::includes(const std::vector<Tile *> & myVector, const Tile * const tile) const {
 			for(unsigned int i = 0; i < myVector.size(); i++) {
 				if(this->tiles[i] == tile) {
 					return true;
@@ -45,9 +44,7 @@ namespace Labyrinth_44422 {
 		 * Creates a new board for the Labyrinth game
 		 */
 		Board::Board(const Position & maxPosition) :
-			maxSize{this->positionInsideBoard(maxPosition)
-				?maxPosition
-				:throw std::runtime_error("Error while initializing the board. Position not inside bounds.")},
+			maxSize{this->positionInsideBoard(maxPosition) ? maxPosition : throw std::runtime_error("Error while initializing the board. Position not inside bounds.")},
 			tiles{std::vector<Tile *>(maxPosition.getX() * maxPosition.getY())} {
 			
 		}
@@ -68,7 +65,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Destroys the board object and cleans its members
 		 */
-		Board::~Board() {
+		Board::~Board(void) {
 			for(Tile * const & tile_ptr : this->tiles) {
 				delete tile_ptr;
 			}
@@ -105,6 +102,14 @@ namespace Labyrinth_44422 {
 		 */
 		std::vector<Tile *> Board::getTiles(void) const {
 			return this->tiles;
+		}
+		
+		/**
+		 * Returns the tile count
+		 * @return the tile count
+		 */
+		unsigned int Board::getTilesCount(void) const {
+			return this->tiles.size();
 		}
 		
 		/**
@@ -170,6 +175,18 @@ namespace Labyrinth_44422 {
 			}
 			
 			this->tiles[index] = const_cast<Tile *>(tile);
+		}
+		
+		/**
+		 * Returns the default position for the players
+		 * @return the default position for the players
+		 */
+		std::vector<Position> Board::getPlayersDefaultPositions() const {
+			return std::vector<Position>{
+				Position{0, 0},
+				Position{maxSize.getX() - 1, 0},
+				Position{0, maxSize.getY() - 1},
+				Position{maxSize.getX(), maxSize.getY()}};
 		}
 		
 		/**
@@ -258,7 +275,7 @@ namespace Labyrinth_44422 {
 		 * @param player the player
 		 * @return true if a player can go to a provided position
 		 */
-		bool Board::canGoToFrom(Position & from, Position & to) {
+		bool Board::canGoToFrom(const Position & from, const Position & to) {
 			if(!this->positionInsideBoard(from)) {
 				throw std::invalid_argument("Error while checking valid tiles. \"From\" position is out of bounds");
 			}
@@ -273,10 +290,11 @@ namespace Labyrinth_44422 {
 			tilesPossible.push_back(this->tiles[from.getX() + from.getY() * (this->maxSize.getX())]);
 			tilesToCheck.push_back(this->tiles[from.getX() + from.getY() * (this->maxSize.getX())]);
 			
-			unsigned int currentTileX;
-			unsigned int currentTileY;
-			
 			while (!tilesToCheck.empty()) {
+				
+				unsigned int currentTileX;
+				unsigned int currentTileY;
+				
 				Tile * currentTile = tilesToCheck[0];
 				
 				currentTileX = this->indexOf(this->tiles, currentTile) % this->maxSize.getX();
@@ -361,5 +379,5 @@ namespace Labyrinth_44422 {
 			
 			return this->includes(tilesPossible, this->tiles[to.getX() + to.getY() * this->maxSize.getX()]);
 		}
-	}
-}
+	}  // namespace model
+}  // namespace Labyrinth_44422

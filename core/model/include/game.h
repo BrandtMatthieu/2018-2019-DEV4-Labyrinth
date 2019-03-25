@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "./board.h"
-#include "./tile.h"
 #include "./player.h"
+#include "./tile.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
@@ -30,16 +30,13 @@ namespace Labyrinth_44422 {
 			public:
 				Game(void);
 				Game(const Game & game);
-				Game & operator= (const Game & game);
-				Game(Game && game) noexcept;
-				Game & operator= (Game && game) noexcept;
 				~Game(void);
 
 				unsigned int getMinPlayers(void) const;
 				unsigned int getMaxPlayers(void) const;
 				
 				std::vector<Player *> getPlayers(void) const;
-				Player * getPlayerAt(void) const;
+				Player * getPlayerAt(const unsigned int index) const;
 				unsigned int getPlayersCount(void) const;
 				bool hasEnoughPlayers(void) const;
 			
@@ -57,7 +54,7 @@ namespace Labyrinth_44422 {
 				void start(void);
 		};
 
-	}
-}
+	}  // namespace model
+}  // namespace Labyrinth_44422
 
 #endif // GAME_H

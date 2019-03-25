@@ -1,17 +1,10 @@
-#include <string>
 #include <iostream>
-#include <stdexcept>
+#include <string>
 
 #include "../include/consoleView.h"
-#include "../../core/model/include/tile.h"
-#include "../../core/model/include/board.h"
 
 namespace Labyrinth_44422 {
 	namespace console {
-		
-		const std::string ConsoleView::wall = "▓";
-		const std::string ConsoleView::path = "░";
-		const std::string ConsoleView::space = " ";
 		
 		/**
 		 * Prints an horizontal line in the tile
@@ -20,6 +13,13 @@ namespace Labyrinth_44422 {
 		 * @return a string with the line printed at the specified height
 		 */
 		std::string ConsoleView::printTile(const Labyrinth_44422::model::Tile * const tile, const unsigned int & k) const {
+			if(tile == nullptr) {
+				throw std::invalid_argument("Error while printing the tile. No tile provided.");
+			}
+			if(k >= ConsoleView::tileSize) {
+				throw std::invalid_argument("Error while printing the tile. Tile line is out of bounds.");
+			}
+			
 			std::string line;
 			for(unsigned int l = 0; l < ConsoleView::tileSize; l++) {
 				if(k < ConsoleView::pathSize // Vertical Top part
@@ -118,7 +118,7 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
-		 * Creates a new console veiw
+		 * Creates a new console view
 		 * @param spacing if there needs to be spaces between the rows and lines of the board printed
 		 */
 		ConsoleView::ConsoleView(bool const spacing) :
@@ -129,6 +129,9 @@ namespace Labyrinth_44422 {
 		 * @param vue
 		 */
 		ConsoleView::ConsoleView(const ConsoleView & vue) :
+			wall{"▓"},
+			path{"░"},
+			space{" "},
 			spacing{vue.spacing} {}
 		
 		/**
@@ -160,6 +163,10 @@ namespace Labyrinth_44422 {
 		 * @param game the game to print the infos from
 		 */
 		void ConsoleView::printGameInfos(const model::Game * const game) const {
+			if(game == nullptr) {
+				throw std::invalid_argument("Error while printing game infos. Game does not exists.");
+			}
+			
 			std::cout << "Game infos : " << std::endl;
 			if(game->hasWinner()) {
 				std::cout << "Game is over." << std::endl
@@ -180,6 +187,10 @@ namespace Labyrinth_44422 {
 		 * @param board the board to print
 		 */
 		void ConsoleView::printBoard(const model::Board * const board) const {
+			if(board == nullptr) {
+				throw std::invalid_argument("Error while printing board. Board doesn't exists.");
+			}
+			
 			for(unsigned int j = 0; j < board->getMaxSizeY(); j++) {
 				for(unsigned int k = 0; k < ConsoleView::tileSize; k++) {
 					for(unsigned int i = 0; i < board->getMaxSizeX(); i++) {
@@ -201,6 +212,10 @@ namespace Labyrinth_44422 {
 		 * @param player the player to print the infos from
 		 */
 		void ConsoleView::printPlayerInfos(const model::Player * const player) const {
+			if(player == nullptr) {
+				throw std::invalid_argument("Error while printing player infos. Player doesn't exists.");
+			}
+			
 			std::cout << "Players infos :" << std::endl
 				<< "Nickname : " << player->getNickname() << std::endl
 				<< "Color : " << player->getColor() << std::endl
@@ -228,6 +243,10 @@ namespace Labyrinth_44422 {
 		}
 		
 		void ConsoleView::printHelp(const model::Board * const board) const {
+			if(board == nullptr) {
+				throw std::invalid_argument("Error while printing board. Board doesn't exists.");
+			}
+			
 			std::cout <<
 			"== HELP ==" << std::endl << std::endl <<
 			"Here are the following available commands :" << std::endl <<
@@ -241,5 +260,5 @@ namespace Labyrinth_44422 {
 			"\tshows the different commands" << std::endl << std::endl;
 		}
 		
-	}
-}
+	}  // namespace console
+}  // namespace Labyrinth_44422

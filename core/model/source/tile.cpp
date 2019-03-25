@@ -142,5 +142,5 @@ namespace Labyrinth_44422 {
 		void Tile::move(const InsertSide & side) {
 			this->position.move(1, side);
 		}
-	}
-}
+	}  // namespace model
+}  // namespace Labyrinth_44422

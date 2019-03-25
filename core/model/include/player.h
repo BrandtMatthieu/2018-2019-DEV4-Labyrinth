@@ -30,9 +30,6 @@ namespace Labyrinth_44422 {
 			public:
 				Player(const std::string & nickname, const std::string & color, const Position & position);
 				Player(const Player & player);
-				Player & operator= (const Player & player);
-				Player(Player && player) noexcept;
-				Player & operator= (Player && player) noexcept;
 				~Player(void);
 
 				std::string getNickname(void) const;
@@ -59,7 +56,7 @@ namespace Labyrinth_44422 {
 				void endTurn(void);
 		};
 
-	}
-}
+	} // namespace model
+} // namespace Labyrinth_44422
 
 #endif // PLAYER_H

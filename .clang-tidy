@@ -1,0 +1,14 @@
+Checks: '*,
+-cppcoreguidelines-owning-memory,
+-cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+-cppcoreguidelines-pro-type-const-cast,
+-cppcoreguidelines-special-member-functions,
+-fuchsia-default-arguments,
+-fuchsia-overloaded-operator,
+-google-readability-todo,
+-llvm-header-guard,
+-modernize-redundant-void-arg,
+-modernize-use-auto-cast,
+-readability-avoid-const-params-in-decls,
+'
+Std: c++11

@@ -22,8 +22,12 @@ namespace Labyrinth_44422 {
 		 * Returns the objective on the objective card
 		 * @return the objective on the objective card
 		 */
-		std::string ObjectiveCard::getObjective() const {
+		std::string ObjectiveCard::getObjective(void) const {
 			return this->objective;
 		}
-	}
-}
+		
+		bool ObjectiveCard::hasObjective(void) const {
+			return !this->objective.empty();
+		}
+	}  // namespace model
+}  // namespace Labyrinth_44422

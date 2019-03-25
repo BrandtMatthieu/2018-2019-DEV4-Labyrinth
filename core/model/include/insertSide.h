@@ -24,7 +24,7 @@ namespace Labyrinth_44422 {
 			"left"
 		};
 		
-	}
-}
+	}  // namespace model
+}  // namespace Labyrinth_44422
 
 #endif // INSERTSIDE_H

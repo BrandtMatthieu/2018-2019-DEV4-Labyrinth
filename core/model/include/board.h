@@ -24,15 +24,12 @@ namespace Labyrinth_44422 {
 				
 				std::vector<Position> playersDefaultPositions;
 				
-				unsigned int indexOf(std::vector<Tile *> & myVector, Tile * tile) const;
-				bool includes(std::vector<Tile *> & myVector, Tile * tile) const;
+				unsigned int indexOf(const std::vector<Tile *> & myVector,const Tile * const tile) const;
+				bool includes(const std::vector<Tile *> & myVector,const Tile * const tile) const;
 
 			public:
-				Board(const Position & maxPosition); // default constructor
+				explicit Board(const Position & maxPosition); // default constructor
 				Board(const Board & board); // copy constructor
-				Board & operator= (const Board & board); // copy assignment operator
-				Board(Board && board) noexcept; // move constructor
-				Board & operator= (Board && board) noexcept; // move assignment operator
 				~Board(void); // destructor
 			
 				Position getMaxSize(void) const;
@@ -41,7 +38,7 @@ namespace Labyrinth_44422 {
 				bool positionInsideBoard(const Position & position) const;
 				
 				std::vector<Tile *> getTiles(void) const;
-				unsigned int getTilewCount(void) const;
+				unsigned int getTilesCount(void) const;
 				Tile * getTilesAt(const Position &position) const;
 				void setTile(const Position & position, const Tile * const tile);
 				void setTile(const unsigned int x, const unsigned int y, const Tile * const tile);
@@ -52,9 +49,9 @@ namespace Labyrinth_44422 {
 				bool canInsertTile(const Position & position, const InsertSide & side) const;
 				Tile * insertTile(const Position & position, const Tile * const tile,  const InsertSide & side);
 				
-				bool canGoToFrom(Position & from, Position & to);
+				bool canGoToFrom(const Position & from, const Position & to);
 		};
-	}
-}
+	}  // namespace model
+}  // namespace Labyrinth_44422
 
 #endif // BOARD_H

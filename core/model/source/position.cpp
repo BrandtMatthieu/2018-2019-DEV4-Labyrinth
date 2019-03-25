@@ -123,5 +123,5 @@ namespace Labyrinth_44422 {
 		std::string Position::toString(void) const {
 			return "(" + std::to_string(this->x) + ";" + std::to_string(this->y) + ")";
 		}
-	}
-}
+	}  // namespace model
+}  // namespace Labyrinth_44422

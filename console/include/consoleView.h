@@ -3,10 +3,10 @@
 
 #include <string>
 
-#include "../../core/model/include/tile.h"
-#include "../../core/model/include/game.h"
 #include "../../core/model/include/board.h"
+#include "../../core/model/include/game.h"
 #include "../../core/model/include/player.h"
+#include "../../core/model/include/tile.h"
 
 namespace Labyrinth_44422 {
 	namespace console {
@@ -22,9 +22,9 @@ namespace Labyrinth_44422 {
 				static constexpr unsigned int pathSize = 3;
 				static constexpr unsigned int tileSize = 3 * pathSize + 2;
 			
-				static const std::string wall;
-				static const std::string path;
-				static const std::string space;
+				const std::string wall;
+				const std::string path;
+				const std::string space;
 				bool spacing = true;
 				
 				std::string printTile(const Labyrinth_44422::model::Tile * const tile, const unsigned int & k) const;
@@ -33,9 +33,6 @@ namespace Labyrinth_44422 {
 			public:
 				explicit ConsoleView(bool spacing);
 				ConsoleView(const ConsoleView & vue);
-				ConsoleView & operator=(const ConsoleView & vue);
-				ConsoleView(ConsoleView && consoleView) noexcept;
-				ConsoleView & operator= (ConsoleView && consoleView) noexcept;
 				~ConsoleView() = default;
 				
 				bool addNewPlayer(void) const;
@@ -48,7 +45,7 @@ namespace Labyrinth_44422 {
 				void printError(const std::string & error) const;
 				void printHelp(const model::Board * const board) const;
 		};
-	}
-}
+	} // namespace console
+} // namespace Labyrinth_44422
 
 #endif // CONSOLEVIEW_H

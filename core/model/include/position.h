@@ -2,6 +2,7 @@
 #define POSITION_H
 
 #include <string>
+
 #include "../include/insertSide.h"
 
 namespace Labyrinth_44422 {
@@ -27,7 +28,7 @@ namespace Labyrinth_44422 {
 				unsigned int getX(void) const;
 				unsigned int getY(void) const;
 				
-                void move(const unsigned int & x, const unsigned int & y);
+				void move(const unsigned int & x, const unsigned int & y);
 				void move(const unsigned int & amount, const InsertSide & side);
 				void move(const Position & position);
 				
@@ -37,7 +38,7 @@ namespace Labyrinth_44422 {
 				std::string toString(void) const;
 		};
 
-	}
-}
+	} // namespace model
+} // namespace labyrinth_44422
 
 #endif // POSITION_H

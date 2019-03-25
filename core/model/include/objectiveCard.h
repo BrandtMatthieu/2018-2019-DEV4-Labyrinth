@@ -16,18 +16,15 @@ namespace Labyrinth_44422 {
 			private:
 				std::string objective;
 			public:
-				ObjectiveCard(const std::string & objective);
+				explicit ObjectiveCard(const std::string & objective);
 				ObjectiveCard(const ObjectiveCard & objectiveCard);
-				ObjectiveCard & operator= (const ObjectiveCard & objectiveCard);
-				ObjectiveCard(ObjectiveCard && objectiveCard) noexcept;
-				ObjectiveCard & operator= (ObjectiveCard && objectiveCard) noexcept;
 				~ObjectiveCard(void) = default;
 			
 				std::string getObjective(void) const;
 				bool hasObjective(void) const;
 		};
 		
-	}
-}
+	} // namespace model
+} // namespace Labyrinth_44422
 
 #endif // OBJECTIVECARD_H
