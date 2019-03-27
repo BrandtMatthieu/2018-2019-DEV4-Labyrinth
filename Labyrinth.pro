@@ -1,25 +1,18 @@
-TEMPLATE = app
-CONFIG += debug\
-    qt \
-    console \
-    warn_on \
-    c++11 \
+message(Root dir)
 
-SOURCES += core\main_console.cpp
+TARGET = Labyrinth
+
+TEMPLATE = subdirs
 
 SUBDIRS += \
+    controller \
+    model \
     core \
     console \
-    gui \
 
-INCLUDEPATH += \
-    . \
-    core \
-    console \
-    gui \
+controller.subdirs = $$PWD/core/controller
+model.subdirs = $$PWD/core/model
+core.subdirs = $$PWD/core
+console.subdirs = $$PWD/console
 
-DESTDIR = build
-
-QMAKE += --Wall
-
-message($$SOURCES)
+core.depends = controller model console
