@@ -1,7 +1,7 @@
 #ifndef OBJECTIVECARD_H
 #define OBJECTIVECARD_H
 
-#include "./objectivesTypes.h"
+#include <string>
 
 namespace Labyrinth_44422 {
 	namespace model {

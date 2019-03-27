@@ -1,4 +1,4 @@
-#include "../include/tile.h"
+#include "./../include/tile.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
@@ -14,7 +14,15 @@ namespace Labyrinth_44422 {
 		 * @param objective the objective of the tile
 		 * @param startNumber
 		 */
-		Tile::Tile(const bool & pathUP, const bool & pathDOWN, const bool & pathRIGHT, const bool & pathLEFT, const Position & position, const bool & movable, const ObjectivesTypes & objective, const unsigned int startNumber) :
+		Tile::Tile(
+			const bool & pathUP,
+			const bool & pathDOWN,
+			const bool & pathRIGHT,
+			const bool & pathLEFT,
+			const Position & position,
+			const bool & movable,
+			const std::string & objective,
+			const unsigned int startNumber) :
 			pathUP{pathUP},
 			pathDOWN{pathDOWN},
 			pathRIGHT{pathRIGHT},
@@ -91,7 +99,7 @@ namespace Labyrinth_44422 {
 		 * Returns the objective on the tile
 		 * @return the objective on the tile
 		 */
-		ObjectivesTypes Tile::getObjective(void) const {
+		std::string Tile::getObjective(void) const {
 			return this->objective;
 		}
 		

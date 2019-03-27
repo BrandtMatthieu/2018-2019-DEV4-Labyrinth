@@ -1,8 +1,8 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "../../../console/include/consoleView.h"
-#include "../../model/include/game.h"
+#include "./../../../console/include/consoleView.h"
+#include "./../../model/include/game.h"
 
 namespace Labyrinth_44422 {
 	namespace controller {
@@ -17,12 +17,15 @@ namespace Labyrinth_44422 {
 			private:
 				Labyrinth_44422::console::ConsoleView * consoleView;
 				Labyrinth_44422::model::Game * game;
+				
 			public:
 				explicit ControllerConsole(const Labyrinth_44422::console::ConsoleView * const consoleView);
 				ControllerConsole(const ControllerConsole & controllerConsole);
 				~ControllerConsole(void);
 
 				void start(void);
+				
+				
 		};
 		
 	} // namespace controller

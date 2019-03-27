@@ -1,0 +1,4 @@
+#ifndef CONTROLLERGUI_H
+#define CONTROLLERGUI_H
+
+#endif //CONTROLLERGUI_H

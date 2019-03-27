@@ -1,4 +1,4 @@
-#include "../include/position.h"
+#include "./../include/position.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
@@ -66,7 +66,7 @@ namespace Labyrinth_44422 {
 		void Position::move(const unsigned int & amount, const InsertSide & side) {
 			switch(side) {
 				case InsertSide::UP:
-					if(this->y - amount < 0) {
+					if(this->y <= amount) {
 						this->y = 0;
 					} else {
 						this->y -= amount; // move towards up so y decreases
@@ -79,7 +79,7 @@ namespace Labyrinth_44422 {
 					this->x += amount; // move towards right so x increases
 					break;
 				case InsertSide::LEFT:
-					if(this->x - amount < 0) {
+					if(this->x <= amount) {
 						this->x = 0;
 					} else {
 						this->x -= amount; // move towards left so x decreases

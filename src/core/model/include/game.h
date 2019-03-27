@@ -26,10 +26,25 @@ namespace Labyrinth_44422 {
 				Player * winner = nullptr;
 				std::vector<Tile *> availableTiles;
 				unsigned int currentPlayerIndex = 0;
+			
+				std::vector<std::string> playerColors = {"Red", "Blue", "Green", "Yellow"};
+				std::vector<ObjectiveCard *> objectiveCards;
+			
+				std::string getFirstPlayerColor(void);
+				
+			public:
+				std::vector<std::string> gameObjectives = {
+						"bat","beetle","bones","butterfly",
+						"candlestick","crown","dragon","emerald",
+						"fairy","genius","ghost","gnome",
+						"golden_purse","grimoire","helm","keys",
+						"lizard","map","owl","rat",
+						"ring","spider","sword","treasure_chest"};
 
 			public:
 				Game(void);
 				Game(const Game & game);
+				void operator=(const Game & game);
 				~Game(void);
 
 				unsigned int getMinPlayers(void) const;
@@ -52,6 +67,11 @@ namespace Labyrinth_44422 {
 				void nextPlayer(void);
 				
 				void start(void);
+				
+				void generateObjectiveCards(void);
+				void dealObjectiveCardsToPlayers(void);
+				
+				void currentPlayerCheckObjective(void);
 		};
 
 	}  // namespace model

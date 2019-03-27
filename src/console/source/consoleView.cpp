@@ -1,103 +1,107 @@
+#include <algorithm>
 #include <iostream>
 #include <string>
 
-#include "../include/consoleView.h"
+#include "./../include/consoleView.h"
+#include "./../../core/model/include/insertSide.h"
+#include "./../../core/model/include/position.h"
 
+
+class Position;
 namespace Labyrinth_44422 {
 	namespace console {
 		
 		/**
 		 * Prints an horizontal line in the tile
 		 * @param tile the tile to print the line from
-		 * @param k the height to print the line of the tile from
+		 * @param ligneDansTuile the height to print the line of the tile from
 		 * @return a string with the line printed at the specified height
 		 */
-		std::string ConsoleView::printTile(const Labyrinth_44422::model::Tile * const tile, const unsigned int & k) const {
+		std::string ConsoleView::printTile(const Labyrinth_44422::model::Tile * const tile, const unsigned int & ligneDansTuile, std::string & str) const {
 			if(tile == nullptr) {
 				throw std::invalid_argument("Error while printing the tile. No tile provided.");
 			}
-			if(k >= ConsoleView::tileSize) {
+			if(ligneDansTuile >= this->tileSize) {
 				throw std::invalid_argument("Error while printing the tile. Tile line is out of bounds.");
 			}
 			
-			std::string line;
-			for(unsigned int l = 0; l < ConsoleView::tileSize; l++) {
-				if(k < ConsoleView::pathSize // Vertical Top part
-				|| k > 2 * ConsoleView::tileSize + 1) { // Vertical Bottom part
-					if(l == ConsoleView::pathSize
-					|| l == 2 * ConsoleView::pathSize + 1) { // Horizontal ConsoleView::walls part
-						if(k < ConsoleView::pathSize) {
+			for(unsigned int caractereDeTuile = 0; caractereDeTuile < this->tileSize; caractereDeTuile++) {
+				if(ligneDansTuile < this->wall1 // Vertical Top part
+				|| ligneDansTuile > this->wall2) { // Vertical Bottom part
+					if(caractereDeTuile == this->wall1
+					|| caractereDeTuile == this->wall2) { // Horizontal ConsoleView::walls part
+						if(ligneDansTuile < this->wall1) {
 							if(tile->getPathUP()) {
-								line += ConsoleView::wall;
+								str += this->wall;
 							} else {
-								line += ConsoleView::path;
+								str += this->path;
 							}
-						} else if(k > 2 * ConsoleView::pathSize + 1) {
+						} else if(ligneDansTuile > this->wall2) {
 							if(tile->getPathDOWN()) {
-								line += ConsoleView::wall;
+								str += this->wall;
 							} else {
-								line += ConsoleView::path;
+								str += this->path;
 							}
 						}
 					} else { // Horizontal All other parts
-						line += ConsoleView::path;
+						str += this->path;
 					}
-				} else if(k > ConsoleView::pathSize
-				&& k < 2 * ConsoleView::tileSize + 1) { // Vertical Middle part
-					if(l == ConsoleView::pathSize) { // Horizontal Left ConsoleView::wall
+				} else if(ligneDansTuile > this->wall1
+				&& ligneDansTuile < this->wall2) { // Vertical Middle part
+					if(caractereDeTuile == this->wall1) { // Horizontal Left ConsoleView::wall
 						if(tile->getPathLEFT()) {
-							line += ConsoleView::path;
+							str += this->path;
 						} else {
-							line += ConsoleView::wall;
+							str += this->wall;
 						}
-					} else if(l == 2 * ConsoleView::pathSize + 1) { // Horizontal Right ConsoleView::wall
+					} else if(caractereDeTuile == this->wall2) { // Horizontal Right ConsoleView::wall
 						if(tile->getPathRIGHT()) {
-							line += ConsoleView::path;
+							str += this->path;
 						} else {
-							line += ConsoleView::wall;
+							str += this->wall;
 						}
 					} else { // Horizontal Middle part
 						// TODO print player on the tile or objective or spawnPoint
-						line += ConsoleView::path;
+						str += this->path;
 					}
-				} else if(k == ConsoleView::pathSize
-				|| k == 2 * ConsoleView::pathSize + 1) { // Vertical ConsoleView::walls part
-					if(l < ConsoleView::pathSize) { // Horizontal Left ConsoleView::wall
+				} else if(ligneDansTuile == this->wall1
+				|| ligneDansTuile == this->wall2) { // Vertical ConsoleView::walls part
+					if(caractereDeTuile < this->wall1) { // Horizontal Left ConsoleView::wall
 						if(tile->getPathLEFT()) {
-							line += ConsoleView::wall;
+							str += this->wall;
 						} else {
-							line += ConsoleView::path;
+							str += this->path;
 						}
-					} else if(l > 2 * ConsoleView::pathSize + 1) { // Horizontal Right ConsoleView::wall
+					} else if(caractereDeTuile > this->wall2) { // Horizontal Right ConsoleView::wall
 						if(tile->getPathRIGHT()) {
-							line += ConsoleView::wall;
+							str += this->wall;
 						} else {
-							line += ConsoleView::path;
+							str += this->path;
 						}
-					} else if(l > ConsoleView::pathSize
-					&& l < 2 * ConsoleView::pathSize + 1) { // Horizontal Middle part
-						if(k == ConsoleView::pathSize) { // Horizontal Middle Top ConsoleView::wall
+					} else if(caractereDeTuile > this->wall1
+					&& caractereDeTuile < this->wall2) { // Horizontal Middle part
+						if(ligneDansTuile == this->wall1) { // Horizontal Middle Top ConsoleView::wall
 							if(tile->getPathUP()) {
-								line += ConsoleView::path;
+								str += this->path;
 							} else {
-								line += ConsoleView::wall;
+								str += this->wall;
 							}
-						} else if(l > ConsoleView::pathSize
-						&& l < 2 * ConsoleView::pathSize + 1) { // Horizontal Middle Bottom ConsoleView::wall
+						} else if(caractereDeTuile > this->wall1
+						&& caractereDeTuile < this->wall2) { // Horizontal Middle Bottom ConsoleView::wall
 							if(tile->getPathDOWN()) {
-								line += ConsoleView::path;
+								str += this->path;
 							} else {
-								line += ConsoleView::wall;
+								str += this->wall;
 							}
 						}
 					} else { // 4 small Middle ConsoleView::walls
-						line += ConsoleView::wall;
+						str += this->wall;
 					}
 				} else {
 					throw std::runtime_error("Error while printing tile. Print carriage is out of tile");
 				}
 			}
-			return line;
+			return str;
 		}
 		
 		/**
@@ -110,6 +114,7 @@ namespace Labyrinth_44422 {
 			std::cout << message << " [ yes | no ]" << std::endl << "> ";
 			do {
 				std::cin >> answer;
+				std::transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
 				if(answer.empty()) {
 					std::cout << "Wrong input, please only answer with [ yes ] or [ no ]." << std::endl << " >";
 				}
@@ -121,8 +126,9 @@ namespace Labyrinth_44422 {
 		 * Creates a new console view
 		 * @param spacing if there needs to be spaces between the rows and lines of the board printed
 		 */
-		ConsoleView::ConsoleView(bool const spacing) :
-			spacing{spacing} {}
+		ConsoleView::ConsoleView(const bool spacing, const bool arrows) :
+			spacing{spacing},
+			arrows{arrows} {}
 		
 		/**
 		 * Creates a new console view from an existing one
@@ -132,21 +138,14 @@ namespace Labyrinth_44422 {
 			wall{"▓"},
 			path{"░"},
 			space{" "},
-			spacing{vue.spacing} {}
-		
-		/**
-		 * Asks if the players want to add another player
-		 * @return true if the players want to add another player
-		 */
-		bool ConsoleView::addNewPlayer(void) const {
-			return getYesNoAnswer("Would you like to add another player ?");
-		}
+			spacing{vue.spacing},
+			arrows{vue.arrows} {}
 		
 		/**
 		 * Asks the name for the new player in the game
 		 * @return the name of the new player
 		 */
-		std::string ConsoleView::newPlayerName(void) const {
+		std::string ConsoleView::getNewPlayerName(void) const {
 			std::cout << "Please enter a name for this player" << std::endl << "> ";
 			std::string answer;
 			while(answer.empty()) {
@@ -191,15 +190,40 @@ namespace Labyrinth_44422 {
 				throw std::invalid_argument("Error while printing board. Board doesn't exists.");
 			}
 			
-			for(unsigned int j = 0; j < board->getMaxSizeY(); j++) {
-				for(unsigned int k = 0; k < ConsoleView::tileSize; k++) {
-					for(unsigned int i = 0; i < board->getMaxSizeX(); i++) {
-						std::cout << this->printTile(board->getTiles().at(j * board->getMaxSizeX() + i), k);
-						if(this->spacing) {
-							std::cout << ConsoleView::space;
+			std::string str = "";
+			if(this->arrows) {
+				str += "  ";
+				for(unsigned int tuileDansRangee = 0; tuileDansRangee < board->getMaxSizeX(); tuileDansRangee++) {
+					for(unsigned int caractereDeTuile = 0; caractereDeTuile < this->tileSize; caractereDeTuile++) {
+						if(caractereDeTuile == this->tileSize / 2 && board->canInsertTile(model::Position{tuileDansRangee, 0}, model::InsertSide::DOWN)) {
+							str += "↓";
+						} else {
+							str += " ";
 						}
 					}
-					std::cout << std::endl;
+					if(this->spacing) {
+						str += " ";
+					}
+				}
+				str += "\n";
+			}
+			std::cout << str << std::endl;
+			for(unsigned int rangeeDeTuile = 0; rangeeDeTuile < board->getMaxSizeY(); rangeeDeTuile++) { // chaque ligne de tuile
+				for(unsigned int ligneDansTuile = 0; ligneDansTuile < this->tileSize; ligneDansTuile++) { // ligne horizontale dans tuile
+					str = "";
+					if(this->arrows && ligneDansTuile == this->tileSize / 2 && board->canInsertTile(model::Position{0, rangeeDeTuile}, model::InsertSide::RIGHT)) {
+						str += "→ ";
+					} else if (this->arrows) {
+						str += "  ";
+					}
+					for(unsigned int tuileDansRangee = 0; tuileDansRangee < board->getMaxSizeX(); tuileDansRangee++) {
+						str = this->printTile(board->getTiles().at(rangeeDeTuile * board->getMaxSizeX() + tuileDansRangee), ligneDansTuile, str);
+						
+						if(this->spacing) {
+							str += this->space;
+						}
+					}
+					std::cout << str << std::endl;
 				}
 				if(this->spacing) {
 					std::cout << std::endl;
@@ -227,6 +251,14 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
+		 * Prints a message telling the winner of the game
+		 * @param player the winner of the game
+		 */
+		void ConsoleView::printWinner(model::Player * player) {
+			this->printMessage("Congratulations " + player->getNickname() + ", you won this game.");
+		}
+		
+		/**
 		 * Prints a message
 		 * @param message the message to be printed
 		 */
@@ -242,6 +274,10 @@ namespace Labyrinth_44422 {
 			std::cerr << error << std::endl;
 		}
 		
+		/**
+		 * Prints a message with the different supported comands
+		 * @param board the board of the game
+		 */
 		void ConsoleView::printHelp(const model::Board * const board) const {
 			if(board == nullptr) {
 				throw std::invalid_argument("Error while printing board. Board doesn't exists.");
@@ -260,5 +296,11 @@ namespace Labyrinth_44422 {
 			"\tshows the different commands" << std::endl << std::endl;
 		}
 		
+		/**
+		 * Clears the console
+		 */
+		void ConsoleView::clearScreen(void) const {
+			std::cout << "\033c";
+		}
 	}  // namespace console
 }  // namespace Labyrinth_44422

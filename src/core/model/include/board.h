@@ -30,6 +30,7 @@ namespace Labyrinth_44422 {
 			public:
 				explicit Board(const Position & maxPosition); // default constructor
 				Board(const Board & board); // copy constructor
+				void operator=(const Board & board);
 				~Board(void); // destructor
 			
 				Position getMaxSize(void) const;

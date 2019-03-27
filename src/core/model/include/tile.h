@@ -1,7 +1,6 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include "./objectivesTypes.h"
 #include "./position.h"
 
 namespace Labyrinth_44422 {
@@ -22,7 +21,7 @@ namespace Labyrinth_44422 {
 				
 				Position position;
 				bool movable;
-				ObjectivesTypes objective;
+				std::string objective;
 				unsigned int startNumber;
 
 			public:
@@ -32,8 +31,8 @@ namespace Labyrinth_44422 {
 						const bool & pathLEFT,
 						const Position & position,
 						const bool & movable,
-						const ObjectivesTypes & objective,
-						unsigned int startNumber);
+						const std::string & objective,
+						const unsigned int startNumber);
 				Tile(const Tile & tile);
 				~Tile(void) = default;
 
@@ -46,7 +45,7 @@ namespace Labyrinth_44422 {
 				
 				bool isMovable(void) const;
 				
-				ObjectivesTypes getObjective(void) const;
+				std::string getObjective(void) const;
 				
 				unsigned int getStartNumber(void) const;
 			

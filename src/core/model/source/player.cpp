@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "../include/player.h"
+#include "./../include/player.h"
 
 namespace Labyrinth_44422 {
 	namespace model {

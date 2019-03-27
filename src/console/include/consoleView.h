@@ -3,10 +3,7 @@
 
 #include <string>
 
-#include "../../core/model/include/board.h"
-#include "../../core/model/include/game.h"
-#include "../../core/model/include/player.h"
-#include "../../core/model/include/tile.h"
+#include "./../../core/model/include/game.h"
 
 namespace Labyrinth_44422 {
 	namespace console {
@@ -19,31 +16,39 @@ namespace Labyrinth_44422 {
 		 */
 		class ConsoleView {
 			private:
-				static constexpr unsigned int pathSize = 3;
-				static constexpr unsigned int tileSize = 3 * pathSize + 2;
+				const unsigned int pathSize = 3;
+				const unsigned int tileSize = 3 * pathSize + 2;
+				
+				const unsigned int wall1 = pathSize;
+				const unsigned int wall2 = 2 * pathSize + 1;
 			
 				const std::string wall;
 				const std::string path;
 				const std::string space;
-				bool spacing = true;
+				const bool spacing = true;
+				const bool arrows = true;
 				
-				std::string printTile(const Labyrinth_44422::model::Tile * const tile, const unsigned int & k) const;
-				bool getYesNoAnswer(const std::string & message) const;
+				std::string printTile(const Labyrinth_44422::model::Tile * const tile, const unsigned int & ligneDansTuile, std::string & str) const;
+				
 			
 			public:
-				explicit ConsoleView(bool spacing);
+				explicit ConsoleView(const bool spacing, const bool arrows);
 				ConsoleView(const ConsoleView & vue);
 				~ConsoleView() = default;
+			
+				bool getYesNoAnswer(const std::string & message) const;
 				
-				bool addNewPlayer(void) const;
-				std::string newPlayerName(void) const;
+				std::string getNewPlayerName(void) const;
 				
 				void printGameInfos(const model::Game * const game) const;
 				void printBoard(const model::Board * const board) const;
 				void printPlayerInfos(const model::Player * const player) const;
+				void printWinner(model::Player * player);
 				void printMessage(const std::string & message) const;
 				void printError(const std::string & error) const;
 				void printHelp(const model::Board * const board) const;
+				
+				void clearScreen(void) const;
 		};
 	} // namespace console
 } // namespace Labyrinth_44422

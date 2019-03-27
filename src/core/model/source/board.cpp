@@ -1,7 +1,8 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "../include/board.h"
+#include "./../include/board.h"
+
 
 namespace Labyrinth_44422 {
 	namespace model {
@@ -13,6 +14,9 @@ namespace Labyrinth_44422 {
 		 * @return the index of the tiles in the provided vector
 		 */
 		unsigned int Board::indexOf(const std::vector<Tile *> & myVector, const Tile * const tile) const {
+			if(tile == nullptr) {
+				throw std::invalid_argument("Error while initializing the board. Cannot get the index if tile is null.");
+			}
 			if(!this->includes(myVector, tile)) {
 				throw std::runtime_error("Error while getting the index of the tile. The tile doesn't exists inside the vector.");
 			}
@@ -32,6 +36,10 @@ namespace Labyrinth_44422 {
 		 * @return true if an element exists in a vector
 		 */
 		bool Board::includes(const std::vector<Tile *> & myVector, const Tile * const tile) const {
+			if(tile == nullptr) {
+				throw std::invalid_argument("Error while initializing the board. Cannot get the index if tile is null.");
+			}
+			
 			for(unsigned int i = 0; i < myVector.size(); i++) {
 				if(this->tiles[i] == tile) {
 					return true;
@@ -60,6 +68,20 @@ namespace Labyrinth_44422 {
 			for(Tile * const & tile_ptr : board.tiles) {
 				this->tiles.push_back(new Tile(* tile_ptr));
 			}
+		}
+		
+		/**
+		 * Creates a new board from another board
+		 * @param board another board
+		 */
+		void Board::operator=(const Board & board) {
+			this->maxSize = board.maxSize;
+			
+			for(Tile * const & tile : board.tiles) {
+				this->tiles.push_back(new Tile(*tile));
+			}
+			
+			this->playersDefaultPositions = board.playersDefaultPositions;
 		}
 		
 		/**
@@ -146,6 +168,9 @@ namespace Labyrinth_44422 {
 			if(!this->positionInsideBoard(position)) {
 				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
 			}
+			if(tile == nullptr) {
+				throw std::invalid_argument("Error while setting a tile. Cannot set the tile if the tile is null.");
+			}
 			
 			this->tiles[position.getX() + position.getY() * this->getMaxSizeX()] = const_cast<Tile *>(tile);
 		}
@@ -156,9 +181,12 @@ namespace Labyrinth_44422 {
 		 * @param y the y position of the tile to set
 		 * @param tile the tile to set at the provided position
 		 */
-		void Board::setTile(const unsigned int x, const unsigned int y, const Tile *const tile) {
+		void Board::setTile(const unsigned int x, const unsigned int y, const Tile * const tile) {
 			if(!this->positionInsideBoard(Position(x, y))) {
 				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
+			}
+			if(tile == nullptr) {
+				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null.");
 			}
 			
 			this->tiles[x + y * this->getMaxSizeX()] = const_cast<Tile *>(tile);
@@ -169,9 +197,12 @@ namespace Labyrinth_44422 {
 		 * @param index the index of the tile to set
 		 * @param tile the tile to set at the provided position
 		 */
-		void Board::setTile(const unsigned int index, const Tile *const tile) {
+		void Board::setTile(const unsigned int index, const Tile * const tile) {
 			if(index > tiles.size()) {
 				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
+			}
+			if(tile == nullptr) {
+				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null.");
 			}
 			
 			this->tiles[index] = const_cast<Tile *>(tile);

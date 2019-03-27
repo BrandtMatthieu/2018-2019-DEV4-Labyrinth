@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../include/insertSide.h"
+#include "./../include/insertSide.h"
 
 namespace Labyrinth_44422 {
 	namespace model {

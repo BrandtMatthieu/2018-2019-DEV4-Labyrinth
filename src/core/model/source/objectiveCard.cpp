@@ -1,4 +1,4 @@
-#include "../include/objectiveCard.h"
+#include "./../include/objectiveCard.h"
 
 namespace Labyrinth_44422 {
 	namespace model {
@@ -8,7 +8,7 @@ namespace Labyrinth_44422 {
 		 * @param objective the objective on the card
 		 */
 		ObjectiveCard::ObjectiveCard(const std::string & objective) :
-			objective{objective} {};
+			objective{objective} {}
 		
 		/**
 		 * Creates a new objective card from an other objective card
@@ -26,6 +26,10 @@ namespace Labyrinth_44422 {
 			return this->objective;
 		}
 		
+		/**
+		 * Returns true if the card has an objective on it
+		 * @return true if the card has an objective on it
+		 */
 		bool ObjectiveCard::hasObjective(void) const {
 			return !this->objective.empty();
 		}

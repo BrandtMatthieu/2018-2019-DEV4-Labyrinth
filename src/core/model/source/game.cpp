@@ -1,33 +1,73 @@
 #include <algorithm>
 #include <ctime>
+#include <iostream>
 #include <stdexcept>
 
+#include "./../include/game.h"
 #include "../include/game.h"
+
 
 namespace Labyrinth_44422 {
 	namespace model {
-
+		
+		/**
+		 * Returns the first color available for the new player
+		 * @return the first color available for the new player
+		 */
+		std::string Game::getFirstPlayerColor(void) {
+			if(this->playerColors.empty()) {
+				throw std::runtime_error("Error while assigning a player a color. No more colors available.");
+			}
+			
+			std::string color = this->playerColors[0];
+			this->playerColors.erase(this->playerColors.begin(), this->playerColors.begin() + 1);
+			this->playerColors.shrink_to_fit();
+			return color;
+		}
+		
 		/**
 		 * Creates a new Labyrinth game
 		 */
-		Game::Game(void) {
-			
-			std::random_shuffle(ObjectivesTypes::objective_names->begin(), ObjectivesTypes::objective_names->end());
-			
-			this->board = new Board(Position{7, 7});
+		Game::Game(void) :
+		board{new Board(Position{7, 7})},
+		objectiveCards{} {
 			
 			srand(static_cast<unsigned int>(time(nullptr)));
-			for(unsigned int i = 0; i < 6; i++) {
 			
-			}
-			for(unsigned int i = 0; i < 12; i++) {
-				Tile * tile = new Tile(true, true, false, false, Position{0, 0}, true, NULL, NULL); // TODO
+			/* 6 d’entres elles sont des « T » marquées d’un objectif, */
+			for(unsigned int i = 0; i < 6; i++) {
+				Tile * tile = new Tile(true, true, true, false, Position{0, 0}, true, "objective", 0); // TODO pick random objective left and set position
 				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
 					tile->rotateLeft90();
 				}
+				this->availableTiles.push_back(tile);
 			}
-			for(unsigned int i = 0; i < 16; i++) {
 			
+			/* 12 d’entre elles sont des « I » non marquées, */
+			for(unsigned int i = 0; i < 12; i++) {
+				Tile * tile = new Tile(true, true, false, false, Position{0, 0}, true, "", 0);
+				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
+					tile->rotateLeft90();
+				}
+				this->availableTiles.push_back(tile);
+			}
+			
+			/* 16 d’entre elles sont des « L », dont six sont marquées d’un objectif. */
+			for(unsigned int i = 0; i < 10; i++) {
+				Tile * tile = new Tile(true, false, true, false, Position{0, 0}, true, "", 0); // TODO pick random objective left ans set position
+				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
+					tile->rotateLeft90();
+				}
+				this->availableTiles.push_back(tile);
+			}
+			
+			/* 16 d’entre elles sont des « L », dont six sont marquées d’un objectif. */
+			for(unsigned int i = 0; i < 6; i++) {
+				Tile * tile = new Tile(true, false, true, false, Position{0, 0}, true, "objective", 0); // TODO pick random objective left and set position
+				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
+					tile->rotateLeft90();
+				}
+				this->availableTiles.push_back(tile);
 			}
 		}
 
@@ -56,6 +96,35 @@ namespace Labyrinth_44422 {
 			for(Tile * const & tile_ptr : game.availableTiles) {
 				this->availableTiles.push_back(new Tile(* tile_ptr));
 			}
+		}
+		
+		void Game::operator=(const Game & game) {
+			this->minPlayers = game.minPlayers;
+			this->maxPlayers = game.maxPlayers;
+			
+			this->players.erase(this->players.begin());
+			for(Player * const & player : game.players) {
+				this->players.push_back(new Player(*player));
+			}
+			
+			this->board = new Board(*game.board);
+			
+			if(game.winner == nullptr) {
+				this->winner = nullptr;
+			} else {
+				unsigned int i = 0;
+				while(game.players.at(i) != winner) {
+					i++;
+				}
+				this->winner = this->players.at(i);
+			}
+			
+			this->availableTiles.erase(this->availableTiles.begin());
+			for(Tile * const & tile : game.availableTiles) {
+				this->availableTiles.push_back(new Tile(*tile));
+			}
+			
+			this->currentPlayerIndex = game.currentPlayerIndex;
 		}
 
 		/**
@@ -180,29 +249,8 @@ namespace Labyrinth_44422 {
 				throw std::length_error("Error while adding player. Maximum amount of player (" +
 				std::to_string(this->getMaxPlayers()) + ") already reached.");
 			}
-			Position position{0, 0};
-			switch(this->players.size()) {
-				case 0: {
-					position = Position{0, 6};
-					break;
-				}
-				case 1: {
-					position = Position{6, 6};
-					break;
-				}
-				case 2: {
-					position = Position{6, 0};
-					break;
-				}
-				case 3: {
-					position = Position{0, 0};
-					break;
-				}
-				default:
-					throw std::runtime_error("Error while giving start position to player. No position to give");
-			}
 
-			this->players.insert(this->players.end(), new Player(name, "red", position));
+			this->players.push_back(new Player(name, this->getFirstPlayerColor(), this->board->getPlayersDefaultPositions().at(this->players.size())));
 		}
 
 
@@ -218,7 +266,7 @@ namespace Labyrinth_44422 {
 		}
 
 		/**
-		 * Starts the game
+		 * Starts the game (method is pretty useless)
 		 */
 		void Game::start(void) {
 			if(this->getPlayers().size() < this->getMinPlayers()) {
@@ -226,6 +274,27 @@ namespace Labyrinth_44422 {
 			}
 
 			this->currentPlayerIndex = 0;
+		}
+		
+		void Game::generateObjectiveCards(void) {
+			std::random_shuffle(this->gameObjectives.begin(), this->gameObjectives.end());
+			for(auto & objective : this->gameObjectives) {
+				this->objectiveCards.push_back(new model::ObjectiveCard(objective));
+			}
+		}
+		
+		void Game::dealObjectiveCardsToPlayers(void) {
+			for(unsigned int playerIndex = 0; !objectiveCards.empty(); playerIndex = ((playerIndex + 1) % this->getPlayersCount())) {
+				this->players.at(playerIndex)->addObjective(this->objectiveCards.at(0));
+				this->objectiveCards.erase(this->objectiveCards.begin(), this->objectiveCards.begin() + 1);
+			}
+		}
+		
+		void Game::currentPlayerCheckObjective(void) {
+			if(this->getCurrentPlayer()->getCurrentObjective()->getObjective() ==
+			this->getBoard()->getTilesAt(this->getCurrentPlayer()->getPosition())->getObjective()) {
+				this->getCurrentPlayer()->completeCurrentObjective();
+			}
 		}
 	}  // namespace model
 }  // namespace Labyrinth_44422
