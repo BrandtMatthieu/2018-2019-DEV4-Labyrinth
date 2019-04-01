@@ -46,8 +46,10 @@ namespace Labyrinth_44422 {
 				bool isMovable(void) const;
 				
 				std::string getObjective(void) const;
+				bool hasObjective(void) const;
 				
 				unsigned int getStartNumber(void) const;
+				bool hasStartNumber(void) const;
 			
 				void setPosition(const Position & position);
 				

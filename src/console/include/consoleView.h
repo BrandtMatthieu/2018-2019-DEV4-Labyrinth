@@ -25,6 +25,7 @@ namespace Labyrinth_44422 {
 				const std::string wall;
 				const std::string path;
 				const std::string space;
+				const std::string objective;
 				const bool spacing = true;
 				const bool arrows = true;
 				
@@ -37,8 +38,8 @@ namespace Labyrinth_44422 {
 				~ConsoleView() = default;
 			
 				bool getYesNoAnswer(const std::string & message) const;
-				
 				std::string getNewPlayerName(void) const;
+				std::string getCommand(void) const;
 				
 				void printGameInfos(const model::Game * const game) const;
 				void printBoard(const model::Board * const board) const;
@@ -47,8 +48,11 @@ namespace Labyrinth_44422 {
 				void printMessage(const std::string & message) const;
 				void printError(const std::string & error) const;
 				void printHelp(const model::Board * const board) const;
+				void printWelcome(void) const;
+				void printInstructions(void) const;
 				
 				void clearScreen(void) const;
+				void lineBreak(void) const;
 		};
 	} // namespace console
 } // namespace Labyrinth_44422

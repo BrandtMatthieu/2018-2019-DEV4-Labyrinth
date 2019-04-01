@@ -42,7 +42,7 @@ namespace Labyrinth_44422 {
 				void completeCurrentObjective(void);
 				
 				std::vector<ObjectiveCard *> getCompletedObjectiveCards(void) const;
-				unsigned int getObjectiveCount(void) const;
+				unsigned int getCompletedObjectiveCardsCount(void) const;
 				
 				std::vector<ObjectiveCard *> getObjectiveCardsLeft(void) const;
 				unsigned int getObjectiveCardsLeftCount(void) const;

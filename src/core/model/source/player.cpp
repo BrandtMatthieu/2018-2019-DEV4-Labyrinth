@@ -70,6 +70,7 @@ namespace Labyrinth_44422 {
 		
 		/**
 		 * Returns the player's current objective
+		 * @throw range_error if there is no current objective to retrieve
 		 * @return the player's current objective
 		 */
 		ObjectiveCard * Player::getCurrentObjective(void) const {
@@ -92,8 +93,8 @@ namespace Labyrinth_44422 {
 		 * Returns the number of objective cards the player has left
 		 * @return the number of objective cards the player has left
 		 */
-		unsigned int Player::getObjectiveCount(void) const {
-			return this->objectiveCardsLeft.size();
+		unsigned int Player::getCompletedObjectiveCardsCount(void) const {
+			return this->completedObjectiveCards.size();
 		}
 		
 		/**
@@ -129,10 +130,11 @@ namespace Labyrinth_44422 {
 		
 		/**
 		 * Completes the current objective card of the player and adds it to the completed objectives
+		 * @throw runtime_error if cannot complete the current objective
 		 */
 		void Player::completeCurrentObjective(void) {
 			if(this->objectiveCardsLeft.empty()) {
-				throw std::range_error("Cannot complete current objective. There are no objective cards left.");
+				throw std::runtime_error("Cannot complete current objective. There are no objective cards left.");
 			}
 			
 			this->completedObjectiveCards.push_back(this->objectiveCardsLeft.at(0));
@@ -157,6 +159,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Move the player's pawn
 		 * @param position the new position of the player's pawn
+		 * @throw runtime_error if player has already moved and pawn was moved
 		 */
 		void Player::movePawn(const Position & position) {
 			if(this->_hasMovedPawn) {

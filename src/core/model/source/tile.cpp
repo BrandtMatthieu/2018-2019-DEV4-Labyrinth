@@ -104,11 +104,27 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
+		 * Returns true if the tile has an objective
+		 * @return true if the tile has an objective
+		 */
+		bool Tile::hasObjective(void) const {
+			return this->objective != "";
+		}
+		
+		/**
 		 * Returns the start number on the tile
 		 * @return the start number on the tile
 		 */
 		unsigned int Tile::getStartNumber(void) const {
-			return 0;
+			return this->startNumber;
+		}
+		
+		/**
+		 * Returns true if tile has a start number
+		 * @return
+		 */
+		bool Tile::hasStartNumber(void) const {
+			return this->startNumber > 0;
 		}
 		
 		/**

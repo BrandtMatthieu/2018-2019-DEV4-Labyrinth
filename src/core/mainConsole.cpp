@@ -1,8 +1,8 @@
 #include <iostream>
-#include <exception>
 
 #include "./../console/include/consoleView.h"
 #include "./controller/include/controllerConsole.h"
+
 
 /**
  * Entry point for the console version of Labyrinth game
@@ -17,7 +17,8 @@ int main() {
         
 	} catch(const std::exception & exception) {
 		
-		std::cout << "Labyrinth has encountered an error and had to close." << std::endl << exception.what() << std::endl;
+		std::cout << std::endl <<"Labyrinth has encountered an error and had to close.";
+		std::cout << std::endl << exception.what();
 		return -1;
 		
 	}

@@ -11,6 +11,8 @@ namespace Labyrinth_44422 {
 		 * Finds a tile in a vector of tiles and returns it's index
 		 * @param myVector the vector where to search
 		 * @param tile the tile to search for
+		 * @throw invalid_argument if tile is null
+		 * @throw runtime_error if myVector doesn't includes the tile
 		 * @return the index of the tiles in the provided vector
 		 */
 		unsigned int Board::indexOf(const std::vector<Tile *> & myVector, const Tile * const tile) const {
@@ -33,6 +35,7 @@ namespace Labyrinth_44422 {
 		 * Returns true if an element exists in a vector
 		 * @param myVector the vector where to search
 		 * @param tile the tile to search for
+		 * @throw invalid_argument if tile is null
 		 * @return true if an element exists in a vector
 		 */
 		bool Board::includes(const std::vector<Tile *> & myVector, const Tile * const tile) const {
@@ -50,9 +53,10 @@ namespace Labyrinth_44422 {
 
 		/**
 		 * Creates a new board for the Labyrinth game
+		 * @param maxPosition the position used to get the size of the board
 		 */
 		Board::Board(const Position & maxPosition) :
-			maxSize{this->positionInsideBoard(maxPosition) ? maxPosition : throw std::runtime_error("Error while initializing the board. Position not inside bounds.")},
+			maxSize{maxPosition},
 			tiles{std::vector<Tile *>(maxPosition.getX() * maxPosition.getY())} {
 			
 		}
@@ -74,7 +78,11 @@ namespace Labyrinth_44422 {
 		 * Creates a new board from another board
 		 * @param board another board
 		 */
-		void Board::operator=(const Board & board) {
+		Board & Board::operator=(const Board & board) {
+			if(&board == this) {
+				return *this;
+			}
+			
 			this->maxSize = board.maxSize;
 			
 			for(Tile * const & tile : board.tiles) {
@@ -82,6 +90,7 @@ namespace Labyrinth_44422 {
 			}
 			
 			this->playersDefaultPositions = board.playersDefaultPositions;
+			return *this;
 		}
 		
 		/**
@@ -137,10 +146,12 @@ namespace Labyrinth_44422 {
 		/**
 		 * Returns the address of the tile at a provided position
 		 * @param position  the position of the tile to get
+		 * @throw invalid_argument if the position is out of bounds of the board
+		 * @throw runtime_error if the tile retrieved is null (no tile at this position)
 		 * @return the address of the tile at a provided position
 		 */
 		Tile * Board::getTilesAt(const Position & position) const {
-			if(!this->positionInsideBoard(position)) {
+			if(!this->isPositionInsideBoard(position)) {
 				throw std::invalid_argument("Error while getting the tile at " + position.toString() +
 											". Position is out of board's bounds (0;0) to " +
 											this->maxSize.toString());
@@ -154,7 +165,7 @@ namespace Labyrinth_44422 {
 		 * @param position the position to check
 		 * @return true if the provided position in inside the game's board
 		 */
-		bool Board::positionInsideBoard(const Position & position) const {
+		bool Board::isPositionInsideBoard(const Position & position) const {
 			return position.getX() < this->maxSize.getX() &&
 					position.getY() < this->maxSize.getY();
 		}
@@ -163,14 +174,22 @@ namespace Labyrinth_44422 {
 		 * Sets a tile in the game's board
 		 * @param position the position of where to set the tile
 		 * @param tile the tile to set at the provided position
+		 * @throw invalid_argument if position is out of bounds
+		 * @throw invalid_argument if tile is null
+		 * @throw runttime_error if the tile overlaps an existing tile to prevent memory leaks
 		 */
-		void Board::setTile(const Position & position, const Tile * const tile) {
-			if(!this->positionInsideBoard(position)) {
+		void Board::setTile(const Position & position, Tile * const tile) {
+			if(!this->isPositionInsideBoard(position)) {
 				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
 			}
 			if(tile == nullptr) {
 				throw std::invalid_argument("Error while setting a tile. Cannot set the tile if the tile is null.");
 			}
+			if(this->getTilesAt(position) != nullptr) {
+				throw std::runtime_error("Error while setting tile. Cannot overlap tile");
+			}
+			
+			tile->setPosition(position);
 			
 			this->tiles[position.getX() + position.getY() * this->getMaxSizeX()] = const_cast<Tile *>(tile);
 		}
@@ -180,14 +199,18 @@ namespace Labyrinth_44422 {
 		 * @param x the x position of the tile to set
 		 * @param y the y position of the tile to set
 		 * @param tile the tile to set at the provided position
+		 * @throw invalid_argument if provided position is out of bounds
+		 * @throw invalid_argument if tile is null
 		 */
-		void Board::setTile(const unsigned int x, const unsigned int y, const Tile * const tile) {
-			if(!this->positionInsideBoard(Position(x, y))) {
+		void Board::setTile(const unsigned int x, const unsigned int y, Tile * const tile) {
+			if(!this->isPositionInsideBoard(Position(x, y))) {
 				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
 			}
 			if(tile == nullptr) {
 				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null.");
 			}
+			
+			tile->setPosition(Position{x, y});
 			
 			this->tiles[x + y * this->getMaxSizeX()] = const_cast<Tile *>(tile);
 		}
@@ -196,14 +219,18 @@ namespace Labyrinth_44422 {
 		 * Sets a tile in the game's board
 		 * @param index the index of the tile to set
 		 * @param tile the tile to set at the provided position
+		 * @throw invalid_argument if the provided position is out of bounds
+		 * @throw invalid_argument if the tile is null
 		 */
-		void Board::setTile(const unsigned int index, const Tile * const tile) {
+		void Board::setTile(const unsigned int index, Tile * const tile) {
 			if(index > tiles.size()) {
 				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
 			}
 			if(tile == nullptr) {
 				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null.");
 			}
+			
+			tile->setPosition(Position{index % this->getMaxSizeX(), index / this->getMaxSizeX()});
 			
 			this->tiles[index] = const_cast<Tile *>(tile);
 		}
@@ -217,17 +244,18 @@ namespace Labyrinth_44422 {
 				Position{0, 0},
 				Position{maxSize.getX() - 1, 0},
 				Position{0, maxSize.getY() - 1},
-				Position{maxSize.getX(), maxSize.getY()}};
+				Position{maxSize.getX() - 1, maxSize.getY() - 1}};
 		}
 		
 		/**
 		 * Returns true if a tile can be inserted at the provided position
 		 * @param position the position to check where to insert the tile
 		 * @param side which side the tile need to be inserted in
+		 * @throw invalid_argument if provided position is out of bounds
 		 * @return true if a tile can be inserted at the provided position
 		 */
 		bool Board::canInsertTile(const Position & position, const InsertSide & side) const {
-			if(!this->positionInsideBoard(position)) {
+			if(!this->isPositionInsideBoard(position)) {
 				throw std::invalid_argument("Error while inserting a tile at a position. Position is out of bounds.");
 			}
 			
@@ -241,8 +269,7 @@ namespace Labyrinth_44422 {
 					break;
 				case InsertSide::RIGHT:
 				case InsertSide::LEFT:
-					for(unsigned int i = position.getY() * this->getMaxSizeX(); i < (position.getY() + 1) *
-																								  this->getMaxSizeX(); i++) {
+					for(unsigned int i = position.getY() * this->getMaxSizeX(); i < (position.getY() + 1) * this->getMaxSizeX(); i++) {
 						lineMovable = lineMovable && this->tiles.at(i)->isMovable();
 					}
 					break;
@@ -255,9 +282,12 @@ namespace Labyrinth_44422 {
 		 * @param position the position where to insert the tile
 		 * @param tile the tile to insert
 		 * @param side what side to insert the tile at
+		 * @throw runtime_error if the provided position is out of bound
+		 * @throw runtime_error if the tile cannot be inserted this side
+		 * @return the tile kicked
 		 */
-		Tile * Board::insertTile(const Position & position, const Tile * const tile, const InsertSide & side) {
-			if(!this->positionInsideBoard(position)) {
+		Tile * Board::insertTile(const Position & position, Tile * const tile, const InsertSide & side) {
+			if(!this->isPositionInsideBoard(position)) {
 				throw std::runtime_error("Error while inserting a tile. Position out of bounds.");
 			}
 			if(!this->canInsertTile(position, side)) {
@@ -297,6 +327,8 @@ namespace Labyrinth_44422 {
 					break;
 			}
 			
+			kickedTile->setPosition(Position{0, 0});
+			
 			return kickedTile;
 		}
 		
@@ -304,13 +336,15 @@ namespace Labyrinth_44422 {
 		 * Returns true if a player can go to a provided position
 		 * @param position the position to check to player can go to
 		 * @param player the player
+		 * @throw invalid_argument if the "from" position is out of bounds
+		 * @throw invalid_argument if the "to" position is out of bounds
 		 * @return true if a player can go to a provided position
 		 */
 		bool Board::canGoToFrom(const Position & from, const Position & to) {
-			if(!this->positionInsideBoard(from)) {
+			if(!this->isPositionInsideBoard(from)) {
 				throw std::invalid_argument("Error while checking valid tiles. \"From\" position is out of bounds");
 			}
-			if(!this->positionInsideBoard(to)) {
+			if(!this->isPositionInsideBoard(to)) {
 				throw std::invalid_argument("Error while checking valid tiles. \"To\" position is out of bounds");
 			}
 			

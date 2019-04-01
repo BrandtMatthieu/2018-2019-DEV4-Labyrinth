@@ -1,10 +1,8 @@
 #include <algorithm>
 #include <ctime>
 #include <iostream>
-#include <stdexcept>
 
 #include "./../include/game.h"
-#include "../include/game.h"
 
 
 namespace Labyrinth_44422 {
@@ -12,6 +10,7 @@ namespace Labyrinth_44422 {
 		
 		/**
 		 * Returns the first color available for the new player
+		 * @throw runtime_error if no more colors are available
 		 * @return the first color available for the new player
 		 */
 		std::string Game::getFirstPlayerColor(void) {
@@ -19,10 +18,52 @@ namespace Labyrinth_44422 {
 				throw std::runtime_error("Error while assigning a player a color. No more colors available.");
 			}
 			
-			std::string color = this->playerColors[0];
+			std::string color = this->playerColors.at(0);
 			this->playerColors.erase(this->playerColors.begin(), this->playerColors.begin() + 1);
 			this->playerColors.shrink_to_fit();
 			return color;
+		}
+		
+		/**
+		 * Returns the first objective available for a new tile
+		 * @throw runtime_error if no more objective are available
+		 * @return the first objective available for a new tile
+		 */
+		std::string Game::getFirstGameObjective(void) {
+			if(this->gameObjectives.empty()) {
+				throw std::runtime_error("Error while retrieving a tile objective. No more objectives left.");
+			}
+			
+			std::string objective = this->gameObjectives.at(0);
+			this->gameObjectives.erase(this->gameObjectives.begin(), this->gameObjectives.begin() + 1);
+			this->gameObjectives.shrink_to_fit();
+			
+			return objective;
+		}
+		
+		/**
+		 * Fixes the positions of the player after inserting a tile on the board
+		 * @param position the position the tile was inserted at
+		 * @param side the side the tile was inserted in
+		 * @throw invalid_argument if the provided position is out of bounds
+		 */
+		void Game::playersFixPosition(const Position & position, const InsertSide & side) {
+			if(!this->board->isPositionInsideBoard(position)) {
+				throw std::invalid_argument("Error while fixing players positions. Position is out of bounds.");
+			}
+			
+			for(const auto & player : this->players) {
+				switch(side) {
+					case InsertSide::DOWN :
+						break;
+					case InsertSide::UP :
+						break;
+					case InsertSide::LEFT :
+						break;
+					case InsertSide::RIGHT :
+						break;
+				}
+			}
 		}
 		
 		/**
@@ -30,46 +71,7 @@ namespace Labyrinth_44422 {
 		 */
 		Game::Game(void) :
 		board{new Board(Position{7, 7})},
-		objectiveCards{} {
-			
-			srand(static_cast<unsigned int>(time(nullptr)));
-			
-			/* 6 d’entres elles sont des « T » marquées d’un objectif, */
-			for(unsigned int i = 0; i < 6; i++) {
-				Tile * tile = new Tile(true, true, true, false, Position{0, 0}, true, "objective", 0); // TODO pick random objective left and set position
-				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
-					tile->rotateLeft90();
-				}
-				this->availableTiles.push_back(tile);
-			}
-			
-			/* 12 d’entre elles sont des « I » non marquées, */
-			for(unsigned int i = 0; i < 12; i++) {
-				Tile * tile = new Tile(true, true, false, false, Position{0, 0}, true, "", 0);
-				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
-					tile->rotateLeft90();
-				}
-				this->availableTiles.push_back(tile);
-			}
-			
-			/* 16 d’entre elles sont des « L », dont six sont marquées d’un objectif. */
-			for(unsigned int i = 0; i < 10; i++) {
-				Tile * tile = new Tile(true, false, true, false, Position{0, 0}, true, "", 0); // TODO pick random objective left ans set position
-				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
-					tile->rotateLeft90();
-				}
-				this->availableTiles.push_back(tile);
-			}
-			
-			/* 16 d’entre elles sont des « L », dont six sont marquées d’un objectif. */
-			for(unsigned int i = 0; i < 6; i++) {
-				Tile * tile = new Tile(true, false, true, false, Position{0, 0}, true, "objective", 0); // TODO pick random objective left and set position
-				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
-					tile->rotateLeft90();
-				}
-				this->availableTiles.push_back(tile);
-			}
-		}
+		objectiveCards{} {}
 
 		/**
 		 * Creates a new game from an existing game object
@@ -98,7 +100,17 @@ namespace Labyrinth_44422 {
 			}
 		}
 		
-		void Game::operator=(const Game & game) {
+		/**
+		 * Changes the game based on another game
+		 * aka. assignment operator
+		 * @param game another game to edit this game from
+		 * @return the edited game
+		 */
+		Game & Game::operator=(const Game & game) {
+			if(&game == this) {
+				return *this;
+			}
+			
 			this->minPlayers = game.minPlayers;
 			this->maxPlayers = game.maxPlayers;
 			
@@ -125,6 +137,7 @@ namespace Labyrinth_44422 {
 			}
 			
 			this->currentPlayerIndex = game.currentPlayerIndex;
+			return *this;
 		}
 
 		/**
@@ -173,6 +186,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Return the player at the provided index
 		 * @param index the index of the player to return
+		 * @throw invalid_argument if the player index is invalid, out of bounds
 		 * @return the player at the index
 		 */
 		Player * Game::getPlayerAt(const unsigned int index) const {
@@ -243,19 +257,22 @@ namespace Labyrinth_44422 {
 		 * Adds a new player to the current game
 		 * @param name the nickname of the player to add
 		 * @param color the color of the player to add
+		 * @throw runtime_error if the max number of player is already reached and trying to add more players
 		 */
 		void Game::addPlayer(const std::string & name) {
 			if(this->getPlayers().size() >= this->getMaxPlayers()) {
-				throw std::length_error("Error while adding player. Maximum amount of player (" +
+				throw std::runtime_error("Error while adding player. Maximum amount of player (" +
 				std::to_string(this->getMaxPlayers()) + ") already reached.");
 			}
 
-			this->players.push_back(new Player(name, this->getFirstPlayerColor(), this->board->getPlayersDefaultPositions().at(this->players.size())));
+			this->players.push_back(new Player(name, this->getFirstPlayerColor(),
+				this->board->getPlayersDefaultPositions().at(this->players.size())));
 		}
 
 
 		/**
 		 * Skips turn of current player and select the next player
+		 * @throw runtime_error if could not end current player's turn and go to next player
 		 */
 		void Game::nextPlayer(void) {
 			try {
@@ -267,6 +284,7 @@ namespace Labyrinth_44422 {
 
 		/**
 		 * Starts the game (method is pretty useless)
+		 * @throw runtime_error if game has too fex players to start
 		 */
 		void Game::start(void) {
 			if(this->getPlayers().size() < this->getMinPlayers()) {
@@ -276,6 +294,9 @@ namespace Labyrinth_44422 {
 			this->currentPlayerIndex = 0;
 		}
 		
+		/**
+		 * Generates objective cards based on the objectives
+		 */
 		void Game::generateObjectiveCards(void) {
 			std::random_shuffle(this->gameObjectives.begin(), this->gameObjectives.end());
 			for(auto & objective : this->gameObjectives) {
@@ -283,6 +304,9 @@ namespace Labyrinth_44422 {
 			}
 		}
 		
+		/**
+		 * Deals the generated objective cards to the players in the game
+		 */
 		void Game::dealObjectiveCardsToPlayers(void) {
 			for(unsigned int playerIndex = 0; !objectiveCards.empty(); playerIndex = ((playerIndex + 1) % this->getPlayersCount())) {
 				this->players.at(playerIndex)->addObjective(this->objectiveCards.at(0));
@@ -290,11 +314,110 @@ namespace Labyrinth_44422 {
 			}
 		}
 		
+		/**
+		 * Generates the tiles of the board
+		 */
+		void Game::generateTiles(void) {
+			srand(static_cast<unsigned int>(time(nullptr)));
+			
+			/* 6 d’entres elles sont des « T » marquées d’un objectif, */
+			for(unsigned int i = 0; i < 6; i++) {
+				Tile * tile = new Tile(true, true, true, false, Position{0, 0}, true, this->getFirstGameObjective(), 0); // TODO set position
+				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
+					tile->rotateLeft90();
+				}
+				this->availableTiles.push_back(tile);
+			}
+			
+			/* 12 d’entre elles sont des « I » non marquées, */
+			for(unsigned int i = 0; i < 12; i++) {
+				Tile * tile = new Tile(true, true, false, false, Position{0, 0}, true, "", 0);
+				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
+					tile->rotateLeft90();
+				}
+				this->availableTiles.push_back(tile);
+			}
+			
+			/* 16 d’entre elles sont des « L », dont six sont marquées d’un objectif. */
+			for(unsigned int i = 0; i < 10; i++) {
+				Tile * tile = new Tile(true, false, true, false, Position{0, 0}, true, "", 0); // TODO set position
+				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
+					tile->rotateLeft90();
+				}
+				this->availableTiles.push_back(tile);
+			}
+			
+			/* 16 d’entre elles sont des « L », dont six sont marquées d’un objectif. */
+			for(unsigned int i = 0; i < 6; i++) {
+				Tile * tile = new Tile(true, false, true, false, Position{0, 0}, true, this->getFirstGameObjective(), 0); // TODO set position
+				for(unsigned int j = static_cast<unsigned int>(rand() % 4); j > 0; j--) {
+					tile->rotateLeft90();
+				}
+				this->availableTiles.push_back(tile);
+			}
+		}
+		
+		/**
+		 * Checks if the current player is on an objective and has this objective as current objective
+		 * So he can complete it.
+		 */
 		void Game::currentPlayerCheckObjective(void) {
+			/* Tile is empty */
+			if(this->getBoard()->getTilesAt(this->getCurrentPlayer()->getPosition()) == nullptr) {
+				return;
+			}
+			
+			/* Completes objective */
 			if(this->getCurrentPlayer()->getCurrentObjective()->getObjective() ==
 			this->getBoard()->getTilesAt(this->getCurrentPlayer()->getPosition())->getObjective()) {
 				this->getCurrentPlayer()->completeCurrentObjective();
 			}
+			
+			/* Put his last objective card and is winner */
+			if(this->getCurrentPlayer()->getObjectiveCardsLeftCount() == 0) {
+				this->winner = this->getCurrentPlayer();
+			}
+		}
+		
+		/**
+		 * Makes the current player insert a tile in the board
+		 * @param position the position where to insert the tile
+		 * @param side the side the player inserts the tile in
+		 * @throw runtime_error if there is no tile to insert
+		 * @throw runtime_error if the tile to insert is null
+		 */
+		void Game::currentPlayerInsertTile(const Position & position, const InsertSide & side) {
+			if(this->availableTiles.empty()) {
+				throw std::runtime_error("Error while inserting tile. No available tile to insert.");
+			}
+			if(this->availableTiles.at(0) == nullptr) {
+				throw std::runtime_error("Error while inserting tile. Tile to insert is null.");
+			}
+			
+			this->board->insertTile(position, this->availableTiles.at(0), side);
+			this->getCurrentPlayer()->insertTile();
+		}
+		
+		/**
+		 * Makes the current player got to a position
+		 * @param position  the position where the player wants to go to
+		 * @throw invalid_argument if the target position is out of bounds
+		 */
+		void Game::currentPlayerGoTo(const Position & position) {
+			if(!this->board->isPositionInsideBoard(position)) {
+				throw std::invalid_argument("Error while moving player. Position is out of bounds");
+			}
+			
+			this->getCurrentPlayer()->movePawn(position);
+		}
+		
+		/**
+		 * Returns true if the current player can go to a target position
+		 * @param position the position targeted by the player
+		 * @return true if the current player can go to a target position
+		 */
+		bool Game::canCurrentPlayerGoTo(const Position & position) {
+			return this->board->isPositionInsideBoard(position) && this->board->canGoToFrom(this->getCurrentPlayer()->getPosition(), position);
 		}
 	}  // namespace model
 }  // namespace Labyrinth_44422

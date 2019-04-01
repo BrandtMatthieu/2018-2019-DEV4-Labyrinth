@@ -31,6 +31,8 @@ namespace Labyrinth_44422 {
 				std::vector<ObjectiveCard *> objectiveCards;
 			
 				std::string getFirstPlayerColor(void);
+				std::string getFirstGameObjective(void);
+				void playersFixPosition(const Position & position, const InsertSide & side);
 				
 			public:
 				std::vector<std::string> gameObjectives = {
@@ -44,7 +46,7 @@ namespace Labyrinth_44422 {
 			public:
 				Game(void);
 				Game(const Game & game);
-				void operator=(const Game & game);
+				Game & operator=(const Game & game);
 				~Game(void);
 
 				unsigned int getMinPlayers(void) const;
@@ -71,7 +73,14 @@ namespace Labyrinth_44422 {
 				void generateObjectiveCards(void);
 				void dealObjectiveCardsToPlayers(void);
 				
+				void generateTiles(void);
+				
 				void currentPlayerCheckObjective(void);
+				
+				void currentPlayerInsertTile(const Position & position, const InsertSide & side);
+				
+				void currentPlayerGoTo(const Position & position);
+				bool canCurrentPlayerGoTo(const Position & position);
 		};
 
 	}  // namespace model

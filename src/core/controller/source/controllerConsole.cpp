@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <stdexcept>
+#include <regex>
 
 #include "./../include/controllerConsole.h"
-#include "./../../model/include/objectiveCard.h"
 
 namespace Labyrinth_44422 {
 	namespace controller {
@@ -10,6 +10,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Creates a new controller for the Labyrinth game
 		 * @param consoleView the address of a console view
+		 * @throw invalid_argument if controller is null
 		 */
 		ControllerConsole::ControllerConsole(const Labyrinth_44422::console::ConsoleView * const consoleView) :
 			game{new Labyrinth_44422::model::Game()} {
@@ -44,7 +45,7 @@ namespace Labyrinth_44422 {
 		 */
 		void ControllerConsole::start(void) {
 			
-			this->consoleView->printMessage("Welcome in the Labyrinth game.");
+			this->consoleView->printWelcome();
 			
 			/* Adding players */
 			for(unsigned int i = 0; i < this->game->getMinPlayers(); i++) {
@@ -59,6 +60,7 @@ namespace Labyrinth_44422 {
 			
 			/* Display Instructions */
 			if(this->consoleView->getYesNoAnswer("Would you like to see the instructions?")) {
+				this->consoleView->printInstructions();
 				this->consoleView->printHelp(this->game->getBoard());
 			}
 			
@@ -68,13 +70,43 @@ namespace Labyrinth_44422 {
 			this->game->dealObjectiveCardsToPlayers();
 			
 			while(!this->game->hasWinner()) {
-				this->consoleView->clearScreen();
 				
-				this->consoleView->printBoard(this->game->getBoard());
+				//this->consoleView->printBoard(this->game->getBoard());
 				
 				this->consoleView->printMessage(this->game->getCurrentPlayer()->getNickname() + ", it's your turn!");
 				
 				this->consoleView->printPlayerInfos(this->game->getCurrentPlayer());
+				
+				while(true) {
+					std::string answer = this->consoleView->getCommand();
+					if(std::regex_match(answer, std::regex(" {0,}help {0,}"))) {
+						this->consoleView->printHelp(this->game->getBoard());
+						continue;
+					} else if(std::regex_match(answer, std::regex(" {0,}insert {1,}[0-9]+ {1,}(UP|DOWN|LEFT|RIGHT) {0,}"))) {
+						this->consoleView->printMessage("INSERT");
+						break;
+					} else if(std::regex_match(answer, std::regex(" {0,}goto {1,}[0-9]+ {1,}[0-9]+ {0,}"))) {
+						this->consoleView->printMessage("GOTO");
+						if(!this->game->getCurrentPlayer()->hasInsertedTile()) {
+							this->consoleView->printError("You cannot move you pawn now since you haven't inserted a tile in the Labyrinth yet.\n"
+								"Please insert a tile in the Labyrinth first then try again");
+							continue;
+						} else {
+							unsigned int x = std::stoi("10");
+							unsigned int y = std::stoi("10");
+							if(this->game->canCurrentPlayerGoTo(model::Position{x, y})) {
+								this->game->currentPlayerGoTo(model::Position{x, y});
+								break;
+							} else {
+								this->consoleView->printError("You cannot move to this tile");
+								continue;
+							};
+						}
+					} else {
+						this->consoleView->printMessage("Unknown command.");
+						continue;
+					}
+				}
 				
 				this->game->currentPlayerCheckObjective();
 				

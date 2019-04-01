@@ -1,10 +1,7 @@
 #include <algorithm>
 #include <iostream>
-#include <string>
 
 #include "./../include/consoleView.h"
-#include "./../../core/model/include/insertSide.h"
-#include "./../../core/model/include/position.h"
 
 
 class Position;
@@ -15,6 +12,9 @@ namespace Labyrinth_44422 {
 		 * Prints an horizontal line in the tile
 		 * @param tile the tile to print the line from
 		 * @param ligneDansTuile the height to print the line of the tile from
+		 * @throw invalid_argument if tile is null
+		 * @throw invalid_argument if ligneDansTuile is null
+		 * @throw runtime_error if printing carriage is out of bounds (should not happen)
 		 * @return a string with the line printed at the specified height
 		 */
 		std::string ConsoleView::printTile(const Labyrinth_44422::model::Tile * const tile, const unsigned int & ligneDansTuile, std::string & str) const {
@@ -61,8 +61,17 @@ namespace Labyrinth_44422 {
 							str += this->wall;
 						}
 					} else { // Horizontal Middle part
-						// TODO print player on the tile or objective or spawnPoint
-						str += this->path;
+						if(caractereDeTuile == this->tileSize/2 && ligneDansTuile == this->tileSize/2) {
+							if(tile->hasObjective()) {
+								str += this->objective;
+							} else  if(tile->hasStartNumber()) {
+								str += std::to_string(tile->getStartNumber());
+							} else {
+								str += this->path;
+							}
+						} else {
+							str += this->path;
+						}
 					}
 				} else if(ligneDansTuile == this->wall1
 				|| ligneDansTuile == this->wall2) { // Vertical ConsoleView::walls part
@@ -111,12 +120,15 @@ namespace Labyrinth_44422 {
 		 */
 		bool ConsoleView::getYesNoAnswer(const std::string & message) const {
 			std::string answer;
-			std::cout << message << " [ yes | no ]" << std::endl << "> ";
+			this->lineBreak();
+			this->printMessage(message + " [ yes | no ]");
+			std::cout << "\n> ";
 			do {
-				std::cin >> answer;
+				std::getline(std::cin, answer);
 				std::transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
 				if(answer.empty()) {
-					std::cout << "Wrong input, please only answer with [ yes ] or [ no ]." << std::endl << " >";
+					this->printError("Wrong input, please only answer with [ yes ] or [ no ].");
+					std::cout << "\n> ";
 				}
 			} while(answer != "yes" && answer != "y" && answer != "n" && answer != "no");
 			return answer == "yes" || answer == "y";
@@ -138,6 +150,7 @@ namespace Labyrinth_44422 {
 			wall{"▓"},
 			path{"░"},
 			space{" "},
+			objective{"o"},
 			spacing{vue.spacing},
 			arrows{vue.arrows} {}
 		
@@ -146,36 +159,54 @@ namespace Labyrinth_44422 {
 		 * @return the name of the new player
 		 */
 		std::string ConsoleView::getNewPlayerName(void) const {
-			std::cout << "Please enter a name for this player" << std::endl << "> ";
+			this->lineBreak();
+			this->printMessage("Please enter a name for this player.");
+			std::cout << "\n> ";
 			std::string answer;
 			while(answer.empty()) {
-				std::cin >> answer;
+				std::getline(std::cin, answer);
 				if(answer.empty()) {
-					std::cout << "Invalid name. Please enter a name for this player" << std::endl << "> ";
+					this->printError("Invalid name. Please enter a name for this player.");
+					std::cout << "\n> ";
 				}
 			}
 			return answer;
 		}
 		
 		/**
+		 * Returns the command entered by the player
+		 * @return the command entered by the player
+		 */
+		std::string ConsoleView::getCommand(void) const {
+			this->lineBreak();
+			this->printMessage("Please enter a command.");
+			this->printMessage("Type \"help\" to get a list of all the available commands.");
+			std::cout << "> ";
+			std::string answer;
+			std::getline(std::cin, answer);
+			return answer;
+		}
+		
+		/**
 		 * Prints the infos of the game
 		 * @param game the game to print the infos from
+		 * @throw invalid_argument if game is null
 		 */
 		void ConsoleView::printGameInfos(const model::Game * const game) const {
 			if(game == nullptr) {
 				throw std::invalid_argument("Error while printing game infos. Game does not exists.");
 			}
 			
-			std::cout << "Game infos : " << std::endl;
+			std::cout << std::endl << "Game infos : " << std::endl;
 			if(game->hasWinner()) {
-				std::cout << "Game is over." << std::endl
-					<< "Winner : " << game->getWinner()->getNickname();
+				this->printMessage("Game is over.");
+				this->printMessage("Winner : " + game->getWinner()->getNickname());
 			} else {
-				std::cout << "Game is still in progress...";
-				std::cout << "Current player : " << game->getCurrentPlayer()->getNickname() << std::endl;
-				std::cout << "Objective left count for each player : " << std::endl;
+				this->printMessage("Game is still in progress...");
+				this->printMessage("Current player : " + game->getCurrentPlayer()->getNickname());
+				this->printMessage("Objective left count for each player : ");
 				for(Labyrinth_44422::model::Player * const & player_ptr : game->getPlayers()) {
-					std::cout << "\t" << player_ptr->getNickname() << " : " << std::to_string(player_ptr->getObjectiveCardsLeftCount()) << " objective cards left" << std::endl;
+					this->printMessage("  " + player_ptr->getNickname() + "\t: " + std::to_string(player_ptr->getObjectiveCardsLeftCount()) + " objective cards left");
 				}
 			}
 
@@ -184,6 +215,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Prints the board of the game
 		 * @param board the board to print
+		 * @throw invalid_argument if game is null
 		 */
 		void ConsoleView::printBoard(const model::Board * const board) const {
 			if(board == nullptr) {
@@ -207,7 +239,7 @@ namespace Labyrinth_44422 {
 				}
 				str += "\n";
 			}
-			std::cout << str << std::endl;
+			this->printMessage(str);
 			for(unsigned int rangeeDeTuile = 0; rangeeDeTuile < board->getMaxSizeY(); rangeeDeTuile++) { // chaque ligne de tuile
 				for(unsigned int ligneDansTuile = 0; ligneDansTuile < this->tileSize; ligneDansTuile++) { // ligne horizontale dans tuile
 					str = "";
@@ -223,10 +255,10 @@ namespace Labyrinth_44422 {
 							str += this->space;
 						}
 					}
-					std::cout << str << std::endl;
+					this->printMessage(str);
 				}
 				if(this->spacing) {
-					std::cout << std::endl;
+					this->lineBreak();
 				}
 			}
 		}
@@ -234,20 +266,23 @@ namespace Labyrinth_44422 {
 		/**
 		 * Prints infos about a player
 		 * @param player the player to print the infos from
+		 * @throw invalid_argument if player is null
 		 */
 		void ConsoleView::printPlayerInfos(const model::Player * const player) const {
 			if(player == nullptr) {
 				throw std::invalid_argument("Error while printing player infos. Player doesn't exists.");
 			}
 			
-			std::cout << "Players infos :" << std::endl
-				<< "Nickname : " << player->getNickname() << std::endl
-				<< "Color : " << player->getColor() << std::endl
-				<< "Location : " << player->getPosition().toString() << std::endl
-				<< "Current objective : " << player->getCurrentObjective()->getObjective() << std::endl
-				<< "Objectives left count : " << std::to_string(player->getObjectiveCardsLeftCount()) << std::endl << std::endl
-				<< "Objectives completed count : " << std::to_string(player->getObjectiveCount()) << std::endl;
-				
+			this->lineBreak();
+			this->printMessage(
+				"Players infos :\n"
+				"===============\n"
+				"  Nickname :\t\t\t" + player->getNickname() + "\n"
+				"  Color :\t\t\t" + player->getColor() + "\n"
+				"  Location :\t\t\t" + player->getPosition().toString() + "\n"
+				"  Current objective :\t\t" + player->getCurrentObjective()->getObjective() + "\n"
+				"  Objectives left count :\t" + std::to_string(player->getObjectiveCardsLeftCount()) + "\n"
+				"  Completed objectives count :\t" + std::to_string(player->getCompletedObjectiveCardsCount()));
 		}
 		
 		/**
@@ -275,25 +310,60 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
-		 * Prints a message with the different supported comands
+		 * Prints a message with the different supported commands
 		 * @param board the board of the game
+		 * @throw invalid_argument if board is null
 		 */
 		void ConsoleView::printHelp(const model::Board * const board) const {
 			if(board == nullptr) {
 				throw std::invalid_argument("Error while printing board. Board doesn't exists.");
 			}
 			
-			std::cout <<
-			"== HELP ==" << std::endl << std::endl <<
-			"Here are the following available commands :" << std::endl <<
-			"- insert <n> [UP|DOWN|RIGHT|LEFT] " << std::endl <<
-			"\tinsert the tile at the nth row line" << std::endl <<
-			"\ti.e. \"insert 1 LEFT\" will insert the tile in the first line and push all the tiles to the left." << std::endl <<
-			"- goto <x> <y> " << std::endl <<
-			"\tmoves your pawn to a location, between (1;1) (upper left corner) and " << board->getMaxSize().toString() << " (bottom right corner)" << std::endl <<
-			"\ti.e. \"goto 3 3\" will try to move the pawn to the tile in (3;3) if the tile is connected to the current tile" << std::endl <<
-			"- help" << std::endl <<
-			"\tshows the different commands" << std::endl << std::endl;
+			this->lineBreak();
+			this->printMessage(
+				"Help :\n"
+				"======\n"
+				"Here are the following available commands :\n"
+				"\n"
+				"- insert <n> [ UP | DOWN | RIGHT | LEFT ]\n"
+				"  inserts the tile at the nth row line\n"
+				"  i.e. \"insert 1 LEFT\" will insert the tile in the first line and push all the tiles to the left.\n"
+				"\n"
+				"- goto <x> <y>\n"
+				"  moves your pawn to a location, between (1;1) (upper left corner) and " + board->getMaxSize().toString() + " (bottom right corner)\n"
+				"  i.e. \"goto 3 3\" will try to move the pawn to the tile in (3;3) if the tile is connected to the current tile\n"
+				"\n"
+				"- help\n"
+				"  shows the different commands\n");
+			this->lineBreak();
+			this->lineBreak();
+		}
+		
+		/**
+		 * Prints a welcome message
+		 */
+		void ConsoleView::printWelcome(void) const {
+			this->lineBreak();
+			this->printMessage(
+				"Welcome in ...\n"
+				"\n"
+				"  _           _                _       _   _     \n"
+				" | |         | |              (_)     | | | |    \n"
+				" | |     __ _| |__  _   _ _ __ _ _ __ | |_| |__  \n"
+				" | |    / _` | '_ \\| | | | '__| | '_ \\| __| '_ \\ \n"
+				" | |___| (_| | |_) | |_| | |  | | | | | |_| | | |\n"
+				" |______\\__,_|_.__/ \\__, |_|  |_|_| |_|\\__|_| |_|\n"
+				"                     __/ |                       \n"
+				"                    |___/                        ");
+			this->lineBreak();
+			this->lineBreak();
+		}
+		
+		/**
+		 * Prints the game instructions
+		 */
+		void ConsoleView::printInstructions(void) const {
+		
 		}
 		
 		/**
@@ -301,6 +371,13 @@ namespace Labyrinth_44422 {
 		 */
 		void ConsoleView::clearScreen(void) const {
 			std::cout << "\033c";
+		}
+		
+		/**
+		 * Prints a line break
+		 */
+		void ConsoleView::lineBreak(void) const {
+			std::cout << std::endl;
 		}
 	}  // namespace console
 }  // namespace Labyrinth_44422
