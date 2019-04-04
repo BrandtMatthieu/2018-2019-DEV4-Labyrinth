@@ -12,7 +12,7 @@ namespace Labyrinth_44422 {
 		 * @param position the position of the tile
 		 * @param movable if the tile can be moved
 		 * @param objective the objective of the tile
-		 * @param startNumber
+		 * @param startNumber the start number of the player
 		 */
 		Tile::Tile(
 			const bool & pathUP,
@@ -84,7 +84,7 @@ namespace Labyrinth_44422 {
 		 * @return true if the tile can be moved
 		 */
 		bool Tile::isMovable(void) const {
-			return false;
+			return this->movable;
 		}
 		
 		/**

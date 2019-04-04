@@ -57,9 +57,13 @@ namespace Labyrinth_44422 {
 		 */
 		Board::Board(const Position & maxPosition) :
 			maxSize{maxPosition},
-			tiles{std::vector<Tile *>(maxPosition.getX() * maxPosition.getY())} {
-			
-		}
+			tiles{std::vector<Tile *>(maxPosition.getX() * maxPosition.getY())},
+			playersDefaultPositions{
+				Position{0, maxSize.getY() - 1},
+				Position{maxSize.getX() - 1, maxSize.getY() - 1},
+				Position{maxSize.getX() - 1, 0},
+				Position{0, 0}
+			} {}
 
 		/**
 		 * Creates a new board from an existing board
@@ -152,9 +156,10 @@ namespace Labyrinth_44422 {
 		 */
 		Tile * Board::getTilesAt(const Position & position) const {
 			if(!this->isPositionInsideBoard(position)) {
-				throw std::invalid_argument("Error while getting the tile at " + position.toString() +
-											". Position is out of board's bounds (0;0) to " +
-											this->maxSize.toString());
+				throw std::invalid_argument("Error while getting the tile at "
+					+ position.toString() +
+					". Position is out of board's bounds (1;1) to " +
+					this->maxSize.toString());
 			}
 			
 			return this->tiles.at(position.getX() + position.getY() * this->getMaxSizeX());
@@ -176,7 +181,7 @@ namespace Labyrinth_44422 {
 		 * @param tile the tile to set at the provided position
 		 * @throw invalid_argument if position is out of bounds
 		 * @throw invalid_argument if tile is null
-		 * @throw runttime_error if the tile overlaps an existing tile to prevent memory leaks
+		 * @throw runtime_error if the tile overlaps an existing tile to prevent memory leaks
 		 */
 		void Board::setTile(const Position & position, Tile * const tile) {
 			if(!this->isPositionInsideBoard(position)) {
@@ -191,7 +196,7 @@ namespace Labyrinth_44422 {
 			
 			tile->setPosition(position);
 			
-			this->tiles[position.getX() + position.getY() * this->getMaxSizeX()] = const_cast<Tile *>(tile);
+			this->tiles[position.getX() + position.getY() * this->getMaxSizeX()] = tile;
 		}
 		
 		/**
@@ -212,7 +217,7 @@ namespace Labyrinth_44422 {
 			
 			tile->setPosition(Position{x, y});
 			
-			this->tiles[x + y * this->getMaxSizeX()] = const_cast<Tile *>(tile);
+			this->tiles[x + y * this->getMaxSizeX()] = tile;
 		}
 		
 		/**
@@ -232,7 +237,7 @@ namespace Labyrinth_44422 {
 			
 			tile->setPosition(Position{index % this->getMaxSizeX(), index / this->getMaxSizeX()});
 			
-			this->tiles[index] = const_cast<Tile *>(tile);
+			this->tiles[index] = tile;
 		}
 		
 		/**
@@ -240,11 +245,57 @@ namespace Labyrinth_44422 {
 		 * @return the default position for the players
 		 */
 		std::vector<Position> Board::getPlayersDefaultPositions() const {
+			return this->playersDefaultPositions;
+		}
+		
+		/**
+		 * Returns a vector with the position of the unmovable tiles of the 7x7 board
+		 * @return a vector with the position of the unmovable tiles of the 7x7 board
+		 */
+		std::vector<Position> Board::getUnmovableTilesPositions(void) const {
 			return std::vector<Position>{
-				Position{0, 0},
-				Position{maxSize.getX() - 1, 0},
-				Position{0, maxSize.getY() - 1},
-				Position{maxSize.getX() - 1, maxSize.getY() - 1}};
+				Position(0, 2),
+				Position(0, 4),
+				Position(2, 0),
+				Position(2, 2),
+				Position(2, 4),
+				Position(2, 6),
+				Position(4, 0),
+				Position(4, 2),
+				Position(4, 4),
+				Position(4, 6),
+				Position(6, 2),
+				Position(6, 4)
+			};
+		}
+		
+		/**
+		 * Returns true if the board is missing a tile
+		 * @return true if the board is missing a tile
+		 */
+		bool Board::hasEmptyTiles(void) const {
+			for(unsigned int i = 0; i < this->getTilesCount(); i++) {
+				if(this->tiles.at(i) == nullptr) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		/**
+		 * Returns the position of the first free tile of the board
+		 * @throw runtime_error if the board doesn't have any empty tile
+		 * @return the position of the first free tile of the board
+		 */
+		Position Board::getEmptyTile(void) const {
+			if(this->hasEmptyTiles()) {
+				for(unsigned int i = 0; i < this->getTilesCount(); i++) {
+					if(this->tiles.at(i) == nullptr) {
+						return Position(i % this->getMaxSizeX(), i / this->getMaxSizeX());
+					}
+				}
+			}
+			throw std::runtime_error("Error while retrieving position of empty tile. No empty tile");
 		}
 		
 		/**
@@ -308,6 +359,7 @@ namespace Labyrinth_44422 {
 					kickedTile = getTilesAt(Position(this->maxSize.getX() - 1, position.getY()));
 					for(unsigned int i = this->maxSize.getX() - 1; 0 < i; i--) {
 						setTile(Position(i, position.getY()), getTilesAt(Position(i - 1, position.getY())));
+						this->getTilesAt(Position{i, position.getY()})->move(InsertSide::LEFT);
 					}
 					setTile(Position(0, position.getY()), tile);
 					break;

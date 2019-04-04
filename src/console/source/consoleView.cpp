@@ -119,18 +119,19 @@ namespace Labyrinth_44422 {
 		 * @return the answer of the player as a boolean
 		 */
 		bool ConsoleView::getYesNoAnswer(const std::string & message) const {
-			std::string answer;
 			this->lineBreak();
 			this->printMessage(message + " [ yes | no ]");
 			std::cout << "\n> ";
-			do {
+			std::string answer;
+			while(answer != "yes" && answer != "y" && answer != "n" && answer != "no") {
 				std::getline(std::cin, answer);
 				std::transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
-				if(answer.empty()) {
-					this->printError("Wrong input, please only answer with [ yes ] or [ no ].");
+				if(answer != "yes" && answer != "y" && answer != "n" && answer != "no") {
+					this->lineBreak();
+					this->printError("Invalid answer. Please only answer with [ yes ] or [ no ].");
 					std::cout << "\n> ";
 				}
-			} while(answer != "yes" && answer != "y" && answer != "n" && answer != "no");
+			}
 			return answer == "yes" || answer == "y";
 		}
 		
@@ -139,6 +140,10 @@ namespace Labyrinth_44422 {
 		 * @param spacing if there needs to be spaces between the rows and lines of the board printed
 		 */
 		ConsoleView::ConsoleView(const bool spacing, const bool arrows) :
+			wall{"X"},
+			path{" "},
+			space{"-"},
+			objective{"O"},
 			spacing{spacing},
 			arrows{arrows} {}
 		
@@ -147,10 +152,10 @@ namespace Labyrinth_44422 {
 		 * @param vue
 		 */
 		ConsoleView::ConsoleView(const ConsoleView & vue) :
-			wall{"▓"},
-			path{"░"},
-			space{" "},
-			objective{"o"},
+			wall{vue.wall},
+			path{vue.path},
+			space{vue.space},
+			objective{vue.objective},
 			spacing{vue.spacing},
 			arrows{vue.arrows} {}
 		
@@ -228,7 +233,7 @@ namespace Labyrinth_44422 {
 				for(unsigned int tuileDansRangee = 0; tuileDansRangee < board->getMaxSizeX(); tuileDansRangee++) {
 					for(unsigned int caractereDeTuile = 0; caractereDeTuile < this->tileSize; caractereDeTuile++) {
 						if(caractereDeTuile == this->tileSize / 2 && board->canInsertTile(model::Position{tuileDansRangee, 0}, model::InsertSide::DOWN)) {
-							str += "↓";
+							str += "ˇ"; // v ↓
 						} else {
 							str += " ";
 						}
@@ -244,7 +249,7 @@ namespace Labyrinth_44422 {
 				for(unsigned int ligneDansTuile = 0; ligneDansTuile < this->tileSize; ligneDansTuile++) { // ligne horizontale dans tuile
 					str = "";
 					if(this->arrows && ligneDansTuile == this->tileSize / 2 && board->canInsertTile(model::Position{0, rangeeDeTuile}, model::InsertSide::RIGHT)) {
-						str += "→ ";
+						str += "> "; // →
 					} else if (this->arrows) {
 						str += "  ";
 					}
@@ -255,12 +260,34 @@ namespace Labyrinth_44422 {
 							str += this->space;
 						}
 					}
+					if(this->arrows && ligneDansTuile == this->tileSize / 2 && board->canInsertTile(model::Position{0, rangeeDeTuile}, model::InsertSide::RIGHT)) {
+						str += " <"; // ←
+					} else if (this->arrows) {
+						str += "  ";
+					}
 					this->printMessage(str);
 				}
 				if(this->spacing) {
 					this->lineBreak();
 				}
 			}
+			if(this->arrows) {
+				str += "\n";
+				str += "  ";
+				for(unsigned int tuileDansRangee = 0; tuileDansRangee < board->getMaxSizeX(); tuileDansRangee++) {
+					for(unsigned int caractereDeTuile = 0; caractereDeTuile < this->tileSize; caractereDeTuile++) {
+						if(caractereDeTuile == this->tileSize / 2 && board->canInsertTile(model::Position{tuileDansRangee, 0}, model::InsertSide::DOWN)) {
+							str += "^"; // ↑
+						} else {
+							str += " ";
+						}
+					}
+					if(this->spacing) {
+						str += " ";
+					}
+				}
+			}
+			this->printMessage(str);
 		}
 		
 		/**
@@ -278,7 +305,7 @@ namespace Labyrinth_44422 {
 				"Players infos :\n"
 				"===============\n"
 				"  Nickname :\t\t\t" + player->getNickname() + "\n"
-				"  Color :\t\t\t" + player->getColor() + "\n"
+				"  Color :\t\t\t\t" + player->getColor() + "\n"
 				"  Location :\t\t\t" + player->getPosition().toString() + "\n"
 				"  Current objective :\t\t" + player->getCurrentObjective()->getObjective() + "\n"
 				"  Objectives left count :\t" + std::to_string(player->getObjectiveCardsLeftCount()) + "\n"
@@ -325,15 +352,15 @@ namespace Labyrinth_44422 {
 				"======\n"
 				"Here are the following available commands :\n"
 				"\n"
-				"- insert <n> [ UP | DOWN | RIGHT | LEFT ]\n"
+				"> insert <n> [ UP | DOWN | RIGHT | LEFT ]\n"
 				"  inserts the tile at the nth row line\n"
 				"  i.e. \"insert 1 LEFT\" will insert the tile in the first line and push all the tiles to the left.\n"
 				"\n"
-				"- goto <x> <y>\n"
+				"> goto <x> <y>\n"
 				"  moves your pawn to a location, between (1;1) (upper left corner) and " + board->getMaxSize().toString() + " (bottom right corner)\n"
 				"  i.e. \"goto 3 3\" will try to move the pawn to the tile in (3;3) if the tile is connected to the current tile\n"
 				"\n"
-				"- help\n"
+				"> help\n"
 				"  shows the different commands\n");
 			this->lineBreak();
 			this->lineBreak();
@@ -363,7 +390,52 @@ namespace Labyrinth_44422 {
 		 * Prints the game instructions
 		 */
 		void ConsoleView::printInstructions(void) const {
-		
+			this->lineBreak();
+			this->printMessage(
+				"  Dans un labyrinthe enchanté, les joueurs partent à la chasse aux objets et aux créatures magiques. Chacun cherche à se frayer un chemin jusqu’à eux en faisant coulisser astucieusement les couloirs.\n"
+				"Le premier joueur à découvrir tous ses secrets et à revenir à son point de départ remporte cette passionnante chasse aux trésors."
+			);
+			this->lineBreak();
+			this->printMessage(
+				"Déroulement :\n"
+				"============="
+			);
+			this->printMessage(
+				"  Chaque joueur se voit attribué différents objectifs à aller chercher dans le labyrinthe.\n"
+				"Un tour se compose toujours de deux phases :\n"
+				"  1. Introduction de la carte couloir supplémentaire\n"
+				"  2. Déplacement du pion\n"
+				"À son tour de jeu, le joueur doit essayer d’atteindre la tuile comportant le même objectif que celui squi lui est actuellement attribué\n"
+				"Pour cela il commence toujours par faire coulisser une rangée ou une colonne du labyrinthe en insérant la plaque supplémentaire du bord vers l’intérieur du plateau, puis il déplace son pion."
+			);
+			this->lineBreak();
+			this->printMessage(
+				"Modification du labyrinthe :\n"
+				"============================");
+			this->printMessage(
+				"  12 flèches sont dessinées en bordure de plateau.\n"
+				"Elles indiquent les rangées et colonnes où peut être insérée la plaque supplémentaire pour modifier les couloirs du labyrinthe.\n"
+				"Quand vient son tour, le joueur choisit l’une de ces rangées ou colonnes et pousse la plaque supplémentaire vers l’intérieur du plateau jusqu’à ce qu’une nouvelle plaque soit expulsée à l’opposé.\n"
+				"La plaque expulsée reste au bord du plateau jusqu’à ce qu’elle soit réintroduite à un autre endroit par le joueur suivant."
+			);
+			this->lineBreak();
+			this->printMessage(
+				"Déplacement du pion :\n"
+				"=====================");
+			this->printMessage(
+				"  Dès qu’il a modifié le labyrinthe, le joueur peut déplacer son pion. Il peut le déplacer aussi loin qu’il veut jusqu’à n’importe quelle plaque en suivant un couloir ininterrompu.\n"
+				"Un joueur peut même s’arrêter sur une case déjà occupée. S’il veut, il peut aussi choisir de rester sur place ; il n’est pas obligé de se déplacer.\n"
+				"Si le joueur n’atteint pas le dessin recherché (= celui fi gurant sur la carte supérieure de sa pile), il peut déplacer son pion aussi loin qu’il veut de manière à être en bonne position pour le prochain tour.\n"
+				"S’il atteint le dessin recherché, il retourne sa carte à côté de sa pile. Il peut immédiatement regarder secrètement la carte suivante de sa pile pour connaître son prochain objectif.\n"
+				"C’est maintenant au tour du joueur suivant de jouer"
+			);
+			this->lineBreak();
+			this->printMessage(
+				"Fin du jeu :\n"
+				"============");
+			this->printMessage(
+				"  La partie s’arrête dès qu’un joueur a atteint tous ses objectifs et qu’il est revenu à son point de départ."
+			);
 		}
 		
 		/**

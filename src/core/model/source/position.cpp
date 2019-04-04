@@ -121,7 +121,7 @@ namespace Labyrinth_44422 {
 		 * @return the position as a string
 		 */
 		std::string Position::toString(void) const {
-			return "(" + std::to_string(this->x) + ";" + std::to_string(this->y) + ")";
+			return "(" + std::to_string(this->x + 1) + ";" + std::to_string(this->y + 1) + ")";
 		}
 	}  // namespace model
 }  // namespace Labyrinth_44422

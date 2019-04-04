@@ -42,8 +42,11 @@ namespace Labyrinth_44422 {
 		
 		/**
 		 * Starts the game
+		 * @throw runtime_error if provided inside doesn't exists
 		 */
 		void ControllerConsole::start(void) {
+			
+			this->game->generateTiles();
 			
 			this->consoleView->printWelcome();
 			
@@ -58,6 +61,10 @@ namespace Labyrinth_44422 {
 				this->game->addPlayer(name);
 			}
 			
+			this->game->generateObjectiveCards();
+			this->game->dealObjectiveCardsToPlayers();
+			
+			
 			/* Display Instructions */
 			if(this->consoleView->getYesNoAnswer("Would you like to see the instructions?")) {
 				this->consoleView->printInstructions();
@@ -66,41 +73,102 @@ namespace Labyrinth_44422 {
 			
 			this->game->start();
 			
-			this->game->generateObjectiveCards();
-			this->game->dealObjectiveCardsToPlayers();
-			
 			while(!this->game->hasWinner()) {
 				
-				//this->consoleView->printBoard(this->game->getBoard());
+				this->consoleView->printBoard(this->game->getBoard());
 				
+				this->consoleView->lineBreak();
 				this->consoleView->printMessage(this->game->getCurrentPlayer()->getNickname() + ", it's your turn!");
 				
 				this->consoleView->printPlayerInfos(this->game->getCurrentPlayer());
 				
 				while(true) {
 					std::string answer = this->consoleView->getCommand();
+					std::transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
+					
 					if(std::regex_match(answer, std::regex(" {0,}help {0,}"))) {
 						this->consoleView->printHelp(this->game->getBoard());
 						continue;
-					} else if(std::regex_match(answer, std::regex(" {0,}insert {1,}[0-9]+ {1,}(UP|DOWN|LEFT|RIGHT) {0,}"))) {
+						
+					} else if(std::regex_match(answer, std::regex(" {0,}insert {1,}[0-9]+ {1,}(up|down|left|right) {0,}"))) {
 						this->consoleView->printMessage("INSERT");
-						break;
+						
+						std::smatch sideMatch;
+						std::regex_search(answer, sideMatch, std::regex("(up|down|left|right)"));
+						std::string sideStr = sideMatch.str(1);
+						model::InsertSide side;
+						
+						if(sideStr == "up") {
+							side = model::InsertSide::UP;
+						} else if (sideStr == "down") {
+							side = model::InsertSide::DOWN;
+						} else if (sideStr == "right") {
+							side = model::InsertSide::RIGHT;
+						} else if (sideStr == "left") {
+							side = model::InsertSide::LEFT;
+						} else {
+							this->consoleView->printError("Unknown insert side. Please use only [ UP | DOWN | RIGHT | LEFT ]");
+							continue;
+						}
+						
+						std::smatch positionMatch;
+						std::regex_search(answer, positionMatch, std::regex("[0-9]+"));
+						unsigned int position = static_cast<unsigned int>((std::stoi(positionMatch.str(0)) < 1 ? 1 : std::stoi(positionMatch.str(0))) - 1);
+						
+						switch(side) {
+							case model::InsertSide::UP:
+							case model::InsertSide::DOWN:
+								if(!this->game->getBoard()->isPositionInsideBoard(model::Position{position, 0})) {
+									this->consoleView->printError(
+											"You cannot insert a tile at this position. This position is out of the board's bounds.");
+									this->consoleView->printError("Please try again.");
+									continue;
+								}
+								if(!this->game->getBoard()->canInsertTile(model::Position{position, 0}, side)) {
+									this->consoleView->printError(
+											"You cannot move this column. One of the tile cannot be moved.");
+									this->consoleView->printError("Please try again with another column.");
+									continue;
+								}
+								this->game->currentPlayerInsertTile(model::Position{position, 0}, side);
+								break;
+							case model::InsertSide::LEFT:
+							case model::InsertSide::RIGHT:
+								if(!this->game->getBoard()->isPositionInsideBoard(model::Position{0, position})) {
+									this->consoleView->printError(
+											"You cannot insert a tile at this position. This position is out of the board's bounds.");
+									this->consoleView->printError("Please try again.");
+									continue;
+								}
+								if(!this->game->getBoard()->canInsertTile(model::Position{0, position}, side)) {
+									this->consoleView->printError(
+											"You cannot move this row. One of the tile cannot be moved.");
+									this->consoleView->printError("Please try again with another row.");
+									continue;
+								}
+								this->game->currentPlayerInsertTile(model::Position{0, position}, side);
+								break;
+						}
+						
+						
 					} else if(std::regex_match(answer, std::regex(" {0,}goto {1,}[0-9]+ {1,}[0-9]+ {0,}"))) {
 						this->consoleView->printMessage("GOTO");
 						if(!this->game->getCurrentPlayer()->hasInsertedTile()) {
-							this->consoleView->printError("You cannot move you pawn now since you haven't inserted a tile in the Labyrinth yet.\n"
-								"Please insert a tile in the Labyrinth first then try again");
+							this->consoleView->printError("You cannot move you pawn now since you haven't inserted a tile in the Labyrinth yet.");
+							this->consoleView->printError("Please insert a tile in the Labyrinth first then try again");
 							continue;
 						} else {
-							unsigned int x = std::stoi("10");
-							unsigned int y = std::stoi("10");
+							std::smatch matchCoo;
+							std::regex_search(answer, matchCoo, std::regex("[0-9]+"));
+							unsigned int x = static_cast<unsigned int>(std::stoi(matchCoo.str(1))) - 1;
+							unsigned int y = static_cast<unsigned int>(std::stoi(matchCoo.str(2))) - 1;
 							if(this->game->canCurrentPlayerGoTo(model::Position{x, y})) {
 								this->game->currentPlayerGoTo(model::Position{x, y});
 								break;
 							} else {
 								this->consoleView->printError("You cannot move to this tile");
 								continue;
-							};
+							}
 						}
 					} else {
 						this->consoleView->printMessage("Unknown command.");

@@ -14,16 +14,6 @@ namespace Labyrinth_44422 {
 			LEFT,
 		};
 		
-		/**
-		 * The names of the different directions in the enum
-		 */
-		const std::string insertSide_names[] = {
-			"up",
-			"down",
-			"right",
-			"left"
-		};
-		
 	}  // namespace model
 }  // namespace Labyrinth_44422
 

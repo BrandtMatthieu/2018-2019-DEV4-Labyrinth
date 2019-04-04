@@ -14,7 +14,7 @@ namespace Labyrinth_44422 {
 		 */
 		class ObjectiveCard {
 			private:
-				std::string objective;
+				std::string objective = "";
 			public:
 				explicit ObjectiveCard(const std::string & objective);
 				ObjectiveCard(const ObjectiveCard & objectiveCard);

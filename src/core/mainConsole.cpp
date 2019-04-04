@@ -19,9 +19,9 @@ int main() {
 		
 		std::cout << std::endl <<"Labyrinth has encountered an error and had to close.";
 		std::cout << std::endl << exception.what();
-		return -1;
+		exit(-1);
 		
 	}
 
-	return 0;
+	exit(0);
 }
