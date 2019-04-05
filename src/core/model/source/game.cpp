@@ -328,27 +328,31 @@ namespace Labyrinth_44422 {
 
 			for(unsigned int i = 0; i < this->getBoard()->getUnmovableTilesPositions().size(); i++) {
 
-				bool pathUP = false;
-				bool pathDOWN = false;
-				bool pathLEFT = false;
-				bool pathRIGHT = false;
+				bool pathUP;
+				bool pathDOWN;
+				bool pathLEFT;
+				bool pathRIGHT;
 
 				// TODO
 
 				if(this->getBoard()->getUnmovableTilesPositions().at(i).getX() < this->getBoard()->getMaxSizeX() / 2) {
-					pathRIGHT = this->getBoard()->getUnmovableTilesPositions().at(i).getX() == 0
-								|| this->getBoard()->getUnmovableTilesPositions().at(i).getY() == 2;
+					pathRIGHT = true;
+					pathLEFT = this->getBoard()->getUnmovableTilesPositions().at(i).getX() == 2
+								&& this->getBoard()->getUnmovableTilesPositions().at(i).getY() != 2;
 				} else {
-					pathRIGHT = this->getBoard()->getUnmovableTilesPositions().at(i).getX() != this->getBoard()->getMaxSizeX() - 1
+					pathLEFT = true;
+					pathRIGHT = this->getBoard()->getUnmovableTilesPositions().at(i).getX() == this->getBoard()->getMaxSizeX() - 3
 								&& this->getBoard()->getUnmovableTilesPositions().at(i).getY() != this->getBoard()->getMaxSizeY() - 3;
 				}
 
 				if(this->getBoard()->getUnmovableTilesPositions().at(i).getY() < this->getBoard()->getMaxSizeY() / 2) {
-					pathUP = this->getBoard()->getUnmovableTilesPositions().at(i).getY() != 0
-							 && this->getBoard()->getUnmovableTilesPositions().at(i).getX() != this->getBoard()->getMaxSizeX() - 3;
+					pathDOWN = true;
+					pathUP = this->getBoard()->getUnmovableTilesPositions().at(i).getX() != this->getBoard()->getMaxSizeX() - 3
+							&& this->getBoard()->getUnmovableTilesPositions().at(i).getY() == 2;
 				} else {
-					pathDOWN = this->getBoard()->getUnmovableTilesPositions().at(i).getY() != this->getBoard()->getMaxSizeY() - 1
-							   && this->getBoard()->getUnmovableTilesPositions().at(i).getX() != 2;
+					pathUP = true;
+					pathDOWN = this->getBoard()->getUnmovableTilesPositions().at(i).getX() != 2
+							&& this->getBoard()->getUnmovableTilesPositions().at(i).getY() == this->getBoard()->getMaxSizeY() - 3;
 				}
 
 				this->getBoard()->setTile(
