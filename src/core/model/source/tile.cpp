@@ -2,7 +2,7 @@
 
 namespace Labyrinth_44422 {
 	namespace model {
-		
+
 		/**
 		 * Creates a new tile
 		 * @param pathUP if there is a way up
@@ -14,8 +14,7 @@ namespace Labyrinth_44422 {
 		 * @param objective the objective of the tile
 		 * @param startNumber the start number of the player
 		 */
-		Tile::Tile(
-			const bool & pathUP,
+		Tile::Tile(const bool & pathUP,
 			const bool & pathDOWN,
 			const bool & pathRIGHT,
 			const bool & pathLEFT,
@@ -30,8 +29,9 @@ namespace Labyrinth_44422 {
 			position{position},
 			movable{movable},
 			objective{objective},
-			startNumber{startNumber}{}
-		
+			startNumber{startNumber} {
+		}
+
 		/**
 		 * Creates a new tile from another tile
 		 * aka. copy constructor
@@ -45,8 +45,41 @@ namespace Labyrinth_44422 {
 			position{tile.position},
 			movable{tile.movable},
 			objective{tile.objective},
-			startNumber{tile.startNumber}{}
-		
+			startNumber{tile.startNumber} {
+		}
+
+		/**
+		 * Returns true if two tiles are equals
+		 * @param tile another tile
+		 * @return true if both tiles are equals
+		 */
+		bool Tile::operator==(const Tile & tile) const {
+			return pathUP == tile.pathUP
+				   && pathDOWN == tile.pathDOWN
+				   && pathRIGHT == tile.pathRIGHT
+				   && pathLEFT == tile.pathLEFT
+				   && position == tile.position
+				   && movable == tile.movable
+				   && objective == tile.objective
+				   && startNumber == tile.startNumber;
+		}
+
+		/**
+		 * Returns true if two tiles are different
+		 * @param tile another tile
+		 * @return true if two tiles are different
+		 */
+		bool Tile::operator!=(const Tile & tile) const {
+			return pathUP != tile.pathUP
+				   || pathDOWN != tile.pathDOWN
+				   || pathRIGHT != tile.pathRIGHT
+				   || pathLEFT != tile.pathLEFT
+				   || position != tile.position
+				   || movable != tile.movable
+				   || objective != tile.objective
+				   || startNumber != tile.startNumber;
+		}
+
 		/**
 		 * Returns true if the tile has a path up
 		 * @return true if the tile has a path up
@@ -54,7 +87,7 @@ namespace Labyrinth_44422 {
 		bool Tile::getPathUP(void) const {
 			return this->pathUP;
 		}
-		
+
 		/**
 		 * Returns true if the tile has a path down
 		 * @return true if the tile has a path down
@@ -62,7 +95,7 @@ namespace Labyrinth_44422 {
 		bool Tile::getPathDOWN(void) const {
 			return this->pathDOWN;
 		}
-		
+
 		/**
 		 * Returns true if the tile has a path right
 		 * @return true if the tile has a path right
@@ -70,7 +103,7 @@ namespace Labyrinth_44422 {
 		bool Tile::getPathRIGHT(void) const {
 			return this->pathRIGHT;
 		}
-		
+
 		/**
 		 * Returns true if the tile has a path left
 		 * @return true if the tile has a path left
@@ -78,7 +111,7 @@ namespace Labyrinth_44422 {
 		bool Tile::getPathLEFT(void) const {
 			return this->pathLEFT;
 		}
-		
+
 		/**
 		 * Returns true if the tile can be moved
 		 * @return true if the tile can be moved
@@ -86,7 +119,7 @@ namespace Labyrinth_44422 {
 		bool Tile::isMovable(void) const {
 			return this->movable;
 		}
-		
+
 		/**
 		 * Returns the position of the tile on the board
 		 * @return the position of the tile on the board
@@ -94,7 +127,7 @@ namespace Labyrinth_44422 {
 		Position Tile::getPosition(void) const {
 			return this->position;
 		}
-		
+
 		/**
 		 * Returns the objective on the tile
 		 * @return the objective on the tile
@@ -102,7 +135,7 @@ namespace Labyrinth_44422 {
 		std::string Tile::getObjective(void) const {
 			return this->objective;
 		}
-		
+
 		/**
 		 * Returns true if the tile has an objective
 		 * @return true if the tile has an objective
@@ -110,7 +143,7 @@ namespace Labyrinth_44422 {
 		bool Tile::hasObjective(void) const {
 			return this->objective != "";
 		}
-		
+
 		/**
 		 * Returns the start number on the tile
 		 * @return the start number on the tile
@@ -118,7 +151,7 @@ namespace Labyrinth_44422 {
 		unsigned int Tile::getStartNumber(void) const {
 			return this->startNumber;
 		}
-		
+
 		/**
 		 * Returns true if tile has a start number
 		 * @return
@@ -126,7 +159,7 @@ namespace Labyrinth_44422 {
 		bool Tile::hasStartNumber(void) const {
 			return this->startNumber > 0;
 		}
-		
+
 		/**
 		 * Sets the position of the tile
 		 * @param position the new position of the tile
@@ -134,7 +167,7 @@ namespace Labyrinth_44422 {
 		void Tile::setPosition(const Position & position) {
 			this->position = position;
 		}
-		
+
 		/**
 		 * Rotates the tile 90° to the right (clockwise)
 		 * Changes the path to match the rotated tile
@@ -146,7 +179,7 @@ namespace Labyrinth_44422 {
 			this->pathDOWN = this->pathRIGHT;
 			this->pathRIGHT = up;
 		}
-		
+
 		/**
 		 * Rotates the tile 90° to the left (counter-clockwise)
 		 * Changes the path to match the rotated tile
@@ -158,7 +191,7 @@ namespace Labyrinth_44422 {
 			this->pathDOWN = this->pathLEFT;
 			this->pathLEFT = up;
 		}
-		
+
 		/**
 		 * Moves the tile 1 cell in the provided way
 		 * @param side the way to move the side to

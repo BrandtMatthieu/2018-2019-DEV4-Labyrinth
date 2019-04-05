@@ -19,9 +19,13 @@ namespace Labyrinth_44422 {
 				explicit ObjectiveCard(const std::string & objective);
 				ObjectiveCard(const ObjectiveCard & objectiveCard);
 				~ObjectiveCard(void) = default;
+				bool operator==(const ObjectiveCard & card) const;
+				bool operator!=(const ObjectiveCard & card) const;
 			
 				std::string getObjective(void) const;
 				bool hasObjective(void) const;
+			
+			
 		};
 		
 	} // namespace model

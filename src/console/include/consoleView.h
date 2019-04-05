@@ -28,11 +28,10 @@ namespace Labyrinth_44422 {
 				const std::string objective;
 				const bool spacing = true;
 				const bool arrows = true;
-				
-				std::string printTile(const Labyrinth_44422::model::Tile * const tile, const unsigned int & ligneDansTuile, std::string & str) const;
-				
 			
-			public:
+				void printTileLine(const Labyrinth_44422::model::Tile * const tile, const unsigned int & ligneDansTuile, std::string & str) const;
+		
+		public:
 				explicit ConsoleView(const bool spacing, const bool arrows);
 				ConsoleView(const ConsoleView & vue);
 				~ConsoleView() = default;
@@ -50,6 +49,10 @@ namespace Labyrinth_44422 {
 				void printHelp(const model::Board * const board) const;
 				void printWelcome(void) const;
 				void printInstructions(void) const;
+				void printTile(const Labyrinth_44422::model::Tile * const tile) const;
+				void printBoardObjectives(model::Board * board, std::vector<model::Tile *> availableTiles) const;
+				void printAvailableTile(model::Tile * & tile) const;
+				void printPlayersInfos(std::vector<model::Player *> players) const;
 				
 				void clearScreen(void) const;
 				void lineBreak(void) const;

@@ -24,7 +24,9 @@ namespace Labyrinth_44422 {
 				Position(const Position & position);
 				Position & operator=(const Position & position);
 				~Position() = default;
-				
+				bool operator==(const Position & position) const;
+				bool operator!=(const Position & position) const;
+			
 				unsigned int getX(void) const;
 				unsigned int getY(void) const;
 				

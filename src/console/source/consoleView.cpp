@@ -3,116 +3,132 @@
 
 #include "./../include/consoleView.h"
 
-
 class Position;
 namespace Labyrinth_44422 {
 	namespace console {
-		
+
 		/**
 		 * Prints an horizontal line in the tile
 		 * @param tile the tile to print the line from
 		 * @param ligneDansTuile the height to print the line of the tile from
+		 * @param str the existing string to get the text to append to from
 		 * @throw invalid_argument if tile is null
 		 * @throw invalid_argument if ligneDansTuile is null
-		 * @throw runtime_error if printing carriage is out of bounds (should not happen)
 		 * @return a string with the line printed at the specified height
 		 */
-		std::string ConsoleView::printTile(const Labyrinth_44422::model::Tile * const tile, const unsigned int & ligneDansTuile, std::string & str) const {
+		void ConsoleView::printTileLine(const Labyrinth_44422::model::Tile * const tile, const unsigned int & ligneDansTuile, std::string & str) const {
 			if(tile == nullptr) {
 				throw std::invalid_argument("Error while printing the tile. No tile provided.");
 			}
 			if(ligneDansTuile >= this->tileSize) {
 				throw std::invalid_argument("Error while printing the tile. Tile line is out of bounds.");
 			}
-			
+
 			for(unsigned int caractereDeTuile = 0; caractereDeTuile < this->tileSize; caractereDeTuile++) {
-				if(ligneDansTuile < this->wall1 // Vertical Top part
-				|| ligneDansTuile > this->wall2) { // Vertical Bottom part
-					if(caractereDeTuile == this->wall1
-					|| caractereDeTuile == this->wall2) { // Horizontal ConsoleView::walls part
-						if(ligneDansTuile < this->wall1) {
-							if(tile->getPathUP()) {
-								str += this->wall;
-							} else {
-								str += this->path;
-							}
-						} else if(ligneDansTuile > this->wall2) {
-							if(tile->getPathDOWN()) {
-								str += this->wall;
-							} else {
-								str += this->path;
-							}
+				if(ligneDansTuile < this->wall1) {
+					if(caractereDeTuile < this->wall1 || caractereDeTuile > this->wall2) {
+						str += space;
+					} else if(caractereDeTuile == this->wall1 || caractereDeTuile == this->wall2) {
+						if(tile->getPathUP()) {
+							str += wall;
+						} else {
+							str += space;
 						}
-					} else { // Horizontal All other parts
-						str += this->path;
+					} else if(caractereDeTuile > this->wall1 || caractereDeTuile < this->wall2) {
+						if(tile->getPathUP()) {
+							str += path;
+						} else {
+							str += space;
+						}
 					}
-				} else if(ligneDansTuile > this->wall1
-				&& ligneDansTuile < this->wall2) { // Vertical Middle part
-					if(caractereDeTuile == this->wall1) { // Horizontal Left ConsoleView::wall
+				} else if(ligneDansTuile == this->wall1 || ligneDansTuile == this->wall2) {
+					if(caractereDeTuile < this->wall1) {
 						if(tile->getPathLEFT()) {
-							str += this->path;
+							str += wall;
 						} else {
-							str += this->wall;
+							str += space;
 						}
-					} else if(caractereDeTuile == this->wall2) { // Horizontal Right ConsoleView::wall
+					} else if (caractereDeTuile > this->wall2) {
 						if(tile->getPathRIGHT()) {
-							str += this->path;
+							str += wall;
 						} else {
-							str += this->wall;
+							str += space;
 						}
-					} else { // Horizontal Middle part
-						if(caractereDeTuile == this->tileSize/2 && ligneDansTuile == this->tileSize/2) {
-							if(tile->hasObjective()) {
-								str += this->objective;
-							} else  if(tile->hasStartNumber()) {
-								str += std::to_string(tile->getStartNumber());
-							} else {
-								str += this->path;
-							}
-						} else {
-							str += this->path;
-						}
-					}
-				} else if(ligneDansTuile == this->wall1
-				|| ligneDansTuile == this->wall2) { // Vertical ConsoleView::walls part
-					if(caractereDeTuile < this->wall1) { // Horizontal Left ConsoleView::wall
-						if(tile->getPathLEFT()) {
-							str += this->wall;
-						} else {
-							str += this->path;
-						}
-					} else if(caractereDeTuile > this->wall2) { // Horizontal Right ConsoleView::wall
-						if(tile->getPathRIGHT()) {
-							str += this->wall;
-						} else {
-							str += this->path;
-						}
-					} else if(caractereDeTuile > this->wall1
-					&& caractereDeTuile < this->wall2) { // Horizontal Middle part
-						if(ligneDansTuile == this->wall1) { // Horizontal Middle Top ConsoleView::wall
+					} else if (caractereDeTuile > this->wall1 && caractereDeTuile < this->wall2) {
+						if(ligneDansTuile == wall1) {
 							if(tile->getPathUP()) {
-								str += this->path;
+								str += path;
 							} else {
-								str += this->wall;
+								str += wall;
 							}
-						} else if(caractereDeTuile > this->wall1
-						&& caractereDeTuile < this->wall2) { // Horizontal Middle Bottom ConsoleView::wall
+						} else if (ligneDansTuile == wall2) {
 							if(tile->getPathDOWN()) {
-								str += this->path;
+								str += path;
 							} else {
-								str += this->wall;
+								str += wall;
 							}
 						}
-					} else { // 4 small Middle ConsoleView::walls
-						str += this->wall;
+					} else {
+						str += wall;
 					}
-				} else {
-					throw std::runtime_error("Error while printing tile. Print carriage is out of tile");
+				} else if(ligneDansTuile > this->wall1 && ligneDansTuile < this->wall2) {
+					if(caractereDeTuile < this->wall1) {
+						if(tile->getPathLEFT()) {
+							str += path;
+						} else {
+							str += space;
+						}
+					} else if(caractereDeTuile > this->wall2) {
+						if(tile->getPathRIGHT()) {
+							str += path;
+						} else {
+							str += space;
+						}
+					} else if(caractereDeTuile == wall1){
+						if(tile->getPathLEFT()) {
+							str += path;
+						} else {
+							str += wall;
+						}
+					} else if(caractereDeTuile == wall2) {
+						if(tile->getPathRIGHT()) {
+							str += path;
+						} else {
+							str += wall;
+						}
+					} else {
+						if(caractereDeTuile == this->tileSize / 2 && ligneDansTuile == this->tileSize / 2 && tile->hasStartNumber()) {
+							str += std::to_string(tile->getStartNumber());
+						} else if(tile->hasObjective() && tile->getObjective().length() >= 3 && std::abs(static_cast<int>(caractereDeTuile - this->tileSize / 2)) <= 1 && ligneDansTuile == this->tileSize / 2) {
+							str += tile->getObjective().at(1 + (caractereDeTuile - this->tileSize / 2));
+						} else if(tile->hasObjective() && tile->getObjective().length() >= 1 && caractereDeTuile == this->tileSize / 2 && ligneDansTuile == this->tileSize / 2 && tile->hasStartNumber()) {
+							str += tile->getObjective().at(0);
+						} else if(tile->hasObjective() && caractereDeTuile == this->tileSize / 2 && ligneDansTuile == this->tileSize / 2 && tile->hasStartNumber()) {
+							str += "?";
+						} else {
+							str += path;
+						}
+					}
+				} else if (ligneDansTuile > this->wall2) {
+					if(caractereDeTuile < this->wall1 || caractereDeTuile > this->wall2) {
+						str += space;
+					} else if(caractereDeTuile == this->wall1 || caractereDeTuile == this->wall2) {
+						if(tile->getPathDOWN()) {
+							str += wall;
+						} else {
+							str += space;
+						}
+					} else if(caractereDeTuile > this->wall1 || caractereDeTuile < this->wall2) {
+						if(tile->getPathDOWN()) {
+							str += path;
+						} else {
+							str += space;
+						}
+					}
 				}
 			}
-			return str;
 		}
-		
+
 		/**
 		 * Gets a yes or no answer from the user
 		 * @param message the message to ask something to the player and wait for a yes or no answer
@@ -134,22 +150,25 @@ namespace Labyrinth_44422 {
 			}
 			return answer == "yes" || answer == "y";
 		}
-		
+
 		/**
 		 * Creates a new console view
 		 * @param spacing if there needs to be spaces between the rows and lines of the board printed
+		 * @param arrows if there needs to be arrows in front of the lines of the board that can be moved
 		 */
 		ConsoleView::ConsoleView(const bool spacing, const bool arrows) :
 			wall{"X"},
 			path{" "},
-			space{"-"},
+			space{"."},
 			objective{"O"},
 			spacing{spacing},
-			arrows{arrows} {}
-		
+			arrows{arrows} {
+		}
+
 		/**
 		 * Creates a new console view from an existing one
-		 * @param vue
+		 * aka. copy constructor
+		 * @param vue the existing view to take the infos from
 		 */
 		ConsoleView::ConsoleView(const ConsoleView & vue) :
 			wall{vue.wall},
@@ -157,8 +176,9 @@ namespace Labyrinth_44422 {
 			space{vue.space},
 			objective{vue.objective},
 			spacing{vue.spacing},
-			arrows{vue.arrows} {}
-		
+			arrows{vue.arrows} {
+		}
+
 		/**
 		 * Asks the name for the new player in the game
 		 * @return the name of the new player
@@ -177,7 +197,7 @@ namespace Labyrinth_44422 {
 			}
 			return answer;
 		}
-		
+
 		/**
 		 * Returns the command entered by the player
 		 * @return the command entered by the player
@@ -186,12 +206,13 @@ namespace Labyrinth_44422 {
 			this->lineBreak();
 			this->printMessage("Please enter a command.");
 			this->printMessage("Type \"help\" to get a list of all the available commands.");
+			this->lineBreak();
 			std::cout << "> ";
 			std::string answer;
 			std::getline(std::cin, answer);
 			return answer;
 		}
-		
+
 		/**
 		 * Prints the infos of the game
 		 * @param game the game to print the infos from
@@ -201,7 +222,7 @@ namespace Labyrinth_44422 {
 			if(game == nullptr) {
 				throw std::invalid_argument("Error while printing game infos. Game does not exists.");
 			}
-			
+
 			std::cout << std::endl << "Game infos : " << std::endl;
 			if(game->hasWinner()) {
 				this->printMessage("Game is over.");
@@ -216,7 +237,7 @@ namespace Labyrinth_44422 {
 			}
 
 		}
-		
+
 		/**
 		 * Prints the board of the game
 		 * @param board the board to print
@@ -226,14 +247,14 @@ namespace Labyrinth_44422 {
 			if(board == nullptr) {
 				throw std::invalid_argument("Error while printing board. Board doesn't exists.");
 			}
-			
+
 			std::string str = "";
 			if(this->arrows) {
 				str += "  ";
 				for(unsigned int tuileDansRangee = 0; tuileDansRangee < board->getMaxSizeX(); tuileDansRangee++) {
 					for(unsigned int caractereDeTuile = 0; caractereDeTuile < this->tileSize; caractereDeTuile++) {
 						if(caractereDeTuile == this->tileSize / 2 && board->canInsertTile(model::Position{tuileDansRangee, 0}, model::InsertSide::DOWN)) {
-							str += "ˇ"; // v ↓
+							str += "v"; // v ↓
 						} else {
 							str += " ";
 						}
@@ -254,10 +275,10 @@ namespace Labyrinth_44422 {
 						str += "  ";
 					}
 					for(unsigned int tuileDansRangee = 0; tuileDansRangee < board->getMaxSizeX(); tuileDansRangee++) {
-						str = this->printTile(board->getTiles().at(rangeeDeTuile * board->getMaxSizeX() + tuileDansRangee), ligneDansTuile, str);
-						
+						this->printTileLine(board->getTiles().at(rangeeDeTuile * board->getMaxSizeX() + tuileDansRangee), ligneDansTuile, str);
+
 						if(this->spacing) {
-							str += this->space;
+							str += " ";
 						}
 					}
 					if(this->arrows && ligneDansTuile == this->tileSize / 2 && board->canInsertTile(model::Position{0, rangeeDeTuile}, model::InsertSide::RIGHT)) {
@@ -272,8 +293,7 @@ namespace Labyrinth_44422 {
 				}
 			}
 			if(this->arrows) {
-				str += "\n";
-				str += "  ";
+				str = "  ";
 				for(unsigned int tuileDansRangee = 0; tuileDansRangee < board->getMaxSizeX(); tuileDansRangee++) {
 					for(unsigned int caractereDeTuile = 0; caractereDeTuile < this->tileSize; caractereDeTuile++) {
 						if(caractereDeTuile == this->tileSize / 2 && board->canInsertTile(model::Position{tuileDansRangee, 0}, model::InsertSide::DOWN)) {
@@ -289,7 +309,7 @@ namespace Labyrinth_44422 {
 			}
 			this->printMessage(str);
 		}
-		
+
 		/**
 		 * Prints infos about a player
 		 * @param player the player to print the infos from
@@ -299,19 +319,19 @@ namespace Labyrinth_44422 {
 			if(player == nullptr) {
 				throw std::invalid_argument("Error while printing player infos. Player doesn't exists.");
 			}
-			
+
 			this->lineBreak();
 			this->printMessage(
 				"Players infos :\n"
 				"===============\n"
 				"  Nickname :\t\t\t" + player->getNickname() + "\n"
-				"  Color :\t\t\t\t" + player->getColor() + "\n"
+				"  Color :\t\t\t" + player->getColor() + "\n"
 				"  Location :\t\t\t" + player->getPosition().toString() + "\n"
 				"  Current objective :\t\t" + player->getCurrentObjective()->getObjective() + "\n"
 				"  Objectives left count :\t" + std::to_string(player->getObjectiveCardsLeftCount()) + "\n"
 				"  Completed objectives count :\t" + std::to_string(player->getCompletedObjectiveCardsCount()));
 		}
-		
+
 		/**
 		 * Prints a message telling the winner of the game
 		 * @param player the winner of the game
@@ -319,7 +339,7 @@ namespace Labyrinth_44422 {
 		void ConsoleView::printWinner(model::Player * player) {
 			this->printMessage("Congratulations " + player->getNickname() + ", you won this game.");
 		}
-		
+
 		/**
 		 * Prints a message
 		 * @param message the message to be printed
@@ -327,7 +347,7 @@ namespace Labyrinth_44422 {
 		void ConsoleView::printMessage(const std::string & message) const {
 			std::cout << message << std::endl;
 		}
-		
+
 		/**
 		 * Prints an error
 		 * @param error the error to be printed
@@ -335,7 +355,7 @@ namespace Labyrinth_44422 {
 		void ConsoleView::printError(const std::string & error) const {
 			std::cerr << error << std::endl;
 		}
-		
+
 		/**
 		 * Prints a message with the different supported commands
 		 * @param board the board of the game
@@ -345,7 +365,7 @@ namespace Labyrinth_44422 {
 			if(board == nullptr) {
 				throw std::invalid_argument("Error while printing board. Board doesn't exists.");
 			}
-			
+
 			this->lineBreak();
 			this->printMessage(
 				"Help :\n"
@@ -365,7 +385,7 @@ namespace Labyrinth_44422 {
 			this->lineBreak();
 			this->lineBreak();
 		}
-		
+
 		/**
 		 * Prints a welcome message
 		 */
@@ -385,66 +405,134 @@ namespace Labyrinth_44422 {
 			this->lineBreak();
 			this->lineBreak();
 		}
-		
+
 		/**
 		 * Prints the game instructions
 		 */
 		void ConsoleView::printInstructions(void) const {
 			this->lineBreak();
+			this->lineBreak();
 			this->printMessage(
-				"  Dans un labyrinthe enchanté, les joueurs partent à la chasse aux objets et aux créatures magiques. Chacun cherche à se frayer un chemin jusqu’à eux en faisant coulisser astucieusement les couloirs.\n"
-				"Le premier joueur à découvrir tous ses secrets et à revenir à son point de départ remporte cette passionnante chasse aux trésors."
+					"Regles :\n"
+					"========"
+			);
+			this->printMessage(
+				"  Dans un labyrinthe enchante, les joueurs partent a la chasse aux objets et aux creatures magiques. Chacun cherche a se frayer un chemin jusqu'a eux en faisant coulisser astucieusement les couloirs.\n"
+				"Le premier joueur a decouvrir tous ses secrets et a revenir a son point de depart remporte cette passionnante chasse aux tresors."
 			);
 			this->lineBreak();
 			this->printMessage(
-				"Déroulement :\n"
+				"Deroulement :\n"
 				"============="
 			);
 			this->printMessage(
-				"  Chaque joueur se voit attribué différents objectifs à aller chercher dans le labyrinthe.\n"
+				"  Chaque joueur se voit attribue differents objectifs a aller chercher dans le labyrinthe.\n"
 				"Un tour se compose toujours de deux phases :\n"
-				"  1. Introduction de la carte couloir supplémentaire\n"
-				"  2. Déplacement du pion\n"
-				"À son tour de jeu, le joueur doit essayer d’atteindre la tuile comportant le même objectif que celui squi lui est actuellement attribué\n"
-				"Pour cela il commence toujours par faire coulisser une rangée ou une colonne du labyrinthe en insérant la plaque supplémentaire du bord vers l’intérieur du plateau, puis il déplace son pion."
+				"  1. Introduction de la carte couloir supplementaire\n"
+				"  2. Deplacement du pion\n"
+				"A son tour de jeu, le joueur doit essayer d'atteindre la tuile comportant le meme objectif que celui squi lui est actuellement attribue\n"
+				"Pour cela il commence toujours par faire coulisser une rangee ou une colonne du labyrinthe en inserant la plaque supplementaire du bord vers l'interieur du plateau, puis il deplace son pion."
 			);
 			this->lineBreak();
 			this->printMessage(
 				"Modification du labyrinthe :\n"
 				"============================");
 			this->printMessage(
-				"  12 flèches sont dessinées en bordure de plateau.\n"
-				"Elles indiquent les rangées et colonnes où peut être insérée la plaque supplémentaire pour modifier les couloirs du labyrinthe.\n"
-				"Quand vient son tour, le joueur choisit l’une de ces rangées ou colonnes et pousse la plaque supplémentaire vers l’intérieur du plateau jusqu’à ce qu’une nouvelle plaque soit expulsée à l’opposé.\n"
-				"La plaque expulsée reste au bord du plateau jusqu’à ce qu’elle soit réintroduite à un autre endroit par le joueur suivant."
+				"  12 fleches sont dessinees en bordure de plateau.\n"
+				"Elles indiquent les rangees et colonnes où peut etre inseree la plaque supplementaire pour modifier les couloirs du labyrinthe.\n"
+				"Quand vient son tour, le joueur choisit l'une de ces rangees ou colonnes et pousse la plaque supplementaire vers l'interieur du plateau jusqu'a ce qu'une nouvelle plaque soit expulsee a l'oppose.\n"
+				"La plaque expulsee reste au bord du plateau jusqu'a ce qu'elle soit reintroduite a un autre endroit par le joueur suivant."
 			);
 			this->lineBreak();
 			this->printMessage(
-				"Déplacement du pion :\n"
+				"Deplacement du pion :\n"
 				"=====================");
 			this->printMessage(
-				"  Dès qu’il a modifié le labyrinthe, le joueur peut déplacer son pion. Il peut le déplacer aussi loin qu’il veut jusqu’à n’importe quelle plaque en suivant un couloir ininterrompu.\n"
-				"Un joueur peut même s’arrêter sur une case déjà occupée. S’il veut, il peut aussi choisir de rester sur place ; il n’est pas obligé de se déplacer.\n"
-				"Si le joueur n’atteint pas le dessin recherché (= celui fi gurant sur la carte supérieure de sa pile), il peut déplacer son pion aussi loin qu’il veut de manière à être en bonne position pour le prochain tour.\n"
-				"S’il atteint le dessin recherché, il retourne sa carte à côté de sa pile. Il peut immédiatement regarder secrètement la carte suivante de sa pile pour connaître son prochain objectif.\n"
-				"C’est maintenant au tour du joueur suivant de jouer"
+				"  Des qu'il a modifie le labyrinthe, le joueur peut deplacer son pion. Il peut le deplacer aussi loin qu'il veut jusqu'a n'importe quelle plaque en suivant un couloir ininterrompu.\n"
+				"Un joueur peut meme s'arreter sur une case deja occupee. S'il veut, il peut aussi choisir de rester sur place ; il n'est pas oblige de se deplacer.\n"
+				"Si le joueur n'atteint pas le dessin recherche (= celui fi gurant sur la carte superieure de sa pile), il peut deplacer son pion aussi loin qu'il veut de maniere a etre en bonne position pour le prochain tour.\n"
+				"S'il atteint le dessin recherche, il retourne sa carte a côte de sa pile. Il peut immediatement regarder secretement la carte suivante de sa pile pour connaître son prochain objectif.\n"
+				"C'est maintenant au tour du joueur suivant de jouer"
 			);
 			this->lineBreak();
 			this->printMessage(
 				"Fin du jeu :\n"
 				"============");
 			this->printMessage(
-				"  La partie s’arrête dès qu’un joueur a atteint tous ses objectifs et qu’il est revenu à son point de départ."
+				"  La partie s'arrete des qu'un joueur a atteint tous ses objectifs et qu'il est revenu a son point de depart."
 			);
 		}
+
+		/**
+		 * Prints a tile
+		 * @param tile the tile to print
+		 */
+		void ConsoleView::printTile(const Labyrinth_44422::model::Tile * const tile) const {
+			for(unsigned int i = 0; i < this->tileSize; i++) {
+				std::string str = "  ";
+				this->printTileLine(tile, i, str);
+				this->printMessage(str);
+			}
+		}
+
+		/**
+		 * Prints the different objectives on the board and their positions
+		 * @param board the board containing the tiles
+		 */
+		void ConsoleView::printBoardObjectives(model::Board * board, std::vector<model::Tile *> availableTiles) const {
+			this->lineBreak();
+			this->printMessage("Here are the objectives on the board :");
+			this->printMessage("======================================");
+			for(const auto & tile : board->getTiles()) {
+				if(tile->hasObjective()) {
+					this->printMessage("  " + tile->getObjective() + " :\t" + ((tile->getObjective().length() <= 4) ? "\t" : "") + tile->getPosition().toString());
+				}
+			}
+			if(std::any_of(availableTiles.begin(), availableTiles.end(), [](model::Tile * tile){return tile->hasObjective();})) {
+				this->lineBreak();
+				this->printMessage("Objectives on the available tile:");
+				this->printMessage("=================================");
+				for(model::Tile * tile : availableTiles) {
+					if(tile->hasObjective()) {
+						this->printMessage("  " + tile->getObjective());
+					}
+				}
+			}
+			this->lineBreak();
+		}
+
+		/**
+		 * Prints the available tile
+		 * @param tile
+		 */
+		void ConsoleView::printAvailableTile(model::Tile * & tile) const {
+			this->lineBreak();
+			this->printMessage("Here is the available tile :");
+			this->printMessage("============================");
+			this->printTile(tile);
+		}
 		
+		/**
+		 * Prints the infos of all the players
+		 * @param players the players in a vector
+		 */
+		void ConsoleView::printPlayersInfos(std::vector<model::Player *> players) const {
+			this->lineBreak();
+			this->printMessage("Infos on the different players :");
+			this->printMessage("============================");
+			for(model::Player * const & player : players) {
+				this->printMessage("  " + player->getNickname() + " :\t" + ((player->getNickname().length() <= 3) ? "\t" : "")
+				+ player->getPosition().toString() + "\t>\t" + player->getCurrentObjective()->getObjective());
+			}
+		}
+
 		/**
 		 * Clears the console
 		 */
 		void ConsoleView::clearScreen(void) const {
 			std::cout << "\033c";
 		}
-		
+
 		/**
 		 * Prints a line break
 		 */

@@ -32,10 +32,13 @@ namespace Labyrinth_44422 {
 						const Position & position,
 						const bool & movable,
 						const std::string & objective,
-						const unsigned int startNumber);
+						const unsigned int startNumber
+				);
 				Tile(const Tile & tile);
 				~Tile(void) = default;
-
+				bool operator==(const Tile & tile) const;
+				bool operator!=(const Tile & tile) const;
+			
 				bool getPathUP(void) const;
 				bool getPathDOWN(void) const;
 				bool getPathRIGHT(void) const;

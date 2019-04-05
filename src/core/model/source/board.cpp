@@ -6,7 +6,7 @@
 
 namespace Labyrinth_44422 {
 	namespace model {
-		
+
 		/**
 		 * Finds a tile in a vector of tiles and returns it's index
 		 * @param myVector the vector where to search
@@ -22,7 +22,7 @@ namespace Labyrinth_44422 {
 			if(!this->includes(myVector, tile)) {
 				throw std::runtime_error("Error while getting the index of the tile. The tile doesn't exists inside the vector.");
 			}
-			
+
 			for(unsigned int i = 0; i < myVector.size(); i++) {
 				if(this->tiles[i] == tile) {
 					return i;
@@ -30,7 +30,7 @@ namespace Labyrinth_44422 {
 			}
 			return 0;
 		}
-		
+
 		/**
 		 * Returns true if an element exists in a vector
 		 * @param myVector the vector where to search
@@ -42,7 +42,7 @@ namespace Labyrinth_44422 {
 			if(tile == nullptr) {
 				throw std::invalid_argument("Error while initializing the board. Cannot get the index if tile is null.");
 			}
-			
+
 			for(unsigned int i = 0; i < myVector.size(); i++) {
 				if(this->tiles[i] == tile) {
 					return true;
@@ -63,7 +63,8 @@ namespace Labyrinth_44422 {
 				Position{maxSize.getX() - 1, maxSize.getY() - 1},
 				Position{maxSize.getX() - 1, 0},
 				Position{0, 0}
-			} {}
+			} {
+		}
 
 		/**
 		 * Creates a new board from an existing board
@@ -77,7 +78,7 @@ namespace Labyrinth_44422 {
 				this->tiles.push_back(new Tile(* tile_ptr));
 			}
 		}
-		
+
 		/**
 		 * Creates a new board from another board
 		 * @param board another board
@@ -86,17 +87,17 @@ namespace Labyrinth_44422 {
 			if(&board == this) {
 				return *this;
 			}
-			
+
 			this->maxSize = board.maxSize;
-			
+
 			for(Tile * const & tile : board.tiles) {
 				this->tiles.push_back(new Tile(*tile));
 			}
-			
+
 			this->playersDefaultPositions = board.playersDefaultPositions;
 			return *this;
 		}
-		
+
 		/**
 		 * Destroys the board object and cleans its members
 		 */
@@ -106,7 +107,7 @@ namespace Labyrinth_44422 {
 			}
 			this->tiles.clear();
 		}
-		
+
 		/**
 		 * Returns the horizontal size of the game's board
 		 * @return the horizontal size of the game's board
@@ -114,7 +115,7 @@ namespace Labyrinth_44422 {
 		unsigned int Board::getMaxSizeX(void) const {
 			return this->maxSize.getX();
 		}
-		
+
 		/**
 		 * Returns the vertical size of the game's board
 		 * @return the vertical size of the game's board
@@ -130,7 +131,7 @@ namespace Labyrinth_44422 {
 		Position Board::getMaxSize(void) const {
 			return this->maxSize;
 		}
-		
+
 		/**
 		 * Returns the vector containing the addresses of the tiles of the game
 		 * @return the vector containing the addresses of the tiles of the game
@@ -138,7 +139,7 @@ namespace Labyrinth_44422 {
 		std::vector<Tile *> Board::getTiles(void) const {
 			return this->tiles;
 		}
-		
+
 		/**
 		 * Returns the tile count
 		 * @return the tile count
@@ -146,7 +147,7 @@ namespace Labyrinth_44422 {
 		unsigned int Board::getTilesCount(void) const {
 			return this->tiles.size();
 		}
-		
+
 		/**
 		 * Returns the address of the tile at a provided position
 		 * @param position  the position of the tile to get
@@ -161,10 +162,10 @@ namespace Labyrinth_44422 {
 					". Position is out of board's bounds (1;1) to " +
 					this->maxSize.toString());
 			}
-			
+
 			return this->tiles.at(position.getX() + position.getY() * this->getMaxSizeX());
 		}
-		
+
 		/**
 		 * Checks if the provided position is inside the board
 		 * @param position the position to check
@@ -174,7 +175,7 @@ namespace Labyrinth_44422 {
 			return position.getX() < this->maxSize.getX() &&
 					position.getY() < this->maxSize.getY();
 		}
-		
+
 		/**
 		 * Sets a tile in the game's board
 		 * @param position the position of where to set the tile
@@ -193,12 +194,12 @@ namespace Labyrinth_44422 {
 			if(this->getTilesAt(position) != nullptr) {
 				throw std::runtime_error("Error while setting tile. Cannot overlap tile");
 			}
-			
+
 			tile->setPosition(position);
-			
+
 			this->tiles[position.getX() + position.getY() * this->getMaxSizeX()] = tile;
 		}
-		
+
 		/**
 		 * Sets a tile in the game's board
 		 * @param x the x position of the tile to set
@@ -214,12 +215,12 @@ namespace Labyrinth_44422 {
 			if(tile == nullptr) {
 				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null.");
 			}
-			
+
 			tile->setPosition(Position{x, y});
-			
+
 			this->tiles[x + y * this->getMaxSizeX()] = tile;
 		}
-		
+
 		/**
 		 * Sets a tile in the game's board
 		 * @param index the index of the tile to set
@@ -234,12 +235,12 @@ namespace Labyrinth_44422 {
 			if(tile == nullptr) {
 				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null.");
 			}
-			
+
 			tile->setPosition(Position{index % this->getMaxSizeX(), index / this->getMaxSizeX()});
-			
+
 			this->tiles[index] = tile;
 		}
-		
+
 		/**
 		 * Returns the default position for the players
 		 * @return the default position for the players
@@ -247,7 +248,7 @@ namespace Labyrinth_44422 {
 		std::vector<Position> Board::getPlayersDefaultPositions() const {
 			return this->playersDefaultPositions;
 		}
-		
+
 		/**
 		 * Returns a vector with the position of the unmovable tiles of the 7x7 board
 		 * @return a vector with the position of the unmovable tiles of the 7x7 board
@@ -268,7 +269,7 @@ namespace Labyrinth_44422 {
 				Position(6, 4)
 			};
 		}
-		
+
 		/**
 		 * Returns true if the board is missing a tile
 		 * @return true if the board is missing a tile
@@ -281,7 +282,7 @@ namespace Labyrinth_44422 {
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Returns the position of the first free tile of the board
 		 * @throw runtime_error if the board doesn't have any empty tile
@@ -297,7 +298,7 @@ namespace Labyrinth_44422 {
 			}
 			throw std::runtime_error("Error while retrieving position of empty tile. No empty tile");
 		}
-		
+
 		/**
 		 * Returns true if a tile can be inserted at the provided position
 		 * @param position the position to check where to insert the tile
@@ -309,7 +310,7 @@ namespace Labyrinth_44422 {
 			if(!this->isPositionInsideBoard(position)) {
 				throw std::invalid_argument("Error while inserting a tile at a position. Position is out of bounds.");
 			}
-			
+
 			bool lineMovable = true;
 			switch(side) {
 				case InsertSide::UP:
@@ -327,7 +328,7 @@ namespace Labyrinth_44422 {
 			}
 			return lineMovable;
 		}
-		
+
 		/**
 		 * Inserts the tile at the provided position onto the game's board
 		 * @param position the position where to insert the tile
@@ -344,7 +345,7 @@ namespace Labyrinth_44422 {
 			if(!this->canInsertTile(position, side)) {
 				throw std::runtime_error("Error while inserting a tile. Column or row cannot move.");
 			}
-			
+
 			Tile * kickedTile;
 
 			switch(side) {
@@ -378,12 +379,12 @@ namespace Labyrinth_44422 {
 					setTile(Position(position.getX(), 0), tile);
 					break;
 			}
-			
+
 			kickedTile->setPosition(Position{0, 0});
-			
+
 			return kickedTile;
 		}
-		
+
 		/**
 		 * Returns true if a player can go to a provided position
 		 * @param position the position to check to player can go to
@@ -399,24 +400,24 @@ namespace Labyrinth_44422 {
 			if(!this->isPositionInsideBoard(to)) {
 				throw std::invalid_argument("Error while checking valid tiles. \"To\" position is out of bounds");
 			}
-			
+
 			std::vector<Tile *> tilesToCheck;
 			std::vector<Tile *> tilesPossible;
 			std::vector<Tile *> tilesNotPossible;
-			
+
 			tilesPossible.push_back(this->tiles[from.getX() + from.getY() * (this->maxSize.getX())]);
 			tilesToCheck.push_back(this->tiles[from.getX() + from.getY() * (this->maxSize.getX())]);
-			
+
 			while (!tilesToCheck.empty()) {
-				
+
 				unsigned int currentTileX;
 				unsigned int currentTileY;
-				
+
 				Tile * currentTile = tilesToCheck[0];
-				
+
 				currentTileX = this->indexOf(this->tiles, currentTile) % this->maxSize.getX();
 				currentTileY = this->indexOf(this->tiles, currentTile) / this->maxSize.getX();
-				
+
 				unsigned int index;
 				if (currentTileX + 1 < this->maxSize.getX()) {
 					index = (currentTileX + 1) + currentTileY * this->maxSize.getX();
@@ -492,8 +493,8 @@ namespace Labyrinth_44422 {
 				}
 				tilesToCheck.erase(tilesToCheck.begin() + 0);
 			}
-			
-			
+
+
 			return this->includes(tilesPossible, this->tiles[to.getX() + to.getY() * this->maxSize.getX()]);
 		}
 	}  // namespace model

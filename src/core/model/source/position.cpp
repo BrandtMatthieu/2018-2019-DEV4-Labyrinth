@@ -2,7 +2,7 @@
 
 namespace Labyrinth_44422 {
 	namespace model {
-		
+
 		/**
 		 * Creates a new position
 		 * @param x the x axis of the position
@@ -10,8 +10,9 @@ namespace Labyrinth_44422 {
 		 */
 		Position::Position(unsigned int x, unsigned int y) :
 			x{x},
-			y{y}{}
-		
+			y{y} {
+		}
+
 		/**
 		 * Creates a new position from an existing position
 		 * aka. copy constructor
@@ -19,8 +20,9 @@ namespace Labyrinth_44422 {
 		 */
 		Position::Position(const Position & position) :
 			x{position.x},
-			y{position.y}{}
-			
+			y{position.y} {
+		}
+
 		/**
 		 * Assigns the value of another object to this object
 		 * @param position another position
@@ -31,7 +33,7 @@ namespace Labyrinth_44422 {
 			this->y = position.y;
 			return *this;
 		}
-		
+
 		/**
 		 * Gets the x value of the position
 		 * @return
@@ -39,7 +41,7 @@ namespace Labyrinth_44422 {
 		unsigned int Position::getX(void) const {
 			return this->x;
 		}
-		
+
 		/**
 		 * Gets the y value of the position
 		 * @return
@@ -57,7 +59,7 @@ namespace Labyrinth_44422 {
 			this->x += x;
 			this->y += y;
 		}
-		
+
 		/**
 		 * Moves the position
 		 * @param amount the amount to move the position in some axis
@@ -87,7 +89,7 @@ namespace Labyrinth_44422 {
 					break;
 			}
 		}
-		
+
 		/**
 		 * Moves the position
 		 * @param position the position to maje the sum from
@@ -96,7 +98,7 @@ namespace Labyrinth_44422 {
 			this->x += position.x;
 			this->y += position.y;
 		}
-		
+
 		/**
 		 * Sets the position to some values
 		 * @param x
@@ -106,7 +108,7 @@ namespace Labyrinth_44422 {
 			this->x = x;
 			this->y = y;
 		}
-		
+
 		/**
 		 * Sets the position to some values
 		 * @param position the position to take the new position from
@@ -115,13 +117,33 @@ namespace Labyrinth_44422 {
 			this->x = position.x;
 			this->y = position.y;
 		}
-		
+
 		/**
 		 * Returns the position as a string
 		 * @return the position as a string
 		 */
 		std::string Position::toString(void) const {
 			return "(" + std::to_string(this->x + 1) + ";" + std::to_string(this->y + 1) + ")";
+		}
+
+		/**
+		 * Returns true if two positions are equals
+		 * @param position another position
+		 * @return true if both position are equals
+		 */
+		bool Position::operator==(const Position & position) const {
+			return this->getX() == position.getX()
+				&& this->getY() == position.getY();
+		}
+
+		/**
+		 * Returns true if two positions are different
+		 * @param position another position
+		 * @return true if both position are different
+		 */
+		bool Position::operator!=(const Position & position) const {
+			return this->getX() != position.getX()
+			|| this->getY() != position.getY();
 		}
 	}  // namespace model
 }  // namespace Labyrinth_44422
