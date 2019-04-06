@@ -372,16 +372,25 @@ namespace Labyrinth_44422 {
 				"======\n"
 				"Here are the following available commands :\n"
 				"\n"
+				"> help\n"
+				"  shows the different commands\n"
+				"\n"
 				"> insert <n> [ UP | DOWN | RIGHT | LEFT ]\n"
 				"  inserts the tile at the nth row line\n"
 				"  i.e. \"insert 1 LEFT\" will insert the tile in the first line and push all the tiles to the left.\n"
 				"\n"
 				"> goto <x> <y>\n"
-				"  moves your pawn to a location, between (1;1) (upper left corner) and " + board->getMaxSize().toString() + " (bottom right corner)\n"
+				"  moves your pawn to a location, between (1;1) (upper left corner) and " + model::Position(board->getMaxSizeX() - 1, board->getMaxSizeY() - 1).toString() + " (bottom right corner)\n"
 				"  i.e. \"goto 3 3\" will try to move the pawn to the tile in (3;3) if the tile is connected to the current tile\n"
 				"\n"
-				"> help\n"
-				"  shows the different commands\n");
+				"> rotate\n"
+				"  rotates the available tile 90°\n"
+				"  i.e. \"rotate\" will rotate the available tile\n"
+				"\n"
+				"> end turn\n"
+				"  ends the player turns\n"
+				"  i.e. \"end turn\" will end your turn and go to the next player\n"
+			);
 			this->lineBreak();
 			this->lineBreak();
 		}
@@ -485,7 +494,7 @@ namespace Labyrinth_44422 {
 			this->printMessage("======================================");
 			for(const auto & tile : board->getTiles()) {
 				if(tile->hasObjective()) {
-					this->printMessage("  " + tile->getObjective() + " :\t" + ((tile->getObjective().length() <= 4) ? "\t" : "") + tile->getPosition().toString());
+					this->printMessage("  " + tile->getObjective() + " :" + std::string(1 + ((15.5 - tile->getObjective().length()) / 4), '\t') + tile->getPosition().toString());
 				}
 			}
 			if(std::any_of(availableTiles.begin(), availableTiles.end(), [](model::Tile * tile){return tile->hasObjective();})) {

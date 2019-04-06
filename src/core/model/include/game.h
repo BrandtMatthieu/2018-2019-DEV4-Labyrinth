@@ -32,6 +32,8 @@ namespace Labyrinth_44422 {
 			
 				std::string getFirstPlayerColor(void);
 				std::string getFirstGameObjective(void);
+				
+				void generateObjectiveCards(void);
 				void playersFixPosition(const Position & position, const InsertSide & side);
 				
 			public:
@@ -70,7 +72,6 @@ namespace Labyrinth_44422 {
 				
 				void start(void);
 				
-				void generateObjectiveCards(void);
 				void dealObjectiveCardsToPlayers(void);
 				
 				void generateTiles(void);

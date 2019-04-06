@@ -55,9 +55,18 @@ namespace Labyrinth_44422 {
 		 * @param x the amount to move the position on the x axis
 		 * @param y the amount to move the position on the y axis
 		 */
-		void Position::move(const unsigned int & x, const unsigned int & y) {
-			this->x += x;
-			this->y += y;
+		void Position::move(const int & x, const int & y) {
+			if(x < 0 && std::abs(x) > this->x) {
+				this->x = 0;
+			} else {
+				this->x += x;
+			}
+			
+			if(y < 0 && std::abs(y) > this->y) {
+				this->y = 0;
+			} else {
+				this->y += x;
+			}
 		}
 
 		/**

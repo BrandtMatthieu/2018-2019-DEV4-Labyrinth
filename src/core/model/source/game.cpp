@@ -65,13 +65,23 @@ namespace Labyrinth_44422 {
 				}
 			}
 		}
+		
+		/**
+ * Generates objective cards based on the objectives
+ */
+		void Game::generateObjectiveCards(void) {
+			std::random_shuffle(this->gameObjectives.begin(), this->gameObjectives.end());
+			for(auto & objective : this->gameObjectives) {
+				this->objectiveCards.push_back(new model::ObjectiveCard(objective));
+			}
+		}
 
 		/**
 		 * Creates a new Labyrinth game
 		 */
-		Game::Game(void) :
-			board{new Board(Position{7, 7})},
-			objectiveCards{} {
+		Game::Game(void) {
+			this->generateObjectiveCards();
+			this->board = new Board(Position{7, 7});
 		}
 
 		/**
@@ -295,16 +305,6 @@ namespace Labyrinth_44422 {
 		}
 
 		/**
-		 * Generates objective cards based on the objectives
-		 */
-		void Game::generateObjectiveCards(void) {
-			std::random_shuffle(this->gameObjectives.begin(), this->gameObjectives.end());
-			for(auto & objective : this->gameObjectives) {
-				this->objectiveCards.push_back(new model::ObjectiveCard(objective));
-			}
-		}
-
-		/**
 		 * Deals the generated objective cards to the players in the game
 		 */
 		void Game::dealObjectiveCardsToPlayers(void) {
@@ -333,8 +333,6 @@ namespace Labyrinth_44422 {
 				bool pathLEFT;
 				bool pathRIGHT;
 
-				// TODO
-
 				if(this->getBoard()->getUnmovableTilesPositions().at(i).getX() < this->getBoard()->getMaxSizeX() / 2) {
 					pathRIGHT = true;
 					pathLEFT = this->getBoard()->getUnmovableTilesPositions().at(i).getX() == 2
@@ -357,7 +355,7 @@ namespace Labyrinth_44422 {
 
 				this->getBoard()->setTile(
 						this->getBoard()->getUnmovableTilesPositions().at(i),
-						new Tile{pathUP, pathDOWN, pathRIGHT, pathLEFT, this->getBoard()->getUnmovableTilesPositions().at(i), false, "", 0}
+						new Tile{pathUP, pathDOWN, pathRIGHT, pathLEFT, this->getBoard()->getUnmovableTilesPositions().at(i), false, this->getFirstGameObjective(), 0}
 				);
 			}
 
@@ -444,9 +442,9 @@ namespace Labyrinth_44422 {
 			if(this->availableTiles.at(0) == nullptr) {
 				throw std::runtime_error("Error while inserting tile. Tile to insert is null.");
 			}
-
-			this->availableTiles.push_back(this->board->insertTile(position, this->availableTiles.at(0), side));
+			
 			this->getCurrentPlayer()->insertTile();
+			this->availableTiles.push_back(this->board->insertTile(position, this->availableTiles, side));
 		}
 
 		/**

@@ -186,14 +186,17 @@ namespace Labyrinth_44422 {
 		 */
 		void Board::setTile(const Position & position, Tile * const tile) {
 			if(!this->isPositionInsideBoard(position)) {
-				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
+				throw std::invalid_argument("Error while setting a tile at a position. Position (position) is out of bounds");
 			}
 			if(tile == nullptr) {
-				throw std::invalid_argument("Error while setting a tile. Cannot set the tile if the tile is null.");
+				throw std::invalid_argument("Error while setting a tile. Cannot set the tile if the tile is null (position).");
 			}
+			
+			// prevents memory leaks by not letting a tile getting overwritten
 			if(this->getTilesAt(position) != nullptr) {
 				throw std::runtime_error("Error while setting tile. Cannot overlap tile");
 			}
+			
 
 			tile->setPosition(position);
 
@@ -210,10 +213,10 @@ namespace Labyrinth_44422 {
 		 */
 		void Board::setTile(const unsigned int x, const unsigned int y, Tile * const tile) {
 			if(!this->isPositionInsideBoard(Position(x, y))) {
-				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
+				throw std::invalid_argument("Error while setting a tile at a position. Position (x;y) is out of bounds");
 			}
 			if(tile == nullptr) {
-				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null.");
+				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null (x;y).");
 			}
 
 			tile->setPosition(Position{x, y});
@@ -230,10 +233,10 @@ namespace Labyrinth_44422 {
 		 */
 		void Board::setTile(const unsigned int index, Tile * const tile) {
 			if(index > tiles.size()) {
-				throw std::invalid_argument("Error while setting a tile at a position. Position is out of bounds");
+				throw std::invalid_argument("Error while setting a tile at a position. Position (index) is out of bounds");
 			}
 			if(tile == nullptr) {
-				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null.");
+				throw std::invalid_argument("Error while setting a tile. Cannot set the index if the tile is null (index).");
 			}
 
 			tile->setPosition(Position{index % this->getMaxSizeX(), index / this->getMaxSizeX()});
@@ -332,18 +335,18 @@ namespace Labyrinth_44422 {
 		/**
 		 * Inserts the tile at the provided position onto the game's board
 		 * @param position the position where to insert the tile
-		 * @param tile the tile to insert
+		 * @param availableTiles the tile to insert
 		 * @param side what side to insert the tile at
 		 * @throw runtime_error if the provided position is out of bound
 		 * @throw runtime_error if the tile cannot be inserted this side
 		 * @return the tile kicked
 		 */
-		Tile * Board::insertTile(const Position & position, Tile * const tile, const InsertSide & side) {
+		Tile * Board::insertTile(const Position & position, std::vector<Tile *> & availableTiles, const InsertSide & side) {
 			if(!this->isPositionInsideBoard(position)) {
-				throw std::runtime_error("Error while inserting a tile. Position out of bounds.");
+				throw std::runtime_error("Error while inserting a availableTiles. Position out of bounds.");
 			}
 			if(!this->canInsertTile(position, side)) {
-				throw std::runtime_error("Error while inserting a tile. Column or row cannot move.");
+				throw std::runtime_error("Error while inserting a availableTiles. Column or row cannot move.");
 			}
 
 			Tile * kickedTile;
@@ -352,35 +355,44 @@ namespace Labyrinth_44422 {
 				case InsertSide::LEFT:
 					kickedTile = getTilesAt(Position(0, position.getY()));
 					for(unsigned int i = 0; i < this->maxSize.getX() - 1; i++) {
+						this->tiles.at(i + position.getY() * this->getMaxSizeX()) = nullptr;
 						setTile(Position(i, position.getY()), getTilesAt(Position(i + 1, position.getY())));
+						this->getTilesAt(Position{i, position.getY()})->move(InsertSide::RIGHT);
 					}
-					setTile(Position(this->maxSize.getX() - 1, position.getY()), tile);
+					setTile(Position(this->maxSize.getX() - 1, position.getY()), availableTiles.at(0));
 					break;
 				case InsertSide::RIGHT:
 					kickedTile = getTilesAt(Position(this->maxSize.getX() - 1, position.getY()));
 					for(unsigned int i = this->maxSize.getX() - 1; 0 < i; i--) {
+						this->tiles.at(i + position.getY() * this->getMaxSizeX()) = nullptr;
 						setTile(Position(i, position.getY()), getTilesAt(Position(i - 1, position.getY())));
 						this->getTilesAt(Position{i, position.getY()})->move(InsertSide::LEFT);
 					}
-					setTile(Position(0, position.getY()), tile);
+					setTile(Position(0, position.getY()), availableTiles.at(0));
 					break;
 				case InsertSide::UP:
 					kickedTile = getTilesAt(Position(position.getX(), 0));
 					for(unsigned int i = 0; i < this->maxSize.getY() - 1; i++) {
+						this->tiles.at(position.getX() + i * this->getMaxSizeX()) = nullptr;
 						setTile(Position(position.getX(), i), getTilesAt(Position(position.getX(), i + 1)));
+						this->getTilesAt(Position(position.getX(), i))->move(InsertSide::DOWN);
 					}
-					setTile(Position(position.getX(), this->maxSize.getY() - 1), tile);
+					setTile(Position(position.getX(), this->maxSize.getY() - 1), availableTiles.at(0));
 					break;
 				case InsertSide::DOWN:
 					kickedTile = getTilesAt(Position(position.getX(), this->maxSize.getY() - 1));
 					for(unsigned int i = this->maxSize.getY() - 1; 0 < i; i--) {
+						this->tiles.at(position.getX() + i * this->getMaxSizeX()) = nullptr;
 						setTile(Position(position.getX(), i), getTilesAt(Position(position.getX(), i - 1)));
+						this->getTilesAt(Position(position.getX(), i))->move(InsertSide::UP);
 					}
-					setTile(Position(position.getX(), 0), tile);
+					setTile(Position(position.getX(), 0), availableTiles.at(0));
 					break;
 			}
 
 			kickedTile->setPosition(Position{0, 0});
+			
+			availableTiles.erase(availableTiles.begin());
 
 			return kickedTile;
 		}
