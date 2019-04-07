@@ -9,9 +9,7 @@ doc/**/
 !doc/Labyrinth.jpg
 release/
 .qmake.stash
-.clean.sh
 .todo
-diff.diff
 my.res
 **/*.pro.user
 **/Makefile

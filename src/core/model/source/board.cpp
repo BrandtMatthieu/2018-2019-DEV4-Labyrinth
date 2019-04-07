@@ -507,7 +507,6 @@ namespace Labyrinth_44422 {
 				tilesToCheck.erase(tilesToCheck.begin() + 0);
 			}
 
-
 			return this->includes(tilesPossible, this->tiles[to.getX() + to.getY() * this->maxSize.getX()]);
 		}
 	}  // namespace model
