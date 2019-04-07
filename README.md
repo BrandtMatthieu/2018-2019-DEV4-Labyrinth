@@ -71,13 +71,17 @@ Aller dans `Outils > Doxygen > Document current project` ou `Ctrl + Maj + F8`.
 Basé sur le pattern **MVC**
 
 * le sous-projet **core** conteant le modèle (remise 2+)
+  * le sous-projet **controller** contenant le contrôleur (remise 2+)
+  * le sous-projet **model** contenant le modêle (remise 2+)
+  * le sous-projet **utils** contenant les méthodes utilitaires (remise 2+)
 * le sous-projet **console** contenant la vue console et le contrôleur console (remise 3+)
 * le sous-projet **gui** contenant la vue graphique et le contrôleur graphique (remise 3+)
 * le sous-projet **test** conteant les tests (librairie Catch2) (remise 2+)
 
 ## Auteur
 
-* **Brandt Matthieu** aka. **44422**
+* **Brandt Matthieu** en **D112** aka. **44422** dans le groupe **n15**.
+* Maître assistant NVS (Nicolas Vasteenkiste)
 
 ## License
 

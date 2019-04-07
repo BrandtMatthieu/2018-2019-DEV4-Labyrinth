@@ -273,7 +273,7 @@ namespace Labyrinth_44422 {
 						str += "  ";
 					}
 					for(unsigned int tuileDansRangee = 0; tuileDansRangee < board->getMaxSizeX(); tuileDansRangee++) {
-						this->printTileLine(board->getTiles().at(rangeeDeTuile * board->getMaxSizeX() + tuileDansRangee), ligneDansTuile, str);
+						this->printTileLine(board->getTilesAt(rangeeDeTuile * board->getMaxSizeX() + tuileDansRangee), ligneDansTuile, str);
 
 						if(this->spacing) {
 							str += " ";
@@ -518,7 +518,7 @@ namespace Labyrinth_44422 {
 			this->printMessage("============================");
 			this->printTile(tile);
 		}
-		
+
 		/**
 		 * Prints the infos of all the players
 		 * @param players the players in a vector

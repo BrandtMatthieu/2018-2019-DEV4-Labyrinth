@@ -51,7 +51,7 @@ namespace Labyrinth_44422 {
 			this->consoleView->printWelcome();
 
 			/* Adding players */
-			for(unsigned int i = 0; i < this->game->getMinPlayers(); i++) {
+			while(!this->game->hasEnoughPlayers()) {
 				std::string name = this->consoleView->getNewPlayerName();
 				this->game->addPlayer(name);
 			}
@@ -77,7 +77,7 @@ namespace Labyrinth_44422 {
 				this->consoleView->printBoard(this->game->getBoard());
 
 				this->consoleView->lineBreak();
-				this->consoleView->printMessage(this->game->getCurrentPlayer()->getNickname() + ", it's your turn!"); // TODO Strong binding
+				this->consoleView->printMessage(this->game->getCurrentPlayer()->getNickname() + ", it's your turn!");
 
 				this->consoleView->printPlayerInfos(this->game->getCurrentPlayer());
 
@@ -128,12 +128,12 @@ namespace Labyrinth_44422 {
 						switch(side) {
 							case model::InsertSide::UP:
 							case model::InsertSide::DOWN:
-								if(!this->game->getBoard()->isPositionInsideBoard(model::Position{position, 0})) { // TODO Strong binding
+								if(!this->game->getBoard()->isPositionInsideBoard(model::Position{position, 0})) {
 									this->consoleView->printError("You cannot insert a tile at this position. This position is out of the board's bounds.");
 									this->consoleView->printError("Please try again.");
 									continue;
 								}
-								if(!this->game->getBoard()->canInsertTile(model::Position{position, 0}, side)) { // TODO Strong binding
+								if(!this->game->getBoard()->canInsertTile(model::Position{position, 0}, side)) {
 									this->consoleView->printError("You cannot move this column. One of the tile cannot be moved.");
 									this->consoleView->printError("Please try again with another column.");
 									continue;
@@ -145,12 +145,12 @@ namespace Labyrinth_44422 {
 								break;
 							case model::InsertSide::LEFT:
 							case model::InsertSide::RIGHT:
-								if(!this->game->getBoard()->isPositionInsideBoard(model::Position{0, position})) { // TODO Strong binding
+								if(!this->game->getBoard()->isPositionInsideBoard(model::Position{0, position})) {
 									this->consoleView->printError("You cannot insert a tile at this position. This position is out of the board's bounds.");
 									this->consoleView->printError("Please try again.");
 									continue;
 								}
-								if(!this->game->getBoard()->canInsertTile(model::Position{0, position}, side)) { // TODO Strong binding
+								if(!this->game->getBoard()->canInsertTile(model::Position{0, position}, side)) {
 									this->consoleView->printError("You cannot move this row. One of the tile cannot be moved.");
 									this->consoleView->printError("Please try again with another row.");
 									continue;
@@ -164,7 +164,7 @@ namespace Labyrinth_44422 {
 
 
 					} else if(std::regex_match(answer, std::regex(" {0,}(goto|g) {1,}[0-9]+ {1,}[0-9]+ {0,}"))) {
-						if(!this->game->getCurrentPlayer()->hasInsertedTile()) { // TODO Strong binding
+						if(!this->game->getCurrentPlayer()->hasInsertedTile()) {
 							this->consoleView->printError("You cannot move you pawn now since you haven't inserted a tile in the Labyrinth yet.");
 							this->consoleView->printError("Please insert a tile in the Labyrinth first then try again.");
 							continue;

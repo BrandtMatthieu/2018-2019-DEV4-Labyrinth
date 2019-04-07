@@ -241,7 +241,7 @@ namespace Labyrinth_44422 {
 		 * @return true if the game has enough players to start
 		 */
 		bool Game::hasEnoughPlayers(void) const {
-			return this->players.size() >= this->minPlayers;
+			return this->players.size() >= this->getMinPlayers();
 		}
 
 		/**
@@ -318,7 +318,7 @@ namespace Labyrinth_44422 {
 		 * @throw runtime_error if game has too fex players to start
 		 */
 		void Game::start(void) {
-			if(this->getPlayersCount() < this->getMinPlayers()) {
+			if(this->hasEnoughPlayers()) {
 				throw std::runtime_error("Error while starting the game. Too few players to start the game");
 			}
 

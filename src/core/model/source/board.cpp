@@ -167,6 +167,25 @@ namespace Labyrinth_44422 {
 		}
 
 		/**
+		 * Returns the address of the tile at a provided position
+		 * @index position  the position of the tile to get
+		 * @throw invalid_argument if the position is out of bounds of the board
+		 * @throw runtime_error if the tile retrieved is null (no tile at this position)
+		 * @return the address of the tile at a provided position
+		 */
+		Tile * Board::getTilesAt(const unsigned int index) const {
+			model::Position position{index % this->getMaxSizeX(), index / this->getMaxSizeX()};
+			if(!this->isPositionInsideBoard(position)) {
+				throw std::invalid_argument("Error while getting the tile at "
+					+ position.toString() +
+					". Position is out of board's bounds (1;1) to " +
+					this->maxSize.toString());
+			}
+
+			return this->tiles.at(index);
+		}
+
+		/**
 		 * Checks if the provided position is inside the board
 		 * @param position the position to check
 		 * @return true if the provided position in inside the game's board
@@ -191,12 +210,12 @@ namespace Labyrinth_44422 {
 			if(tile == nullptr) {
 				throw std::invalid_argument("Error while setting a tile. Cannot set the tile if the tile is null (position).");
 			}
-			
+
 			// prevents memory leaks by not letting a tile getting overwritten
 			if(this->getTilesAt(position) != nullptr) {
 				throw std::runtime_error("Error while setting tile. Cannot overlap tile");
 			}
-			
+
 
 			tile->setPosition(position);
 
@@ -392,7 +411,7 @@ namespace Labyrinth_44422 {
 			}
 
 			kickedTile->setPosition(Position{0, 0});
-			
+
 			availableTiles.erase(availableTiles.begin());
 
 			return kickedTile;
