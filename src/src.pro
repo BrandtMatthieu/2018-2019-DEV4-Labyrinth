@@ -1,12 +1,24 @@
-SUBDIRS += \
-    controller \
-    model \
-    core \
-    console \
+SOURCES += \
+    console/source/consoleView.cpp \
+    core/controller/source/controllerConsole.cpp \
+    core/model/source/board.cpp \
+    core/model/source/game.cpp \
+    core/model/source/objectiveCard.cpp \
+    core/model/source/player.cpp \
+    core/model/source/position.cpp \
+    core/model/source/tile.cpp \
+    core/mainConsole.cpp \
+    gui/source/guiView.cpp
 
-controller.subdirs = $$PWD/core/controller
-model.subdirs = $$PWD/core/model
-core.subdirs = $$PWD/core
-console.subdirs = $$PWD/console
-
-core.depends = controller model console
+HEADERS += \
+    console/include/consoleView.h \
+    core/controller/include/controllerConsole.h \
+    core/model/include/board.h \
+    core/model/include/game.h \
+    core/model/include/insertSide.h \
+    core/model/include/objectiveCard.h \
+    core/model/include/player.h \
+    core/model/include/position.h \
+    core/model/include/tile.h \
+    core/utils/include/utils.h \
+    gui/include/guiView.h
