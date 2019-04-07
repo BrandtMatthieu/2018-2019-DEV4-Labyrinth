@@ -52,15 +52,35 @@ namespace Labyrinth_44422 {
 				throw std::invalid_argument("Error while fixing players positions. Position is out of bounds.");
 			}
 
-			for(const auto & player : this->players) { // TODO
+			for(const auto & player : this->players) {
 				switch(side) {
 					case InsertSide::DOWN :
+						if(player->getPosition().getY() == this->board->getMaxSizeY() - 1) {
+							player->getPosition().set(player->getPosition().getX(), 0);
+						} else {
+							player->getPosition().move(1, InsertSide::DOWN);
+						}
 						break;
 					case InsertSide::UP :
+						if(player->getPosition().getY() == 0) {
+							player->getPosition().set(player->getPosition().getX(), this->board->getMaxSizeY() - 1);
+						} else {
+							player->getPosition().move(1, InsertSide::UP);
+						}
 						break;
 					case InsertSide::LEFT :
+						if(player->getPosition().getX() == 0) {
+							player->getPosition().set(this->board->getMaxSizeX() - 1, player->getPosition().getY());
+						} else {
+							player->getPosition().move(1, InsertSide::LEFT);
+						}
 						break;
 					case InsertSide::RIGHT :
+						if(player->getPosition().getX() == this->board->getMaxSizeX() - 1) {
+							player->getPosition().set(0, player->getPosition().getY());
+						} else {
+							player->getPosition().move(1, InsertSide::RIGHT);
+						}
 						break;
 				}
 			}
@@ -271,7 +291,7 @@ namespace Labyrinth_44422 {
 		 * @throw runtime_error if the max number of player is already reached and trying to add more players
 		 */
 		void Game::addPlayer(const std::string & name) {
-			if(this->getPlayers().size() >= this->getMaxPlayers()) {
+			if(this->getPlayersCount() >= this->getMaxPlayers()) {
 				throw std::runtime_error("Error while adding player. Maximum amount of player (" +
 				std::to_string(this->getMaxPlayers()) + ") already reached.");
 			}
@@ -285,6 +305,7 @@ namespace Labyrinth_44422 {
 		 * @throw runtime_error if could not end current player's turn and go to next player
 		 */
 		void Game::nextPlayer(void) {
+			this->getCurrentPlayer()->endTurn();
 			try {
 				this->currentPlayerIndex = ((this->currentPlayerIndex + 1) % this->getPlayersCount());
 			} catch(std::exception & e) {
@@ -297,7 +318,7 @@ namespace Labyrinth_44422 {
 		 * @throw runtime_error if game has too fex players to start
 		 */
 		void Game::start(void) {
-			if(this->getPlayers().size() < this->getMinPlayers()) {
+			if(this->getPlayersCount() < this->getMinPlayers()) {
 				throw std::runtime_error("Error while starting the game. Too few players to start the game");
 			}
 
@@ -309,7 +330,7 @@ namespace Labyrinth_44422 {
 		 */
 		void Game::dealObjectiveCardsToPlayers(void) {
 			for(unsigned int playerIndex = 0; !objectiveCards.empty(); playerIndex = ((playerIndex + 1) % this->getPlayersCount())) {
-				this->players.at(playerIndex)->addObjective(this->objectiveCards.at(0));
+				this->getPlayerAt(playerIndex)->addObjective(this->objectiveCards.at(0));
 				this->objectiveCards.erase(this->objectiveCards.begin(), this->objectiveCards.begin() + 1);
 			}
 		}
@@ -445,6 +466,7 @@ namespace Labyrinth_44422 {
 			
 			this->getCurrentPlayer()->insertTile();
 			this->availableTiles.push_back(this->board->insertTile(position, this->availableTiles, side));
+			this->playersFixPosition(position, side);
 		}
 
 		/**

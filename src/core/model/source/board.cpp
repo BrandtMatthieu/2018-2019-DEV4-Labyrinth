@@ -386,6 +386,7 @@ namespace Labyrinth_44422 {
 						setTile(Position(position.getX(), i), getTilesAt(Position(position.getX(), i - 1)));
 						this->getTilesAt(Position(position.getX(), i))->move(InsertSide::UP);
 					}
+					this->tiles.at(position.getX()) = nullptr;
 					setTile(Position(position.getX(), 0), availableTiles.at(0));
 					break;
 			}

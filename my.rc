@@ -28795,8 +28795,8 @@ LABYRINTH ICON "doc/labyrinth.ico"
 // VERSIONINFO : VersionInfo
 
 1 VERSIONINFO
-  FILEVERSION 0,1,3,24
-  PRODUCTVERSION 0,1,3,24
+  FILEVERSION 0,1,4,7
+  PRODUCTVERSION 0,1,4,7
   FILEFLAGSMASK 0x3FL
   FILEFLAGS 0xBL
   FILEOS 0x40004L
@@ -28809,10 +28809,10 @@ BEGIN
       VALUE "LegalTrademarks", ""
       VALUE "ProductName", "Labyrinth"
       VALUE "Comments", "Labyrinth 44422 D112 DEVG4 2018-2019"
-      VALUE "ProductVersion", "0.1.03.24"
+      VALUE "ProductVersion", "0.1.04.07"
       VALUE "FileDescription", "Labyrinth_44422"
       VALUE "CompanyName", "DEVG4 - D112"
-      VALUE "FileVersion", "0.1.03.24"
+      VALUE "FileVersion", "0.1.04.07"
       VALUE "LegalCopyright", ""
       VALUE "InternalName", "Labyrinth"
     END

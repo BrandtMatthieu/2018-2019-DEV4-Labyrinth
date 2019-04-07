@@ -231,9 +231,7 @@ namespace Labyrinth_44422 {
 				this->printMessage("Game is still in progress...");
 				this->printMessage("Current player : " + game->getCurrentPlayer()->getNickname());
 				this->printMessage("Objective left count for each player : ");
-				for(Labyrinth_44422::model::Player * const & player_ptr : game->getPlayers()) {
-					this->printMessage("  " + player_ptr->getNickname() + "\t: " + std::to_string(player_ptr->getObjectiveCardsLeftCount()) + " objective cards left");
-				}
+				this->printPlayersInfos(game->getPlayers());
 			}
 
 		}
@@ -494,7 +492,7 @@ namespace Labyrinth_44422 {
 			this->printMessage("======================================");
 			for(const auto & tile : board->getTiles()) {
 				if(tile->hasObjective()) {
-					this->printMessage("  " + tile->getObjective() + " :" + std::string(1 + ((15.5 - tile->getObjective().length()) / 4), '\t') + tile->getPosition().toString());
+					this->printMessage("  " + tile->getObjective() + " :" + std::string(1 + ((15 - tile->getObjective().length()) / 4), '\t') + tile->getPosition().toString());
 				}
 			}
 			if(std::any_of(availableTiles.begin(), availableTiles.end(), [](model::Tile * tile){return tile->hasObjective();})) {
