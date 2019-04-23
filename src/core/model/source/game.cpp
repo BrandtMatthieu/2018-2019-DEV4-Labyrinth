@@ -87,8 +87,8 @@ namespace Labyrinth_44422 {
 		}
 		
 		/**
- * Generates objective cards based on the objectives
- */
+         * Generates objective cards based on the objectives
+         */
 		void Game::generateObjectiveCards(void) {
 			std::random_shuffle(this->gameObjectives.begin(), this->gameObjectives.end());
 			for(auto & objective : this->gameObjectives) {
@@ -318,7 +318,7 @@ namespace Labyrinth_44422 {
 		 * @throw runtime_error if game has too fex players to start
 		 */
 		void Game::start(void) {
-			if(this->hasEnoughPlayers()) {
+			if(!this->hasEnoughPlayers()) {
 				throw std::runtime_error("Error while starting the game. Too few players to start the game");
 			}
 
