@@ -2,19 +2,20 @@
 .vscode/
 build/
 cmake*/
-qmake*/
 debug/
-doc/**/
-!doc/additionnal.css
-!doc/Labyrinth.jpg
+doc/*/
+qmake*/
 release/
+resource/*.html
+test/Boost Test/*.cpp
+.CMakeLists*.*
 .qmake.stash
 .todo
 my.res
-**/*.pro.user
+*.zip
+**/*.afdesign
 **/Makefile
 **/Makefile.*
-**/CMakeLists.txt
-**/CMake*.*
+!**/CMakeLists.txt
 **/clion*.*
 !**/.gitkeep

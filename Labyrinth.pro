@@ -4,5 +4,4 @@ TARGET = Labyrinth
 
 TEMPLATE = subdirs
 
-SUBDIRS += \
-    src
+SUBDIRS += src
