@@ -20,6 +20,7 @@ namespace Labyrinth_44422 {
 			private:
 				QWidget *centralWidget;
 				QHBoxLayout *centralLayout;
+
 				QGridLayout *gLayout;
 				QVBoxLayout *vLayout;
 
@@ -34,10 +35,10 @@ namespace Labyrinth_44422 {
 				std::string windowsTitle = "Labyrinth | n°15 | 44422 | D112 | DEVG4 | 2018-2019";
 
 			public:
-				GUIView(model::Game * game = nullptr);
+				explicit GUIView(model::Game * game = nullptr);
 				~GUIView(void) = default;
 
-				void update(void);
+				void updateDisplay(void);
 
 				void displayWelcome(void);
 				std::string askPlayerName(void);

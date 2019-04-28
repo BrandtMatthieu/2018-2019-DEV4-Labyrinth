@@ -6,21 +6,21 @@
 #include "./../../core/model/include/player.h"
 
 namespace Labyrinth_44422 {
-    namespace gui {
+	namespace gui {
 
-        class PlayerInfos : public QFormLayout {
+		class PlayerInfos : public QHBoxLayout {
 
-            Q_OBJECT
+			Q_OBJECT
 
-            private:
-                model::Player *player = nullptr;
+			private:
+				model::Player *player = nullptr;
 
-            public:
-                PlayerInfos(QWidget *parent, model::Player *player, bool isCurrentPlayer);
-                ~PlayerInfos() = default;
-        };
+			public:
+				PlayerInfos(QWidget *parent, model::Player *player, bool isCurrentPlayer);
+				~PlayerInfos() = default;
+		};
 
-    } // namespace gui
+	} // namespace gui
 } // namespace Labyrinth_44422
 
 #endif // PLAYERINFOS_H

@@ -18,15 +18,20 @@ namespace Labyrinth_44422 {
 		}
 
 		void ControllerGUI::start(void) {
-			/*
+
 			this->game->generateTiles();
-			this->guiView->displayWelcome();
-			while (!this->game->hasEnoughPlayers()) {
-				std::string name = this->guiView->askPlayerName();
-				this->game->addPlayer(name);
-			}
-			this->guiView->show();
-			*/
+			//this->guiView->displayWelcome();
+
+			this->game->addPlayer("Player 1");
+			this->game->addPlayer("Player 2");
+			this->game->addPlayer("Player 3");
+			this->game->addPlayer("Player 4");
+
+			this->game->dealObjectiveCardsToPlayers();
+			this->game->start();
+
+
+			this->guiView->updateDisplay();
 		}
 	} // namespace controller
 } // namespace Labyrinth_44422

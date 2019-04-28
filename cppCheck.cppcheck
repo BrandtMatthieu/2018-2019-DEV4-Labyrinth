@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="1">
+    <builddir>cppCheck-cppcheck-build-dir</builddir>
+    <platform>Unspecified</platform>
+    <analyze-all-vs-configs>true</analyze-all-vs-configs>
+    <includedir>
+        <dir name="src/"/>
+        <dir name="test/"/>
+        <dir name="D:/Programs/Qt/5.12.1/mingw73_64/"/>
+        <dir name="D:/Programs/MinGW/lib/gcc/mingw32/6.3.0/include/c++/"/>
+    </includedir>
+    <paths>
+        <dir name="src"/>
+        <dir name="test"/>
+    </paths>
+</project>

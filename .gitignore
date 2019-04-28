@@ -2,6 +2,7 @@
 .vscode/
 build/
 cmake*/
+cppCheck*/
 debug/
 doc/*/
 qmake*/
@@ -16,6 +17,8 @@ my.res
 **/*.afdesign
 **/Makefile
 **/Makefile.*
+**/object*.Debug
+**/object*.Release
 !**/CMakeLists.txt
 **/clion*.*
 !**/.gitkeep

@@ -12,7 +12,7 @@ namespace Labyrinth_44422 {
 			Q_OBJECT
 
 			public:
-				AskPlayerName(QWidget * parent = nullptr);
+				explicit AskPlayerName(QWidget * parent = nullptr);
 				~AskPlayerName(void) = default;
 
 		};

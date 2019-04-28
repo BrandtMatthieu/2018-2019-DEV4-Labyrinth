@@ -13,7 +13,7 @@ namespace Labyrinth_44422 {
 
 			public:
 
-				WelcomeWindow(QWidget * parent = nullptr);
+				explicit WelcomeWindow(QWidget * parent = nullptr);
 				~WelcomeWindow(void) = default;
 		};
 

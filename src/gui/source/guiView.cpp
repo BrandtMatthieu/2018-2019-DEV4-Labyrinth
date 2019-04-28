@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QPushButton>
 
+
+#include <iostream>
+
 #include "./../include/guiView.h"
 #include "./../include/playerInfos.h"
 #include "./../include/welcomeWindow.h"
@@ -13,19 +16,26 @@ namespace Labyrinth_44422 {
 
 		GUIView::GUIView(model::Game *game) :
 			QMainWindow{nullptr},
-			game{game},
-			centralWidget{new QWidget(this)},
-			centralLayout{new QHBoxLayout(this)},
-			gLayout{new QGridLayout(centralWidget)},
-			vLayout{new QVBoxLayout(centralWidget)} {
+			game{game} {
 
-			this->show();
-			this->activateWindow();
 			this->setWindowTitle(QString::fromStdString(this->windowsTitle));
+			this->setMinimumSize(800, 600);
 
-			centralLayout->addLayout(this->gLayout);
+			this->centralWidget = new QWidget(this);
 
-			centralLayout->addLayout(this->vLayout);
+			this->centralLayout = new QHBoxLayout(centralWidget); //
+
+			this->gLayout = new QGridLayout(centralWidget);
+			this->gLayout->addWidget(new QPushButton(centralWidget));
+			this->gLayout->addWidget(new QPushButton(centralWidget));
+			this->gLayout->addWidget(new QPushButton(centralWidget));
+			this->gLayout->addWidget(new QPushButton(centralWidget));
+			this->gLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+			this->vLayout = new QVBoxLayout(centralWidget);
+
+			centralLayout->addLayout(this->gLayout, 200);
+
+			centralLayout->addLayout(this->vLayout, 200);
 /*
 			for(unsigned int i = 7; i > 0; i--) {
 				auto * btn = new QPushButton(QString::fromStdString(std::string("test").append(std::to_string(i))));
@@ -38,25 +48,32 @@ namespace Labyrinth_44422 {
 				vLayout->addItem(new PlayerInfos(centralWidget, game->getPlayerAt(i)));
 			}
 */
-			centralWidget->setLayout(centralLayout);
-			setCentralWidget(centralWidget);
+			setCentralWidget(this->centralWidget);
 
+			this->show();
+			this->activateWindow();
 		}
 
-		void GUIView::update(void) {
-			/*
+		void GUIView::updateDisplay(void) {
+/*
 			for(auto * el : this->vLayout->children()) {
 				this->vLayout->removeItem(el);
 				delete el;
 			}
 */
+
+			std::cout << std::to_string(this->game->getPlayersCount()) << std::endl;
+
 			for(unsigned int i = 0; i < this->game->getPlayersCount(); i++) {
-				this->vLayout->addItem(new PlayerInfos(this->centralWidget, this->game->getPlayerAt(i), this->game->getPlayerAt(i) == this->game->getCurrentPlayer()));
+				auto * playerInfoBox = new PlayerInfos(this, this->game->getPlayerAt(i), this->game->getPlayerAt(i) == this->game->getCurrentPlayer());
+				this->vLayout->addLayout(playerInfoBox);
 			}
+			this->vLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+			this->update();
 		}
 
 		void GUIView::displayWelcome(void) {
-			WelcomeWindow ww(this);
+			new WelcomeWindow(this);
 		}
 
 		std::string GUIView::askPlayerName(void) {

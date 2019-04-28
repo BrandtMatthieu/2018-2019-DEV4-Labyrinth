@@ -33,5 +33,8 @@ HEADERS += \
 	gui/include/welcomeWindow.h
 
 TEMPLATE = app
+TARGET = Labyrinth
+
+RESOURCES += ./../my.rc
 
 QT += core gui widgets

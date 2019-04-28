@@ -1,0 +1,3 @@
+TEMPLATE = SUBDIRS
+
+SUBDIRS += Catch2 Test
