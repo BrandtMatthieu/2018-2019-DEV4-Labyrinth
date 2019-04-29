@@ -12,19 +12,19 @@
  */
 int main(int argc, char *argv[]) {
 
-    try {
+	try {
 
-        QApplication app(argc, argv);
-        Labyrinth_44422::controller::ControllerGUI controllerGui;
-        app.exec();
+		QApplication app(argc, argv);
+		Labyrinth_44422::controller::ControllerGUI controllerGui;
+		app.exec();
 
-    } catch (const std::exception &exception) {
+	} catch (const std::exception &exception) {
 
-        std::cout << std::endl << "Labyrinth has encountered an error and had to close.";
-        std::cout << std::endl << exception.what();
-        exit(-1);
+		std::cout << std::endl << "Labyrinth has encountered an error and had to close.";
+		std::cout << std::endl << exception.what();
+		exit(-1);
 
-    }
+	}
 
-    exit(0);
+	exit(0);
 }

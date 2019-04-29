@@ -4,76 +4,74 @@
 #include "./position.h"
 
 namespace Labyrinth_44422 {
-    namespace model {
+	namespace model {
 
-        /**
-         * Represents a tile for the board game Labyrinth
-         * @author 44422
-         * @version 0.1.1
-         * @since 2019-03-01
-         */
-        class Tile {
-        private:
-            bool pathUP = false;
-            bool pathDOWN = false;
-            bool pathRIGHT = false;
-            bool pathLEFT = false;
+		/**
+		 * Represents a tile for the board game Labyrinth
+		 * @author 44422
+		 * @version 0.1.1
+		 * @since 2019-03-01
+		 */
+		class Tile {
+			private:
+				bool pathUP = false;
 
-            Position position = model::Position{0, 0};
-            bool movable= true;
-            std::string objective = "objective";
-            unsigned int startNumber = 0;
+				bool pathDOWN = false;
 
-        public:
-            Tile(const bool &pathUP,
-                 const bool &pathDOWN,
-                 const bool &pathRIGHT,
-                 const bool &pathLEFT,
-                 const Position &position,
-                 const bool &movable,
-                 const std::string &objective,
-                 const unsigned int startNumber
-            );
+				bool pathRIGHT = false;
 
-            Tile(const Tile &tile);
+				bool pathLEFT = false;
 
-            ~Tile(void) = default;
+				Position position = model::Position{0, 0};
 
-            bool operator==(const Tile &tile) const;
+				bool movable = true;
 
-            bool operator!=(const Tile &tile) const;
+				std::string objective = "objective";
 
-            bool getPathUP(void) const;
+				unsigned int startNumber = 0;
 
-            bool getPathDOWN(void) const;
+			public:
+				Tile(const bool &pathUP, const bool &pathDOWN, const bool &pathRIGHT, const bool &pathLEFT, const Position &position, const bool &movable, const std::string &objective, const unsigned int startNumber);
 
-            bool getPathRIGHT(void) const;
+				Tile(const Tile &tile);
 
-            bool getPathLEFT(void) const;
+				~Tile(void) = default;
 
-            Position getPosition(void) const;
+				bool operator==(const Tile &tile) const;
 
-            bool isMovable(void) const;
+				bool operator!=(const Tile &tile) const;
 
-            std::string getObjective(void) const;
+				bool getPathUP(void) const;
 
-            bool hasObjective(void) const;
+				bool getPathDOWN(void) const;
 
-            unsigned int getStartNumber(void) const;
+				bool getPathRIGHT(void) const;
 
-            bool hasStartNumber(void) const;
+				bool getPathLEFT(void) const;
 
-            void setPosition(const Position &position);
+				Position getPosition(void) const;
 
-            void rotateRight90(void);
+				bool isMovable(void) const;
 
-            void rotateLeft90(void);
+				std::string getObjective(void) const;
 
-            void move(const InsertSide &side);
+				bool hasObjective(void) const;
 
-        };
+				unsigned int getStartNumber(void) const;
 
-    } // namespace model
+				bool hasStartNumber(void) const;
+
+				void setPosition(const Position &position);
+
+				void rotateRight90(void);
+
+				void rotateLeft90(void);
+
+				void move(const InsertSide &side);
+
+		};
+
+	} // namespace model
 } // namespace Labyrinth_44422
 
 #endif // TILE_H

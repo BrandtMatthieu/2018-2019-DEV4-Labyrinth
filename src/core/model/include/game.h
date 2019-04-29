@@ -8,96 +8,96 @@
 #include "./tile.h"
 
 namespace Labyrinth_44422 {
-    namespace model {
+	namespace model {
 
-        /**
-         * Represents the labyrinth board game
-         * @author 44422
-         * @version 0.1.1
-         * @since 2019-03-01
-         */
-        class Game {
-        private:
-            unsigned int minPlayers = 2;
-            unsigned int maxPlayers = 4;
+		/**
+		 * Represents the labyrinth board game
+		 * @author 44422
+		 * @version 0.1.1
+		 * @since 2019-03-01
+		 */
+		class Game {
+			private:
+				unsigned int minPlayers = 2;
 
-            std::vector<Player *> players;
-            Board *board = nullptr;
-            Player *winner = nullptr;
-            std::vector<Tile *> availableTiles;
-            unsigned int currentPlayerIndex = 0;
+				unsigned int maxPlayers = 4;
 
-            std::vector<std::string> playerColors = {"Red", "Blue", "Green", "Yellow"};
-            std::vector<ObjectiveCard *> objectiveCards;
+				std::vector<Player *> players;
 
-            std::string getFirstPlayerColor(void);
+				Board *board = nullptr;
 
-            std::string getFirstGameObjective(void);
+				Player *winner = nullptr;
 
-            void generateObjectiveCards(void);
+				std::vector<Tile *> availableTiles;
 
-            void playersFixPosition(const Position &position, const InsertSide &side);
+				unsigned int currentPlayerIndex = 0;
 
-        public:
-            std::vector<std::string> gameObjectives = {
-                    "bat", "beetle", "bones", "butterfly",
-                    "candlestick", "crown", "dragon", "emerald",
-                    "fairy", "genius", "ghost", "gnome",
-                    "golden_purse", "grimoire", "helm", "keys",
-                    "lizard", "map", "owl", "rat",
-                    "ring", "spider", "sword", "treasure_chest"};
+				std::vector<std::string> playerColors = {"Red", "Blue", "Green", "Yellow"};
 
-        public:
-            Game(void);
+				std::vector<ObjectiveCard *> objectiveCards;
 
-            Game(const Game &game);
+				std::string getFirstPlayerColor(void);
 
-            Game &operator=(const Game &game);
+				std::string getFirstGameObjective(void);
 
-            ~Game(void);
+				void generateObjectiveCards(void);
 
-            unsigned int getMinPlayers(void) const;
+				void playersFixPosition(const Position &position, const InsertSide &side);
 
-            unsigned int getMaxPlayers(void) const;
+			public:
+				std::vector<std::string> gameObjectives = {"bat", "beetle", "bones", "butterfly", "candlestick", "crown", "dragon", "emerald", "fairy", "genius", "ghost", "gnome", "golden_purse", "grimoire", "helm", "keys", "lizard", "map", "owl", "rat", "ring", "spider", "sword", "treasure_chest"};
 
-            std::vector<Player *> getPlayers(void) const;
+			public:
+				Game(void);
 
-            Player *getPlayerAt(const unsigned int index) const;
+				Game(const Game &game);
 
-            unsigned int getPlayersCount(void) const;
+				Game &operator=(const Game &game);
 
-            bool hasEnoughPlayers(void) const;
+				~Game(void);
 
-            Board *getBoard(void) const;
+				unsigned int getMinPlayers(void) const;
 
-            Player *getWinner(void) const;
+				unsigned int getMaxPlayers(void) const;
 
-            bool hasWinner(void) const;
+				std::vector<Player *> getPlayers(void) const;
 
-            std::vector<Tile *> getAvailableTiles(void) const;
+				Player *getPlayerAt(const unsigned int index) const;
 
-            Player *getCurrentPlayer(void) const;
+				unsigned int getPlayersCount(void) const;
 
-            void addPlayer(const std::string &name);
+				bool hasEnoughPlayers(void) const;
 
-            void nextPlayer(void);
+				Board *getBoard(void) const;
 
-            void start(void);
+				Player *getWinner(void) const;
 
-            void dealObjectiveCardsToPlayers(void);
+				bool hasWinner(void) const;
 
-            void generateTiles(void);
+				std::vector<Tile *> getAvailableTiles(void) const;
 
-            void currentPlayerCheckObjective(void);
+				Player *getCurrentPlayer(void) const;
 
-            void currentPlayerInsertTile(const Position &position, const InsertSide &side);
+				void addPlayer(const std::string &name);
 
-            void currentPlayerGoTo(const Position &position);
+				void nextPlayer(void);
 
-            bool canCurrentPlayerGoTo(const Position &position);
-        };
+				void start(void);
 
-    }  // namespace model
+				void dealObjectiveCardsToPlayers(void);
+
+				void generateTiles(void);
+
+				void currentPlayerCheckObjective(void);
+
+				void currentPlayerInsertTile(const Position &position, const InsertSide &side);
+
+				void currentPlayerGoTo(const Position &position);
+
+				bool canCurrentPlayerGoTo(const Position &position);
+		};
+
+	}  // namespace model
 }  // namespace Labyrinth_44422
 
 #endif // GAME_H

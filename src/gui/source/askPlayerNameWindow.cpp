@@ -3,7 +3,11 @@
 namespace Labyrinth_44422 {
 	namespace gui {
 
-		AskPlayerName::AskPlayerName(QWidget * parent) : QInputDialog{parent} {
+		/**
+		 * Creates a popup window to ask a player's nickname
+		 * @param parent the parent window
+		 */
+		AskPlayerName::AskPlayerName(QWidget *parent) : QInputDialog{parent} {
 			this->setCancelButtonText("Plus de joueurs");
 			this->setInputMode(QInputDialog::InputMode::TextInput);
 			this->setLabelText("Entrez un nom pour ce joueur.");

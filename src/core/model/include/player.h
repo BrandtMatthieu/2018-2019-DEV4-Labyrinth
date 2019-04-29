@@ -8,64 +8,69 @@
 #include "./position.h"
 
 namespace Labyrinth_44422 {
-    namespace model {
+	namespace model {
 
-        /**
-         * Represents a player for the game
-         * @author 44422
-         * @version 0.1.1
-         * @since 2019-03-01
-         */
-        class Player {
-        private:
-            std::string nickname = "player";
-            std::string color = "red";
-            Position position = model::Position{0, 0};
-            std::vector<ObjectiveCard *> objectiveCardsLeft;
-            std::vector<ObjectiveCard *> completedObjectiveCards;
+		/**
+		 * Represents a player for the game
+		 * @author 44422
+		 * @version 0.1.1
+		 * @since 2019-03-01
+		 */
+		class Player {
+			private:
+				std::string nickname = "player";
 
-            bool _hasInsertedTile = false;
-            bool _hasMovedPawn = false;
+				std::string color = "red";
 
-        public:
-            Player(const std::string &nickname, const std::string &color, const Position &position);
+				Position position = model::Position{0, 0};
 
-            Player(const Player &player);
+				std::vector<ObjectiveCard *> objectiveCardsLeft;
 
-            ~Player(void);
+				std::vector<ObjectiveCard *> completedObjectiveCards;
 
-            std::string getNickname(void) const;
+				bool _hasInsertedTile = false;
 
-            std::string getColor(void) const;
+				bool _hasMovedPawn = false;
 
-            Position getPosition(void) const;
+			public:
+				Player(const std::string &nickname, const std::string &color, const Position &position);
 
-            ObjectiveCard *getCurrentObjective(void) const;
+				Player(const Player &player);
 
-            void completeCurrentObjective(void);
+				~Player(void);
 
-            std::vector<ObjectiveCard *> getCompletedObjectiveCards(void) const;
+				std::string getNickname(void) const;
 
-            unsigned int getCompletedObjectiveCardsCount(void) const;
+				std::string getColor(void) const;
 
-            std::vector<ObjectiveCard *> getObjectiveCardsLeft(void) const;
+				Position getPosition(void) const;
 
-            unsigned int getObjectiveCardsLeftCount(void) const;
+				ObjectiveCard *getCurrentObjective(void) const;
 
-            void addObjective(ObjectiveCard *const &objectiveCard);
+				void completeCurrentObjective(void);
 
-            bool hasInsertedTile(void) const;
+				std::vector<ObjectiveCard *> getCompletedObjectiveCards(void) const;
 
-            bool hasMovedPawn(void) const;
+				unsigned int getCompletedObjectiveCardsCount(void) const;
 
-            void insertTile(void);
+				std::vector<ObjectiveCard *> getObjectiveCardsLeft(void) const;
 
-            void movePawn(const Position &position);
+				unsigned int getObjectiveCardsLeftCount(void) const;
 
-            void endTurn(void);
-        };
+				void addObjective(ObjectiveCard *const &objectiveCard);
 
-    } // namespace model
+				bool hasInsertedTile(void) const;
+
+				bool hasMovedPawn(void) const;
+
+				void insertTile(void);
+
+				void movePawn(const Position &position);
+
+				void endTurn(void);
+		};
+
+	} // namespace model
 } // namespace Labyrinth_44422
 
 #endif // PLAYER_H

@@ -6,50 +6,51 @@
 #include "./../include/insertSide.h"
 
 namespace Labyrinth_44422 {
-    namespace model {
+	namespace model {
 
-        /**
-         * Represents a position of any object in the game
-         * @author 44422
-         * @version 0.1.2
-         * @since 2019-03-04
-         */
-        class Position {
-        private:
-            unsigned int x = 0;
-            unsigned int y = 0;
+		/**
+		 * Represents a position of any object in the game
+		 * @author 44422
+		 * @version 0.1.2
+		 * @since 2019-03-04
+		 */
+		class Position {
+			private:
+				unsigned int x = 0;
 
-        public:
-            Position(unsigned x, unsigned y);
+				unsigned int y = 0;
 
-            Position(const Position &position);
+			public:
+				Position(unsigned x, unsigned y);
 
-            Position &operator=(const Position &position);
+				Position(const Position &position);
 
-            ~Position() = default;
+				Position &operator=(const Position &position);
 
-            bool operator==(const Position &position) const;
+				~Position() = default;
 
-            bool operator!=(const Position &position) const;
+				bool operator==(const Position &position) const;
 
-            unsigned int getX(void) const;
+				bool operator!=(const Position &position) const;
 
-            unsigned int getY(void) const;
+				unsigned int getX(void) const;
 
-            void move(const int &x, const int &y);
+				unsigned int getY(void) const;
 
-            void move(const unsigned int &amount, const InsertSide &side);
+				void move(const int &x, const int &y);
 
-            void move(const Position &position);
+				void move(const unsigned int &amount, const InsertSide &side);
 
-            void set(const unsigned int &x, const unsigned int &y);
+				void move(const Position &position);
 
-            void set(const Position &position);
+				void set(const unsigned int &x, const unsigned int &y);
 
-            std::string toString(void) const;
-        };
+				void set(const Position &position);
 
-    } // namespace model
+				std::string toString(void) const;
+		};
+
+	} // namespace model
 } // namespace labyrinth_44422
 
 #endif // POSITION_H

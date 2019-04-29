@@ -8,6 +8,12 @@
 namespace Labyrinth_44422 {
 	namespace gui {
 
+		/**
+		 * Represents a player infobox containing all the infos about a player
+		 * @author 44422
+		 * @version 0.1.0
+		 * @since 2019-04-27
+		 */
 		class PlayerInfos : public QHBoxLayout {
 
 			Q_OBJECT
@@ -17,6 +23,7 @@ namespace Labyrinth_44422 {
 
 			public:
 				PlayerInfos(QWidget *parent, model::Player *player, bool isCurrentPlayer);
+
 				~PlayerInfos() = default;
 		};
 

@@ -13,6 +13,8 @@ SOURCES += \
 	gui/source/askPlayerNameWindow.cpp \
 	gui/source/guiView.cpp \
 	gui/source/playerInfos.cpp \
+	gui/source/rulesWindow.cpp \
+	gui/source/tilePreviewer.cpp \
 	gui/source/welcomeWindow.cpp
 
 HEADERS += \
@@ -30,6 +32,8 @@ HEADERS += \
 	gui/include/askPlayerNameWindow.h \
 	gui/include/guiView.h \
 	gui/include/playerInfos.h \
+	gui/include/rulesWindow.h \
+	gui/include/tilePreviewer.h \
 	gui/include/welcomeWindow.h
 
 TEMPLATE = app
