@@ -1,11 +1,14 @@
 #include <sstream>
 #include <string>
 
+#include <QLabel>
+#include <QPixmap>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "./../include/tilePreviewer.h"
+#include "./../include/availableTile.h"
+#include "./../include/clickableTile.h"
 #include "./../../core/model/include/tile.h"
 
 namespace Labyrinth_44422 {
@@ -16,17 +19,9 @@ namespace Labyrinth_44422 {
 		 * @param parent the parent window
 		 * @param tile the tile to display
 		 */
-		TilePreviewer::TilePreviewer(QWidget *parent, model::Tile *tile) : QVBoxLayout{parent}, tile{tile} {
+		AvailableTile::AvailableTile(QWidget *parent, model::Game *game) : QVBoxLayout{parent}, game{game} {
 
-			auto *tileWidget = new QWidget(parent);
-			tileWidget->setMaximumSize(50, 50);
-
-			std::stringstream path;
-			path << "background: url(./../resource/" << (tile->getPathLEFT() ? "t" : "f") << (tile->getPathDOWN() ? "t" : "f") << (tile->getPathRIGHT() ? "t" : "f") << (tile->getPathUP() ? "t" : "f") << ".png) 0 0 0 0 stretch stretch;"
-																																																		   "background-repeat: none; width: 50px; height: 50px;";
-			tileWidget->setStyleSheet(QString::fromStdString(path.str()));
-
-			this->addWidget(tileWidget);
+			this->tile = new ClickableTile(parent, this->game->getAvailableTiles().at(0), 100, 100, false);
 
 			auto *horizontal = new QHBoxLayout(parent);
 
@@ -36,8 +31,18 @@ namespace Labyrinth_44422 {
 			horizontal->addWidget(leftButton);
 			horizontal->addWidget(rightButton);
 
+			this->addWidget(tile);
 			this->addLayout(horizontal);
 
+			this->updateDisplay();
+
+		}
+
+		void AvailableTile::updateDisplay() {
+
+			this->tile->updateDisplay(this->game->getAvailableTiles().at(0), false);
+
+			this->update();
 		}
 
 	} // namespace gui

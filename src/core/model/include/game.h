@@ -95,6 +95,8 @@ namespace Labyrinth_44422 {
 				void currentPlayerGoTo(const Position &position);
 
 				bool canCurrentPlayerGoTo(const Position &position);
+
+				bool canCurrentPlayerInsertTile(void);
 		};
 
 	}  // namespace model

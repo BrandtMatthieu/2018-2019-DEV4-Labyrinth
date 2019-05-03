@@ -21,7 +21,7 @@ namespace Labyrinth_44422 {
 				unsigned int y = 0;
 
 			public:
-				Position(unsigned x, unsigned y);
+				Position(unsigned int x, unsigned int y);
 
 				Position(const Position &position);
 

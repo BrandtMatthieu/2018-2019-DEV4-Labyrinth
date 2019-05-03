@@ -34,9 +34,9 @@ namespace Labyrinth_44422 {
 
 			setLayout(layout);
 
-			this->isActiveWindow();
+			this->update();
 			this->show();
-
+			this->isActiveWindow();
 		}
 
 	} // namespace gui

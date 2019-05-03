@@ -9,6 +9,7 @@ namespace Labyrinth_44422 {
 		 * Creates a new player for the game
 		 * @param nickname the nickname of the player
 		 * @param color the color of the player's pawn
+		 * @param position the position of the player
 		 */
 		Player::Player(const std::string &nickname, const std::string &color, const Position &position) : nickname{nickname}, color{color}, position{position.getX(), position.getY()} {
 		}

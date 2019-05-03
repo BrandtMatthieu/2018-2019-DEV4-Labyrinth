@@ -11,7 +11,7 @@ namespace Labyrinth_44422 {
 		 * @since 2019-03-01
 		 */
 		enum class InsertSide {
-			UP, DOWN, RIGHT, LEFT,
+				UP, DOWN, RIGHT, LEFT,
 		};
 
 	}  // namespace model

@@ -52,13 +52,13 @@ namespace Labyrinth_44422 {
 		 * @param y the amount to move the position on the y axis
 		 */
 		void Position::move(const int &x, const int &y) {
-			if (x < 0 && std::abs(x) > this->x) {
+			if (x < 0 && static_cast<unsigned int>(std::abs(x)) > this->x) {
 				this->x = 0;
 			} else {
 				this->x += x;
 			}
 
-			if (y < 0 && std::abs(y) > this->y) {
+			if (y < 0 && static_cast<unsigned int>(std::abs(y)) > this->y) {
 				this->y = 0;
 			} else {
 				this->y += x;

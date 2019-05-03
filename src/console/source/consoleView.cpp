@@ -451,6 +451,7 @@ namespace Labyrinth_44422 {
 		/**
 		 * Prints the different objectives on the board and their positions
 		 * @param board the board containing the tiles
+		 * @param availableTiles the different availabl tiles in the board
 		 */
 		void ConsoleView::printBoardObjectives(model::Board *board, std::vector<model::Tile *> availableTiles) const {
 			this->lineBreak();

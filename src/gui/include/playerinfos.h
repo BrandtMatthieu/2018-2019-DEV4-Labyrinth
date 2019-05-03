@@ -2,6 +2,8 @@
 #define PLAYERINFOS_H
 
 #include <QFormLayout>
+#include <QLabel>
+#include <QPalette>
 
 #include "./../../core/model/include/player.h"
 
@@ -21,10 +23,24 @@ namespace Labyrinth_44422 {
 			private:
 				model::Player *player = nullptr;
 
+				QPalette *palette = nullptr;
+
+				QWidget *currentPlayerColor = nullptr;
+
+				QLabel *playerLocation = nullptr;
+
+				QLabel *playerCurrentObjective = nullptr;
+
+				QLabel *playerObjectiveCompleted = nullptr;
+
 			public:
-				PlayerInfos(QWidget *parent, model::Player *player, bool isCurrentPlayer);
+				explicit PlayerInfos(QWidget *parent, model::Player *player, bool isCurrentPlayer);
 
 				~PlayerInfos() = default;
+
+				void updateDisplay(bool isCurrentPlayer);
+
+				model::Player *getPlayer();
 		};
 
 	} // namespace gui

@@ -1,26 +1,34 @@
 SOURCES += \
 	# console/source/consoleView.cpp \
+	\
 	# core/controller/source/controllerConsole.cpp \
 	core/controller/source/controllerGUI.cpp \
+	\
 	core/model/source/board.cpp \
 	core/model/source/game.cpp \
 	core/model/source/objectiveCard.cpp \
 	core/model/source/player.cpp \
 	core/model/source/position.cpp \
 	core/model/source/tile.cpp \
+	\
 	# core/mainConsole.cpp \
+	\
 	core/mainGUI.cpp \
 	gui/source/askPlayerNameWindow.cpp \
+	gui/source/availableTile.cpp \
+	gui/source/boardView.cpp \
+	gui/source/clickableTile.cpp \
 	gui/source/guiView.cpp \
+	gui/source/insertButton.cpp \
 	gui/source/playerInfos.cpp \
-	gui/source/rulesWindow.cpp \
-	gui/source/tilePreviewer.cpp \
-	gui/source/welcomeWindow.cpp
+	gui/source/rulesWindow.cpp
 
 HEADERS += \
-	# console/include/consoleView.h \
-	#  core/controller/include/controllerConsole.h \
+	console/include/consoleView.h \
+	\
+	core/controller/include/controllerConsole.h \
 	core/controller/include/controllerGUI.h \
+	\
 	core/model/include/board.h \
 	core/model/include/game.h \
 	core/model/include/insertSide.h \
@@ -29,12 +37,15 @@ HEADERS += \
 	core/model/include/position.h \
 	core/model/include/tile.h \
 	core/utils/include/utils.h \
+	\
 	gui/include/askPlayerNameWindow.h \
+	gui/include/availableTile.h \
+	gui/include/boardView.h \
+	gui/include/clickableTile.h \
 	gui/include/guiView.h \
+	gui/include/insertButton.h \
 	gui/include/playerInfos.h \
-	gui/include/rulesWindow.h \
-	gui/include/tilePreviewer.h \
-	gui/include/welcomeWindow.h
+	gui/include/rulesWindow.h
 
 TEMPLATE = app
 TARGET = Labyrinth

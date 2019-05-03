@@ -155,7 +155,7 @@ namespace Labyrinth_44422 {
 
 		/**
 		 * Returns the address of the tile at a provided position
-		 * @index position  the position of the tile to get
+		 * @param index position  the position of the tile to get
 		 * @throw invalid_argument if the position is out of bounds of the board
 		 * @return the address of the tile at a provided position
 		 */
@@ -388,8 +388,8 @@ namespace Labyrinth_44422 {
 
 		/**
 		 * Returns true if a player can go to a provided position
-		 * @param position the position to check to player can go to
-		 * @param player the player
+		 * @param from the position to check to player can go from
+		 * @param to the position to check to player can go to
 		 * @throw invalid_argument if the "from" position is out of bounds
 		 * @throw invalid_argument if the "to" position is out of bounds
 		 * @return true if a player can go to a provided position

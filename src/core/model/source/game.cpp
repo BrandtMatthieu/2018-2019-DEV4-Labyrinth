@@ -285,7 +285,6 @@ namespace Labyrinth_44422 {
 		/**
 		 * Adds a new player to the current game
 		 * @param name the nickname of the player to add
-		 * @param color the color of the player to add
 		 * @throw runtime_error if the max number of player is already reached and trying to add more players
 		 */
 		void Game::addPlayer(const std::string &name) {
@@ -476,6 +475,14 @@ namespace Labyrinth_44422 {
 		 */
 		bool Game::canCurrentPlayerGoTo(const Position &position) {
 			return this->board->isPositionInsideBoard(position) && this->board->canGoToFrom(this->getCurrentPlayer()->getPosition(), position);
+		}
+
+		/**
+		 * Returns true if the current player can insert a tile in the Labyrinth
+		 * @return true if the current player can insert a tile in the Labyrinth
+		 */
+		bool Game::canCurrentPlayerInsertTile() {
+			return !this->getCurrentPlayer()->hasInsertedTile();
 		}
 	}  // namespace model
 }  // namespace Labyrinth_44422

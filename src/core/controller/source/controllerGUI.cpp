@@ -1,5 +1,5 @@
 #include "./../include/controllerGUI.h"
-#include "./../../../gui/include/askPlayerNameWindow.h"
+#include "./../../../gui/include/guiView.h"
 
 namespace Labyrinth_44422 {
 	namespace controller {
@@ -7,8 +7,20 @@ namespace Labyrinth_44422 {
 		/**
 		 * Creates a new controller for the game in gui mode
 		 */
-		ControllerGUI::ControllerGUI(void) : game{new model::Game()}, guiView{new gui::GUIView(game)} {
-			this->start();
+		ControllerGUI::ControllerGUI(void) : game{new model::Game()}, guiView{new gui::GUIView(this->game)} {
+
+
+			this->game->addPlayer("Player 1");
+			this->game->addPlayer("Player 2");
+			this->game->addPlayer("Player 3");
+			this->game->addPlayer("Player 4");
+
+			this->game->generateTiles();
+
+			this->game->dealObjectiveCardsToPlayers();
+			this->game->start();
+
+			this->guiView->init();
 		}
 
 		/**
@@ -17,24 +29,6 @@ namespace Labyrinth_44422 {
 		ControllerGUI::~ControllerGUI(void) {
 			delete this->game;
 			delete this->guiView;
-		}
-
-		/**
-		 * Starts the controller
-		 */
-		void ControllerGUI::start(void) {
-
-			this->game->generateTiles();
-
-			this->game->addPlayer("Player 1");
-			this->game->addPlayer("Player 2");
-			this->game->addPlayer("Player 3");
-			this->game->addPlayer("Player 4");
-
-			this->game->dealObjectiveCardsToPlayers();
-			this->game->start();
-
-			this->guiView->updateDisplay();
 		}
 
 	} // namespace controller

@@ -25,8 +25,6 @@ namespace Labyrinth_44422 {
 				ControllerGUI(const ControllerGUI &controllerGui) = default;
 
 				~ControllerGUI(void);
-
-				void start(void);
 		};
 
 	} // namespace controller

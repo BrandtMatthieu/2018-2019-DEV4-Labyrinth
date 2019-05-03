@@ -35,6 +35,11 @@ add_compile_options(-Wl,--gc-sections)
 add_compile_options(-I"D:\\Programs\\Qt\\5.12.1\\mingw73_64\\include" -L"D:\\Programs\\Qt\\5.12.1\\mingw73_64\\lib" -lQtGui -lQtCore -lQtWidgets)
 add_compile_options(-DENABLE_PRECOMPILED_HEADERS=OFF)
 set(CMAKE_EXE_LINKER_FLAGS -I"D:\\Programs\\Qt\\5.12.1\\mingw73_64\\include" -L"D:\\Programs\\Qt\\5.12.1\\mingw73_64\\lib" -lQtGui -lQtCore -lQtWidgets)
+SET(GCC_COVERAGE_LINK_FLAGS    "-Lsearchdir D:\\Programs\\Qt\\5.12.1\\mingw73_64\\include")
+# add_link_options(-Lsearchdir D:\\Programs\\Qt\\5.12.1\\mingw73_64\\include)
+# add_link_options(-Lsearchdir D:\\Programs\\Qt\\5.12.1\\mingw73_64\\include\\QtCore)
+# add_link_options(-Lsearchdir D:\\Programs\\Qt\\5.12.1\\mingw73_64\\include\\QtGui)
+# add_link_options(-Lsearchdir D:\\Programs\\Qt\\5.12.1\\mingw73_64\\include\\QtWidgets)
 
 # ============= FIND EXTERNAL LIBRARIES ==========
 # SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
