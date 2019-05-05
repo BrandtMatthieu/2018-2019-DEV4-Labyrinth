@@ -23,6 +23,9 @@ namespace Labyrinth_44422 {
 
 				void updateDisplay(bool clickable);
 
+				model::InsertSide getSide(void);
+				unsigned int getLine(void);
+
 		};
 
 	} // namespace gui

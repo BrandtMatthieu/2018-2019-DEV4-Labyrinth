@@ -92,11 +92,15 @@ namespace Labyrinth_44422 {
 
 				void currentPlayerInsertTile(const Position &position, const InsertSide &side);
 
+				void currentPlayerInsertTile(const unsigned int line, const InsertSide &side);
+
 				void currentPlayerGoTo(const Position &position);
 
 				bool canCurrentPlayerGoTo(const Position &position);
 
 				bool canCurrentPlayerInsertTile(void);
+
+				bool canCurrentPlayerGoTo(void);
 		};
 
 	}  // namespace model

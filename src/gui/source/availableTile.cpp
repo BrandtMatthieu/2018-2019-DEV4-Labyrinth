@@ -1,6 +1,7 @@
 #include <sstream>
 #include <string>
 
+#include <QCoreApplication>
 #include <QLabel>
 #include <QPixmap>
 #include <QPushButton>
@@ -19,14 +20,21 @@ namespace Labyrinth_44422 {
 		 * @param parent the parent window
 		 * @param tile the tile to display
 		 */
-		AvailableTile::AvailableTile(QWidget *parent, model::Game *game) : QVBoxLayout{parent}, game{game} {
+		AvailableTile::AvailableTile(QWidget *parent, model::Game *game, controller::ControllerGUI *controller) : QVBoxLayout{parent}, game{game}, controller{controller} {
 
-			this->tile = new ClickableTile(parent, this->game->getAvailableTiles().at(0), 100, 100, false);
+			this->tile = new ClickableTile(parent, this->game->getAvailableTiles().at(0), 100, 100, false, controller);
 
 			auto *horizontal = new QHBoxLayout(parent);
 
 			auto *leftButton = new QPushButton("Tourner la tuile de -90°", parent);
 			auto *rightButton = new QPushButton("Tourner la tuile de 90°", parent);
+
+			QObject::connect(leftButton, &QPushButton::clicked, this, [leftButton, this]() {
+				this->controller->currentPlayerTurnTileLeft();
+			});
+			QObject::connect(rightButton, &QPushButton::clicked, this, [rightButton, this]() {
+				this->controller->currentPlayerTurnTileRight();
+			});
 
 			horizontal->addWidget(leftButton);
 			horizontal->addWidget(rightButton);

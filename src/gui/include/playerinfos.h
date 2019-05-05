@@ -2,6 +2,7 @@
 #define PLAYERINFOS_H
 
 #include <QFormLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QPalette>
 
@@ -16,11 +17,14 @@ namespace Labyrinth_44422 {
 		 * @version 0.1.0
 		 * @since 2019-04-27
 		 */
-		class PlayerInfos : public QHBoxLayout {
+		class PlayerInfos : public QWidget {
 
 			Q_OBJECT
 
 			private:
+
+				QHBoxLayout *layout = nullptr;
+
 				model::Player *player = nullptr;
 
 				QPalette *palette = nullptr;

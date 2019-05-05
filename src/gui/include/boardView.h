@@ -12,6 +12,10 @@
 #include "./../../core/model/include/game.h"
 
 namespace Labyrinth_44422 {
+	namespace controller {
+		class ControllerGUI;
+	}
+
 	namespace gui {
 
 		/**
@@ -20,19 +24,21 @@ namespace Labyrinth_44422 {
 		 * @version 0.1.1
 		 * @since 2019-05-01
 		 */
-		class BoardView : public QGridLayout {
+		class BoardView : public QWidget {
 
 			Q_OBJECT
 
 			private:
 				model::Game *game = nullptr;
 
+				controller::ControllerGUI *controller = nullptr;
+
 				std::vector<ClickableTile *> tiles;
 
 				std::vector<InsertButton *> buttons;
 
 			public:
-				explicit BoardView(QWidget *parent, model::Game *game);
+				explicit BoardView(QWidget *parent, model::Game *game, controller::ControllerGUI *controller);
 
 				~BoardView(void) = default;
 

@@ -68,6 +68,8 @@ namespace Labyrinth_44422 {
 
 				bool canInsertTile(const Position &position, const InsertSide &side) const;
 
+				bool canInsertTile(unsigned int line, const InsertSide &side) const;
+
 				Tile *insertTile(const Position &position, std::vector<Tile *> &availableTiles, const InsertSide &side);
 
 				bool canGoToFrom(const Position &from, const Position &to);

@@ -6,6 +6,7 @@
 #include <QWidget>
 
 #include "./clickableTile.h"
+#include "./../../core/controller/include/controllerGUI.h"
 #include "./../../core/model/include/game.h"
 
 namespace Labyrinth_44422 {
@@ -24,14 +25,19 @@ namespace Labyrinth_44422 {
 			private:
 				model::Game *game = nullptr;
 
+				controller::ControllerGUI *controller = nullptr;
+
 				ClickableTile *tile = nullptr;
 
 			public:
-				explicit AvailableTile(QWidget *parent, model::Game *game);
+				explicit AvailableTile(QWidget *parent, model::Game *game, controller::ControllerGUI *controller);
 
 				~AvailableTile() = default;
 
 				void updateDisplay(void);
+
+			signals:
+				void clicked();
 
 		};
 

@@ -1,10 +1,16 @@
 #ifndef CONTROLLERGUI_H
 #define CONTROLLERGUI_H
 
-#include "../../model/include/game.h"
-#include "./../../../gui/include/guiView.h"
+#include <string>
+
+#include "./../../model/include/game.h"
+#include "./../../model/include/insertSide.h"
 
 namespace Labyrinth_44422 {
+	namespace gui {
+		class GUIView;
+	}
+
 	namespace controller {
 
 		/**
@@ -14,10 +20,11 @@ namespace Labyrinth_44422 {
 		 * @since 2019-04-27
 		 */
 		class ControllerGUI {
+
 			private:
 				Labyrinth_44422::model::Game *game;
 
-				Labyrinth_44422::gui::GUIView *guiView;
+				gui::GUIView *guiView;
 
 			public:
 				ControllerGUI(void);
@@ -25,6 +32,15 @@ namespace Labyrinth_44422 {
 				ControllerGUI(const ControllerGUI &controllerGui) = default;
 
 				~ControllerGUI(void);
+
+				void addPlayer(std::string nickname);
+
+				void currentPlayerTurnTileLeft();
+				void currentPlayerTurnTileRight();
+
+				void currentPlayerTryInsertTile(Labyrinth_44422::model::InsertSide side, unsigned int line);
+				void currentPlayerTryGoTo(unsigned int x, unsigned int y);
+
 		};
 
 	} // namespace controller

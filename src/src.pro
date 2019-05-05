@@ -14,7 +14,6 @@ SOURCES += \
 	# core/mainConsole.cpp \
 	\
 	core/mainGUI.cpp \
-	gui/source/askPlayerNameWindow.cpp \
 	gui/source/availableTile.cpp \
 	gui/source/boardView.cpp \
 	gui/source/clickableTile.cpp \
@@ -38,7 +37,6 @@ HEADERS += \
 	core/model/include/tile.h \
 	core/utils/include/utils.h \
 	\
-	gui/include/askPlayerNameWindow.h \
 	gui/include/availableTile.h \
 	gui/include/boardView.h \
 	gui/include/clickableTile.h \

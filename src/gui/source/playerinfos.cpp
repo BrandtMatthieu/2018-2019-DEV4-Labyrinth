@@ -14,8 +14,11 @@ namespace Labyrinth_44422 {
 		 * @param player the player to display the infos from
 		 * @param isCurrentPlayer if the player is the current player
 		 */
-		PlayerInfos::PlayerInfos(QWidget *parent, model::Player *player, bool isCurrentPlayer) : QHBoxLayout(parent), player{player} {
+		PlayerInfos::PlayerInfos(QWidget *parent, model::Player *player, bool isCurrentPlayer) : QWidget{parent}, player{player} {
 
+			this->layout = new QHBoxLayout(this);
+
+			this->setLayout(this->layout);
 
 			this->palette = new QPalette();
 			this->currentPlayerColor = new QWidget{parent};
@@ -28,28 +31,29 @@ namespace Labyrinth_44422 {
 			this->currentPlayerColor->setMaximumHeight(100);
 			this->currentPlayerColor->setMinimumHeight(100);
 
-			this->addWidget(currentPlayerColor);
+			this->layout->addWidget(currentPlayerColor);
 
 			auto *infos = new QWidget();
 			auto *infosLayout = new QFormLayout();
 			infos->setLayout(infosLayout);
 
-			this->addWidget(infos);
+			this->layout->addWidget(infos);
 
-			this->updateDisplay(isCurrentPlayer);
 
 			infosLayout->addRow(new QLabel("Player"), new QLabel(QString::fromStdString(this->player->getNickname())));
 			infosLayout->addRow(new QLabel("Color"), new QLabel(QString::fromStdString(this->player->getColor())));
 			infosLayout->addRow(new QLabel("Location"), this->playerLocation);
 			infosLayout->addRow(new QLabel("Current Objective"), this->playerCurrentObjective);
 			infosLayout->addRow(new QLabel("Objective Completed"), this->playerObjectiveCompleted);
+
+			this->updateDisplay(isCurrentPlayer);
 		}
 
 		/**
 		 * Updates the infos in the infobox
 		 * @param isCurrentPlayer if the player is the current player
 		 */
-		void PlayerInfos::updateDisplay(bool isCurrentPlayer = false) {
+		void PlayerInfos::updateDisplay(bool isCurrentPlayer) {
 			if (isCurrentPlayer) {
 				if (this->player->getColor() == "Red") {
 					this->palette->setColor(QPalette::Background, Qt::red);
@@ -63,7 +67,7 @@ namespace Labyrinth_44422 {
 					this->palette->setColor(QPalette::Background, Qt::black);
 				}
 			} else {
-				this->palette->setColor(QPalette::Background, Qt::transparent);
+				this->palette->setColor(QPalette::Background, Qt::white);
 			}
 
 			this->currentPlayerColor->setPalette(*palette);
@@ -79,6 +83,7 @@ namespace Labyrinth_44422 {
 			this->playerObjectiveCompleted->setText(QString::fromStdString(std::to_string(this->player->getCompletedObjectiveCardsCount()) + " / " + std::to_string(this->player->getObjectiveCardsLeftCount() + this->player->getCompletedObjectiveCardsCount())));
 
 			this->update();
+			this->show();
 		}
 
 		/**

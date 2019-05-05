@@ -11,8 +11,14 @@
 #include "./../include/playerInfos.h"
 #include "./../../core/model/include/position.h"
 #include "./../../core/model/include/game.h"
+#include "./../include/availableTile.h"
+
 
 namespace Labyrinth_44422 {
+	namespace controller {
+		class ControllerGUI;
+	}
+
 	namespace gui {
 
 		/**
@@ -28,14 +34,18 @@ namespace Labyrinth_44422 {
 			private:
 				model::Game *game = nullptr;
 
+				Labyrinth_44422::controller::ControllerGUI *controller = nullptr;
+
 				std::vector<PlayerInfos *> playersInfos;
 
 				BoardView *boardView = nullptr;
 
 				QVBoxLayout *vLayout = nullptr;
 
+				AvailableTile *availableTile = nullptr;
+
 			public:
-				explicit GUIView(model::Game *game = nullptr);
+				explicit GUIView(model::Game *game, controller::ControllerGUI *controller);
 
 				~GUIView(void) = default;
 
@@ -45,7 +55,7 @@ namespace Labyrinth_44422 {
 
 				void displayRules(void);
 
-				std::string askPlayerName(void);
+				void displayWinner(void);
 		};
 
 	} // namespace gui

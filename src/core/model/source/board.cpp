@@ -321,6 +321,48 @@ namespace Labyrinth_44422 {
 		}
 
 		/**
+		 * Returns true if a tile can be inserted at the provided position
+		 * @param line the line to check where to insert the tile
+		 * @param side which side the tile need to be inserted in
+		 * @throw invalid_argument if provided position is out of bounds
+		 * @return true if a tile can be inserted at the provided line
+		 */
+		bool Board::canInsertTile(unsigned int line, const InsertSide &side) const {
+			Position pos{0, 0};
+			switch (side) {
+				case InsertSide::DOWN:
+				case InsertSide::UP:
+					pos.set(0, line);
+					break;
+				case InsertSide::RIGHT:
+				case InsertSide::LEFT:
+					pos.set(line, 0);
+					break;
+			}
+
+			if (!this->isPositionInsideBoard(pos)) {
+				throw std::invalid_argument("Error while inserting a tile at a position. Position is out of bounds.");
+			}
+
+			bool lineMovable = true;
+			switch (side) {
+				case InsertSide::UP:
+				case InsertSide::DOWN:
+					for (unsigned int i = line; i < this->tiles.size(); i = i + this->getMaxSizeX()) {
+						lineMovable = lineMovable && this->tiles.at(i)->isMovable();
+					}
+					break;
+				case InsertSide::RIGHT:
+				case InsertSide::LEFT:
+					for (unsigned int i = line * this->getMaxSizeX(); i < (line + 1) * this->getMaxSizeX(); i++) {
+						lineMovable = lineMovable && this->tiles.at(i)->isMovable();
+					}
+					break;
+			}
+			return lineMovable;
+		}
+
+		/**
 		 * Inserts the tile at the provided position onto the game's board
 		 * @param position the position where to insert the tile
 		 * @param availableTiles the tile to insert

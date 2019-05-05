@@ -1,11 +1,14 @@
 #include <iostream>
+#include <sstream>
 
 #include <QApplication>
 #include <QDebug>
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QInputDialog>
 #include <QLabel>
 #include <QPushButton>
+#include <QString>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -14,6 +17,7 @@
 #include "./../include/playerInfos.h"
 #include "./../include/rulesWindow.h"
 #include "./../include/availableTile.h"
+#include "./../../core/controller/include/controllerGUI.h"
 
 namespace Labyrinth_44422 {
 	namespace gui {
@@ -22,7 +26,7 @@ namespace Labyrinth_44422 {
 		 * Creates the main window of the Labyrinth game
 		 * @param game the game to display
 		 */
-		GUIView::GUIView(model::Game *game) : QMainWindow{nullptr}, game{game} {
+		GUIView::GUIView(model::Game *game, controller::ControllerGUI *controller) : QMainWindow{nullptr}, game{game}, controller{controller} {
 
 			this->setWindowTitle(QString::fromStdString("Labyrinth | n°15 - 44422 - D112 - DEVG4 - 2018-2019"));
 			this->setMinimumSize(1200, 800);
@@ -31,11 +35,11 @@ namespace Labyrinth_44422 {
 			auto *centralLayout = new QHBoxLayout();
 			centralWidget->setLayout(centralLayout);
 
-			centralLayout->addLayout(new QGridLayout(centralWidget));
+			// centralLayout->addWidget(new BoardView(centralWidget, game));
 
 
 			this->vLayout = new QVBoxLayout(centralWidget);
-			this->vLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+			this->vLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
 
 			centralLayout->addLayout(this->vLayout, 200);
 
@@ -47,36 +51,30 @@ namespace Labyrinth_44422 {
 				this->displayRules();
 			}
 
-			// QString text = QInputDialog::getText(parent,"Title","text");
+			while ((!this->game->hasEnoughPlayers()) || ((this->game->getPlayersCount() < this->game->getMaxPlayers()) && (QMessageBox::question(this, "Labyrinth | Ajouter joueur", "Voulez-vous ajouter un autre joueur dans la partie ?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes))) {
+				QString text = QInputDialog::getText(this, "Labyrinth | Ajouter joueur", "Entrez un nom pour le joueur");
+				this->controller->addPlayer(text.toStdString());
+			}
 
-			/*
-			for(unsigned int i = 7; i > 0; i--) {
-				auto * btn = new QPushButton(QString::fromStdString(std::string("test").append(std::to_string(i))));
-				btn->setStyleSheet("border-image:url(:/Icons/images/Sfondo.png);");
-				vLayout->addWidget(btn);
-			}
-			*/
-			/*
-			for (unsigned int i = 0; i < game->getPlayersCount(); i++) {
-				vLayout->addItem(new PlayerInfos(centralWidget, game->getPlayerAt(i)));
-			}
-			*/
 			this->setCentralWidget(centralWidget);
 		}
 
 		void GUIView::init(void) {
-			this->boardView = new BoardView(this, game);
 
+			this->boardView = new BoardView(this, game, controller);
+			this->centralWidget()->layout()->addWidget(boardView);
 
 			this->vLayout->addWidget(new QLabel("Tuile disponible :", this));
-			this->vLayout->addLayout(new AvailableTile(this, this->game));
+			this->availableTile = new AvailableTile(this, this->game, controller);
+			this->vLayout->addLayout(this->availableTile);
 
 			this->vLayout->addWidget(new QLabel("Joueurs :", this));
 			for (unsigned int i = 0; i < this->game->getPlayersCount(); i++) {
 				auto *playerInfoBox = new PlayerInfos(this, this->game->getPlayerAt(i), this->game->getPlayerAt(i) == this->game->getCurrentPlayer());
 				this->playersInfos.push_back(playerInfoBox);
-				this->vLayout->addLayout(playerInfoBox);
+				this->vLayout->addWidget(playerInfoBox);
 			}
+
 
 			this->updateDisplay();
 		}
@@ -86,6 +84,7 @@ namespace Labyrinth_44422 {
 		 */
 		void GUIView::updateDisplay(void) {
 			this->boardView->updateDisplay();
+			this->availableTile->updateDisplay();
 			for (auto *player : this->playersInfos) {
 				player->updateDisplay(player->getPlayer() == this->game->getCurrentPlayer());
 			}
@@ -102,12 +101,15 @@ namespace Labyrinth_44422 {
 		}
 
 		/**
-		 * Asks a name for the player
-		 * @return the name of the new player
+		 * Displays the Winner of the game
 		 */
-		std::string GUIView::askPlayerName(void) {
-			// TODO
-			return "";
+		void GUIView::displayWinner() {
+			std::stringstream message;
+			message << this->game->getWinner()->getNickname() << " est le gagnant de cette partie.";
+			QMessageBox::StandardButton reply = QMessageBox::question(this, "Labyrinth | Gagnant", QString::fromStdString(message.str()), QMessageBox::Yes | QMessageBox::No);
+			if (reply == QMessageBox::Yes) {
+				QApplication::quit();
+			}
 		}
 
 	}

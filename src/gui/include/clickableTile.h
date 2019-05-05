@@ -6,6 +6,10 @@
 #include "./../../core/model/include/tile.h"
 
 namespace Labyrinth_44422 {
+	namespace controller {
+		class ControllerGUI;
+	}
+
 	namespace gui {
 
 		class ClickableTile : public QPushButton {
@@ -15,8 +19,10 @@ namespace Labyrinth_44422 {
 			private:
 				model::Tile *tile = nullptr;
 
+				controller::ControllerGUI *controller = nullptr;
+
 			public:
-				explicit ClickableTile(QWidget *parent, model::Tile *tile, unsigned int width, unsigned int height, bool clickable);
+				explicit ClickableTile(QWidget *parent, model::Tile *tile, unsigned int width, unsigned int height, bool clickable, controller::ControllerGUI *controller);
 				~ClickableTile() = default;
 
 				void updateDisplay(model::Tile *tile, bool clickable);
