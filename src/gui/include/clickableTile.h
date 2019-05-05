@@ -20,8 +20,6 @@ namespace Labyrinth_44422 {
 			private:
 				model::Tile *tile = nullptr;
 
-				controller::ControllerGUI *controller = nullptr;
-
 				unsigned int x = 0;
 
 				unsigned int y = 0;
@@ -29,6 +27,8 @@ namespace Labyrinth_44422 {
 				unsigned int width = 100;
 
 				unsigned int height = 100;
+
+				controller::ControllerGUI *controller = nullptr;
 
 				QImage *result = nullptr;
 

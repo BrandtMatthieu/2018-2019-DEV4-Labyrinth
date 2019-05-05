@@ -1,5 +1,15 @@
 # Avertissements
 
+## Remise 3
+* Mêmes avertissements qu'à la remise 2
+* `gui/source/guiView.cpp`
+  * ligne 50: prise d'une valeur d'enum depuis un entier
+  * ligne 116: prise d'une valeur d'enum depuis un entier
+* `core/controller/source/controllerGUI.cpp`
+  * ligne 13: la classe `ControllerGUI` n'a pas d'`operator=`, ce qui est recommandé pour les classes demandant de l'allocation de mémoire (pas nécessaire dans ce cas-ci de l'implémenter)
+* `core/controller/include/controllerGUI.h`
+  * ligne 32: le constructeur par copie est mis à `default`, ce qui n'est pas recommandé dans les classes demandant de l'allocation de mémoire (pas nécessaire dans ce cas-ci de l'implémenter)
+
 ## Remise 2
 
 * `console/source/controllerConsole.cpp`

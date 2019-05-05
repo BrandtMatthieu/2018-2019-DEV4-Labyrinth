@@ -35,10 +35,6 @@ namespace Labyrinth_44422 {
 				~AvailableTile() = default;
 
 				void updateDisplay(void);
-
-			signals:
-				void clicked();
-
 		};
 
 	} // namespace gui

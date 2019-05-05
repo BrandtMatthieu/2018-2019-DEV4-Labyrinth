@@ -2,6 +2,12 @@
 
 Ce fichier reprend les changements par rapport au modèle métier remis lors de la remise n°1.
 
+## Remise 3
+
+* Ajout d'une méthode `canCurrentPlayerInsertTile` dans la classe `Game`
+* Ajout d'une méthode `canCurrentGoTo` dans la classe `Game`
+* Ajout d'une méthode overloadée `canInsertTile` dans la classe `Board`
+
 ## Remise 2
 
 * Création d'une classe `ConsoleView` avec des méthodes responsable pour l'affichage

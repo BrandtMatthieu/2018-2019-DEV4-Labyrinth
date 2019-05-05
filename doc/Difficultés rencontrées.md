@@ -1,5 +1,10 @@
 # Difficultés rencontrées durant la création du projet Labyrinth
 
+## Relmise  3
+
+### 01/05/2019
+* Comment mettre une image en fond pour un bouton (toujours pas trouvé d'ailleurs)
+
 ## Remise 2
 
 ### 28/02/2019

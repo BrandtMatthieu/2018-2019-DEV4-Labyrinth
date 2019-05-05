@@ -53,7 +53,6 @@ namespace Labyrinth_44422 {
 			delete this->result;
 			result = new QImage(QSize(500, 500), QImage::Format_RGBA64_Premultiplied);
 
-			QImage background;
 			std::stringstream tileBackground;
 			tileBackground << ":/resource/tiles/" << (tile->getPathLEFT() ? "t" : "f") << (tile->getPathDOWN() ? "t" : "f") << (tile->getPathRIGHT() ? "t" : "f") << (tile->getPathUP() ? "t" : "f") << ".png";
 
