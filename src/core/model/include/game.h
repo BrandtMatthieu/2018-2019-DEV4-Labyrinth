@@ -45,7 +45,7 @@ namespace Labyrinth_44422 {
 				void playersFixPosition(const Position &position, const InsertSide &side);
 
 			public:
-				std::vector<std::string> gameObjectives = {"bat", "beetle", "bones", "butterfly", "candlestick", "crown", "dragon", "emerald", "fairy", "genius", "ghost", "gnome", "golden_purse", "grimoire", "helm", "keys", "lizard", "map", "owl", "rat", "ring", "spider", "sword", "treasure_chest"};
+				std::vector<std::string> gameObjectives = {"bat", "beetle", "bones", "butterfly", "candlestick", "crown", "dragon", "emerald", "fairy", "genie", "ghost", "gnome", "golden_purse", "grimoire", "helm", "keys", "lizard", "map", "owl", "rat", "ring", "spider", "sword", "treasure_chest"};
 
 			public:
 				Game(void);

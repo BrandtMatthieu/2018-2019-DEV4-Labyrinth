@@ -10,7 +10,7 @@ namespace Labyrinth_44422 {
 		 * Creates a new controller for the game in gui mode
 		 */
 		ControllerGUI::ControllerGUI(void) : game{new model::Game()} {
-			this->guiView = new Labyrinth_44422::gui::GUIView(this->game, this);
+			this->guiView = new gui::GUIView(this->game, this);
 
 			this->game->generateTiles();
 
@@ -36,33 +36,39 @@ namespace Labyrinth_44422 {
 			this->game->addPlayer(nickname);
 		}
 
+		/**
+		 * Makes the available tile turn 90° left
+		 */
 		void ControllerGUI::currentPlayerTurnTileLeft() {
 			try {
 				this->game->getAvailableTiles().at(0)->rotateLeft90();
 				this->guiView->updateDisplay();
-				std::cout << "Left" << std::endl;
 			} catch (std::exception const &e) {
 				std::cout << e.what() << std::endl;
 			}
 		}
 
+		/**
+		 * Makes the available tile turn 90° right
+		 */
 		void ControllerGUI::currentPlayerTurnTileRight() {
 			try {
 				this->game->getAvailableTiles().at(0)->rotateRight90();
 				this->guiView->updateDisplay();
-				std::cout << "Right" << std::endl;
 			} catch (std::exception const &e) {
 				std::cout << e.what() << std::endl;
 			}
 		}
 
+		/**
+		 * Tries to insert a tile in the Labyrinth
+		 * @param side the side to insert the tile
+		 * @param line the line to insert the tile
+		 */
 		void ControllerGUI::currentPlayerTryInsertTile(Labyrinth_44422::model::InsertSide side, unsigned int line) {
 			try {
 				if (this->game->canCurrentPlayerInsertTile()) {
 					this->game->currentPlayerInsertTile(line, side);
-					std::cout << "Insert at " << line << std::endl;
-				} else {
-					std::cerr << "Cannot insert at " << line << std::endl;
 				}
 				this->guiView->updateDisplay();
 			} catch (std::exception const &e) {
@@ -70,11 +76,15 @@ namespace Labyrinth_44422 {
 			}
 		}
 
+		/**
+		 * Tries to go to a tile on the board
+		 * @param x the x position of the tile
+		 * @param y the y position of the tile
+		 */
 		void ControllerGUI::currentPlayerTryGoTo(unsigned int x, unsigned int y) {
 			try {
-				if (this->game->canCurrentPlayerGoTo()) {
+				if (this->game->canCurrentPlayerGoTo(model::Position{x, y})) {
 					this->game->currentPlayerGoTo(model::Position{x, y});
-					this->guiView->updateDisplay();
 					std::cout << "Goto " << x << " " << y << std::endl;
 					this->game->currentPlayerCheckObjective();
 					if (this->game->hasWinner()) {
@@ -84,6 +94,7 @@ namespace Labyrinth_44422 {
 				} else {
 					std::cerr << "Cannot goto " << x << " " << y << std::endl;
 				}
+				this->guiView->updateDisplay();
 			} catch (std::exception const &e) {
 				std::cout << e.what() << std::endl;
 			}

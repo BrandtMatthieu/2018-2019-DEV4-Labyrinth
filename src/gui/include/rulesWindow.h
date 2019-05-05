@@ -15,7 +15,7 @@ namespace Labyrinth_44422 {
 		 */
 		class RulesWindow : public QDialog {
 
-				Q_OBJECT
+			Q_OBJECT
 
 			private:
 				QString rules = ""

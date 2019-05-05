@@ -25,11 +25,12 @@ namespace Labyrinth_44422 {
 		/**
 		 * Creates the main window of the Labyrinth game
 		 * @param game the game to display
+		 * @param controller the controller of the game
 		 */
 		GUIView::GUIView(model::Game *game, controller::ControllerGUI *controller) : QMainWindow{nullptr}, game{game}, controller{controller} {
 
 			this->setWindowTitle(QString::fromStdString("Labyrinth | n°15 - 44422 - D112 - DEVG4 - 2018-2019"));
-			this->setMinimumSize(1200, 800);
+			this->setMinimumSize(1200, 900);
 
 			auto *centralWidget = new QWidget(this);
 			auto *centralLayout = new QHBoxLayout();
@@ -53,12 +54,18 @@ namespace Labyrinth_44422 {
 
 			while ((!this->game->hasEnoughPlayers()) || ((this->game->getPlayersCount() < this->game->getMaxPlayers()) && (QMessageBox::question(this, "Labyrinth | Ajouter joueur", "Voulez-vous ajouter un autre joueur dans la partie ?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes))) {
 				QString text = QInputDialog::getText(this, "Labyrinth | Ajouter joueur", "Entrez un nom pour le joueur");
+				if (text.length() == 0) {
+					text = QString::fromStdString("Joueur " + std::to_string(this->game->getPlayersCount() + 1));
+				}
 				this->controller->addPlayer(text.toStdString());
 			}
 
 			this->setCentralWidget(centralWidget);
 		}
 
+		/**
+		 * Creates a new GUI View and adds the main compononents
+		 */
 		void GUIView::init(void) {
 
 			this->boardView = new BoardView(this, game, controller);

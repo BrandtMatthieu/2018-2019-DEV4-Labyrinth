@@ -457,7 +457,7 @@ namespace Labyrinth_44422 {
 
 		/**
 		 * Makes the current player insert a tile in the board
-		 * @param position the position where to insert the tile
+		 * @param line the line where to insert the tile
 		 * @param side the side the player inserts the tile in
 		 * @throw runtime_error if there is no tile to insert
 		 * @throw runtime_error if the tile to insert is null
@@ -469,7 +469,6 @@ namespace Labyrinth_44422 {
 			if (this->availableTiles.at(0) == nullptr) {
 				throw std::runtime_error("Error while inserting tile. Tile to insert is null.");
 			}
-			// TODO
 
 			this->getCurrentPlayer()->insertTile();
 			switch (side) {
@@ -523,7 +522,7 @@ namespace Labyrinth_44422 {
 		 * @return true if the current player can go to a tile in the Labyrinth
 		 */
 		bool Game::canCurrentPlayerGoTo(void) {
-			return !this->getCurrentPlayer()->hasInsertedTile();
+			return this->getCurrentPlayer()->hasInsertedTile();
 		}
 	}  // namespace model
 }  // namespace Labyrinth_44422

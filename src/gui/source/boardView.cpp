@@ -12,11 +12,11 @@ namespace Labyrinth_44422 {
 	namespace gui {
 
 		void deleteWidgets(QLayout *layout) {
-			while (QLayoutItem * item = layout->takeAt(0)) {
-				if (QWidget * widget = item->widget()) {
+			while (QLayoutItem *item = layout->takeAt(0)) {
+				if (QWidget *widget = item->widget()) {
 					widget->deleteLater();
 				}
-				if (QLayout * childLayout = item->layout()) {
+				if (QLayout *childLayout = item->layout()) {
 					deleteWidgets(childLayout);
 				}
 
@@ -28,6 +28,7 @@ namespace Labyrinth_44422 {
 		 * Creates a new board display
 		 * @param parent the parent window
 		 * @param game the game to display
+		 * @param controller the controller of the game
 		 */
 		BoardView::BoardView(QWidget *parent, model::Game *game, controller::ControllerGUI *controller) : QWidget{parent}, game{game}, controller{controller} {
 
@@ -40,7 +41,7 @@ namespace Labyrinth_44422 {
 			this->setSizePolicy(policy);
 
 			for (unsigned int i = 0; i < this->game->getBoard()->getTilesCount(); i++) {
-				auto *clickableTile = new ClickableTile(parent, this->game->getBoard()->getTilesAt(i), sizeButton, sizeButton, false, controller);
+				auto *clickableTile = new ClickableTile(parent, this->game->getBoard()->getTilesAt(i), i % this->game->getBoard()->getMaxSizeX(), i / this->game->getBoard()->getMaxSizeX(), sizeButton, sizeButton, false, controller);
 				this->tiles.push_back(clickableTile);
 				grid->addWidget(clickableTile, (i / this->game->getBoard()->getMaxSizeX()) + 1, (i % this->game->getBoard()->getMaxSizeX()) + 1);
 			}
@@ -110,9 +111,6 @@ namespace Labyrinth_44422 {
 			}
 
 			this->updateDisplay();
-
-
-			// générer toutes les tuiles et les boutons
 		}
 
 		/**

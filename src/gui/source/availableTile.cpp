@@ -3,8 +3,10 @@
 
 #include <QCoreApplication>
 #include <QLabel>
+#include <QLayout>
 #include <QPixmap>
 #include <QPushButton>
+#include <QSizePolicy>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -18,11 +20,13 @@ namespace Labyrinth_44422 {
 		/**
 		 * Creates an infobox to display the available tile in the board
 		 * @param parent the parent window
-		 * @param tile the tile to display
+		 * @param game the current game
+		 * @param controller the controller of the game
 		 */
 		AvailableTile::AvailableTile(QWidget *parent, model::Game *game, controller::ControllerGUI *controller) : QVBoxLayout{parent}, game{game}, controller{controller} {
 
-			this->tile = new ClickableTile(parent, this->game->getAvailableTiles().at(0), 100, 100, false, controller);
+			this->tile = new ClickableTile(parent, this->game->getAvailableTiles().at(0), 0, 0, 200, 200, false, controller);
+			this->tile->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 			auto *horizontal = new QHBoxLayout(parent);
 
@@ -46,6 +50,9 @@ namespace Labyrinth_44422 {
 
 		}
 
+		/**
+		 * Updates the available tile
+		 */
 		void AvailableTile::updateDisplay() {
 
 			this->tile->updateDisplay(this->game->getAvailableTiles().at(0), false);

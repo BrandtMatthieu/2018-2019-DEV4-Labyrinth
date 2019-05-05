@@ -2,6 +2,7 @@
 #define CLICKABLETILE_H
 
 #include <QPushButton>
+#include <QToolButton>
 
 #include "./../../core/model/include/tile.h"
 
@@ -12,7 +13,7 @@ namespace Labyrinth_44422 {
 
 	namespace gui {
 
-		class ClickableTile : public QPushButton {
+		class ClickableTile : public QToolButton {
 
 			Q_OBJECT
 
@@ -21,8 +22,18 @@ namespace Labyrinth_44422 {
 
 				controller::ControllerGUI *controller = nullptr;
 
+				unsigned int x = 0;
+
+				unsigned int y = 0;
+
+				unsigned int width = 100;
+
+				unsigned int height = 100;
+
+				QImage *result = nullptr;
+
 			public:
-				explicit ClickableTile(QWidget *parent, model::Tile *tile, unsigned int width, unsigned int height, bool clickable, controller::ControllerGUI *controller);
+				explicit ClickableTile(QWidget *parent, model::Tile *tile, unsigned int x, unsigned int y, unsigned int width, unsigned int height, bool clickable, controller::ControllerGUI *controller);
 				~ClickableTile() = default;
 
 				void updateDisplay(model::Tile *tile, bool clickable);

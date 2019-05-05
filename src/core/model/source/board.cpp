@@ -389,6 +389,7 @@ namespace Labyrinth_44422 {
 						setTile(Position(i, position.getY()), getTilesAt(Position(i + 1, position.getY())));
 						this->getTilesAt(Position{i, position.getY()})->move(InsertSide::RIGHT);
 					}
+					this->tiles.at(this->maxSize.getX() - 1 + position.getY() * this->getMaxSizeX()) = nullptr;
 					setTile(Position(this->maxSize.getX() - 1, position.getY()), availableTiles.at(0));
 					break;
 				case InsertSide::RIGHT:
@@ -398,6 +399,7 @@ namespace Labyrinth_44422 {
 						setTile(Position(i, position.getY()), getTilesAt(Position(i - 1, position.getY())));
 						this->getTilesAt(Position{i, position.getY()})->move(InsertSide::LEFT);
 					}
+					this->tiles.at(0 + position.getY() * this->getMaxSizeX()) = nullptr;
 					setTile(Position(0, position.getY()), availableTiles.at(0));
 					break;
 				case InsertSide::UP:
@@ -407,6 +409,7 @@ namespace Labyrinth_44422 {
 						setTile(Position(position.getX(), i), getTilesAt(Position(position.getX(), i + 1)));
 						this->getTilesAt(Position(position.getX(), i))->move(InsertSide::DOWN);
 					}
+					this->tiles.at(position.getX() + ((this->getMaxSizeY() - 1) * this->getMaxSizeX())) = nullptr;
 					setTile(Position(position.getX(), this->maxSize.getY() - 1), availableTiles.at(0));
 					break;
 				case InsertSide::DOWN:

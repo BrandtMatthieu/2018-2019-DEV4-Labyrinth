@@ -28,8 +28,7 @@ namespace Labyrinth_44422 {
 
 			this->currentPlayerColor->setMaximumWidth(20);
 			this->currentPlayerColor->setMinimumWidth(20);
-			this->currentPlayerColor->setMaximumHeight(100);
-			this->currentPlayerColor->setMinimumHeight(100);
+			this->currentPlayerColor->setAutoFillBackground(true);
 
 			this->layout->addWidget(currentPlayerColor);
 
@@ -40,11 +39,11 @@ namespace Labyrinth_44422 {
 			this->layout->addWidget(infos);
 
 
-			infosLayout->addRow(new QLabel("Player"), new QLabel(QString::fromStdString(this->player->getNickname())));
-			infosLayout->addRow(new QLabel("Color"), new QLabel(QString::fromStdString(this->player->getColor())));
-			infosLayout->addRow(new QLabel("Location"), this->playerLocation);
-			infosLayout->addRow(new QLabel("Current Objective"), this->playerCurrentObjective);
-			infosLayout->addRow(new QLabel("Objective Completed"), this->playerObjectiveCompleted);
+			infosLayout->addRow(new QLabel("Joueur"), new QLabel(QString::fromStdString(this->player->getNickname())));
+			infosLayout->addRow(new QLabel("Couleur"), new QLabel(QString::fromStdString(this->player->getColor())));
+			infosLayout->addRow(new QLabel("Position"), this->playerLocation);
+			infosLayout->addRow(new QLabel("Objectif en cours"), this->playerCurrentObjective);
+			infosLayout->addRow(new QLabel("Objectifs complétés"), this->playerObjectiveCompleted);
 
 			this->updateDisplay(isCurrentPlayer);
 		}
