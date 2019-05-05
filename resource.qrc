@@ -1,0 +1,52 @@
+<RCC>
+    <qresource prefix="/resource/tiles">
+        <file>resource/tiles/ffff.png</file>
+        <file>resource/tiles/ffft.png</file>
+        <file>resource/tiles/fftf.png</file>
+        <file>resource/tiles/fftt.png</file>
+        <file>resource/tiles/ftff.png</file>
+        <file>resource/tiles/ftft.png</file>
+        <file>resource/tiles/fttf.png</file>
+        <file>resource/tiles/fttt.png</file>
+        <file>resource/tiles/tfff.png</file>
+        <file>resource/tiles/tfft.png</file>
+        <file>resource/tiles/tftf.png</file>
+        <file>resource/tiles/tftt.png</file>
+        <file>resource/tiles/ttff.png</file>
+        <file>resource/tiles/ttft.png</file>
+        <file>resource/tiles/tttf.png</file>
+        <file>resource/tiles/tttt.png</file>
+    </qresource>
+    <qresource prefix="/resource/pawns">
+        <file>resource/pawns/blue.png</file>
+        <file>resource/pawns/green.png</file>
+        <file>resource/pawns/red.png</file>
+        <file>resource/pawns/yellow.png</file>
+    </qresource>
+    <qresource prefix="/resource/icons">
+        <file>resource/icons/bat.png</file>
+        <file>resource/icons/beetle.png</file>
+        <file>resource/icons/bones.png</file>
+        <file>resource/icons/butterfly.png</file>
+        <file>resource/icons/candlestick.png</file>
+        <file>resource/icons/crown.png</file>
+        <file>resource/icons/dragon.png</file>
+        <file>resource/icons/emerald.png</file>
+        <file>resource/icons/fairy.png</file>
+        <file>resource/icons/genie.png</file>
+        <file>resource/icons/ghost.png</file>
+        <file>resource/icons/gnome.png</file>
+        <file>resource/icons/golden_purse.png</file>
+        <file>resource/icons/grimoire.png</file>
+        <file>resource/icons/helmet.png</file>
+        <file>resource/icons/keys.png</file>
+        <file>resource/icons/lizard.png</file>
+        <file>resource/icons/map.png</file>
+        <file>resource/icons/owl.png</file>
+        <file>resource/icons/rat.png</file>
+        <file>resource/icons/ring.png</file>
+        <file>resource/icons/spider.png</file>
+        <file>resource/icons/sword.png</file>
+        <file>resource/icons/treasure_chest.png</file>
+    </qresource>
+</RCC>

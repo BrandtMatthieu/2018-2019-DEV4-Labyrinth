@@ -1,3 +1,5 @@
+CONFIG += resources_big
+
 SOURCES += \
 	# console/source/consoleView.cpp \
 	\
@@ -44,6 +46,8 @@ HEADERS += \
 	gui/include/insertButton.h \
 	gui/include/playerInfos.h \
 	gui/include/rulesWindow.h
+
+RESOURCES += ./../resource.qrc
 
 TEMPLATE = app
 TARGET = Labyrinth

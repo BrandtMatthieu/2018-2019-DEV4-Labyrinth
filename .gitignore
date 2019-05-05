@@ -8,6 +8,8 @@ doc/*/
 qmake*/
 release/
 resource/*.html
+resource/backup/
+resource/tiles_/
 test/Boost Test/*.cpp
 .CMakeLists*.*
 .qmake.stash

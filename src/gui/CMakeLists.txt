@@ -1,13 +1,25 @@
 # ============= ADDING SOURCES ==========
 set(SOURCE
         ${SOURCE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/availableTile.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/boardView.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/clickableTile.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/source/guiView.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/insertButton.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/playerInfo.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/rulesWindow.cpp
         PARENT_SCOPE
         )
 
 set(HEADERS
         ${HEADERS}
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/availableTile.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/boardView.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/clickableTile.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/guiView.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/insertButton.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/playerInfos.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/rulesWindow.h
         PARENT_SCOPE
         )
 
